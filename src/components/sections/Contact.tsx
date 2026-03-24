@@ -1,7 +1,9 @@
-import { useRef } from 'react'
+import { useRef, useState, type ChangeEvent, type FormEvent } from 'react'
 import { motion, useInView } from 'framer-motion'
 import { Mail, MapPin, Send } from 'lucide-react'
 import { GitHubIcon, LinkedInIcon, XIcon } from '../ui/SocialIcons'
+import { appwriteConfig, submitContactMessage } from '../../lib/appwrite'
+import { socialLinks } from '../../data/portfolio'
 
 const fadeUp = {
   hidden: { opacity: 0, y: 30 },
@@ -11,6 +13,39 @@ const fadeUp = {
 export function Contact() {
   const ref = useRef(null)
   const isInView = useInView(ref, { once: true, margin: '-100px' })
+  const [formData, setFormData] = useState({ name: '', email: '', message: '' })
+  const [formStatus, setFormStatus] = useState<{ type: 'idle' | 'submitting' | 'success' | 'error'; message?: string }>({ type: 'idle' })
+
+  const socialProfiles = [
+    { icon: GitHubIcon, href: socialLinks.github, label: 'GitHub' },
+    { icon: LinkedInIcon, href: socialLinks.linkedin, label: 'LinkedIn' },
+    { icon: XIcon, href: socialLinks.twitter, label: 'Twitter' },
+  ]
+
+  const handleChange = (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = event.target
+    setFormData((prev) => ({ ...prev, [name]: value }))
+  }
+
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault()
+    if (!appwriteConfig.configured) {
+      setFormStatus({
+        type: 'error',
+        message: 'Contact form is not configured yet. Please add your Appwrite environment variables.',
+      })
+      return
+    }
+
+    setFormStatus({ type: 'submitting' })
+    try {
+      await submitContactMessage(formData)
+      setFormData({ name: '', email: '', message: '' })
+      setFormStatus({ type: 'success', message: 'Thanks! Your message has been sent.' })
+    } catch (error) {
+      setFormStatus({ type: 'error', message: 'Something went wrong. Please try again shortly.' })
+    }
+  }
 
   return (
     <section id="contact" className="relative py-24 md:py-32" ref={ref}>
@@ -42,7 +77,12 @@ export function Contact() {
                   <Mail className="w-5 h-5 text-primary" />
                 </div>
                 <div>
-                  <p className="text-sm font-semibold text-foreground">hello@bipul.dev</p>
+                  <a
+                    href={`mailto:${socialLinks.email}`}
+                    className="text-sm font-semibold text-foreground hover:text-primary transition-colors"
+                  >
+                    {socialLinks.email}
+                  </a>
                   <p className="text-xs text-muted-foreground mt-1">Drop me a line anytime</p>
                 </div>
               </div>
@@ -58,19 +98,24 @@ export function Contact() {
               </div>
 
               <div className="flex items-center gap-3 pt-4">
-                <a href="https://github.com" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-secondary flex items-center justify-center text-muted-foreground hover:bg-primary/10 hover:text-primary transition-all duration-200">
-                  <GitHubIcon className="w-5 h-5" />
-                </a>
-                <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-secondary flex items-center justify-center text-muted-foreground hover:bg-primary/10 hover:text-primary transition-all duration-200">
-                  <LinkedInIcon className="w-5 h-5" />
-                </a>
-                <a href="https://x.com" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-secondary flex items-center justify-center text-muted-foreground hover:bg-primary/10 hover:text-primary transition-all duration-200">
-                  <XIcon className="w-5 h-5" />
-                </a>
+                {socialProfiles.map((social) => {
+                  const Icon = social.icon
+                  return (
+                    <a
+                      key={social.label}
+                      href={social.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="w-10 h-10 rounded-full bg-secondary flex items-center justify-center text-muted-foreground hover:bg-primary/10 hover:text-primary transition-all duration-200"
+                    >
+                      <Icon className="w-5 h-5" />
+                    </a>
+                  )
+                })}
               </div>
             </motion.div>
 
-            {/* Right: Tally CTA */}
+            {/* Right: Appwrite contact form */}
             <motion.div variants={fadeUp}>
               <div className="glass-panel rounded-xl p-8 md:p-10 text-center space-y-6">
                 <div className="w-16 h-16 rounded-2xl bg-primary/10 flex items-center justify-center mx-auto">
@@ -82,16 +127,52 @@ export function Contact() {
                 <p className="text-sm text-muted-foreground leading-relaxed max-w-sm mx-auto">
                   Fill out a quick form and I&apos;ll get back to you within 24 hours. Let&apos;s turn your idea into reality.
                 </p>
-                <button
-                  data-tally-open="VLVJEa"
-                  data-tally-emoji-text="👋"
-                  data-tally-emoji-animation="wave"
-                  className="inline-flex items-center gap-2 rounded-lg bg-primary px-8 py-3 text-sm font-semibold text-primary-foreground transition-all duration-200 hover:scale-[1.02] active:scale-[0.98]"
-                  style={{ fontFamily: "'Space Grotesk', sans-serif" }}
-                >
-                  <Send className="w-4 h-4" />
-                  Get In Touch
-                </button>
+                <form className="space-y-4 text-left" onSubmit={handleSubmit}>
+                  <input
+                    type="text"
+                    name="name"
+                    value={formData.name}
+                    onChange={handleChange}
+                    placeholder="Your name"
+                    required
+                    className="w-full rounded-lg border border-border bg-secondary/40 px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary/40"
+                  />
+                  <input
+                    type="email"
+                    name="email"
+                    value={formData.email}
+                    onChange={handleChange}
+                    placeholder="Email address"
+                    required
+                    className="w-full rounded-lg border border-border bg-secondary/40 px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary/40"
+                  />
+                  <textarea
+                    name="message"
+                    value={formData.message}
+                    onChange={handleChange}
+                    placeholder="Tell me about your project"
+                    rows={4}
+                    required
+                    className="w-full rounded-lg border border-border bg-secondary/40 px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary/40"
+                  />
+                  <button
+                    type="submit"
+                    disabled={formStatus.type === 'submitting'}
+                    className="inline-flex w-full items-center justify-center gap-2 rounded-lg bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground transition-all duration-200 hover:scale-[1.01] active:scale-[0.99] disabled:cursor-not-allowed disabled:opacity-70"
+                    style={{ fontFamily: "'Space Grotesk', sans-serif" }}
+                  >
+                    <Send className="w-4 h-4" />
+                    {formStatus.type === 'submitting' ? 'Sending...' : 'Send message'}
+                  </button>
+                </form>
+                {formStatus.type !== 'idle' && formStatus.message && (
+                  <p
+                    className={`text-xs ${formStatus.type === 'error' ? 'text-destructive' : 'text-muted-foreground'}`}
+                    role={formStatus.type === 'error' ? 'alert' : undefined}
+                  >
+                    {formStatus.message}
+                  </p>
+                )}
               </div>
             </motion.div>
           </div>
