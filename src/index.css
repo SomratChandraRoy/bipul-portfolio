@@ -1,0 +1,274 @@
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+@import '@blinkdotnew/ui/styles';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-family: 'DM Sans', var(--font-sans), -apple-system, BlinkMacSystemFont, sans-serif;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Space Grotesk', var(--font-heading), sans-serif;
+  }
+  code, pre, .font-mono {
+    font-family: 'JetBrains Mono', var(--font-mono), monospace;
+  }
+}
+
+/* ── Bipul Dark-First Palette ──────────────────────────────────────────────── */
+/* Electric Lime primary (#C8FF00) + Mint Neon accent (#00FFB2) on near-black  */
+
+:root {
+  --background: 240 33% 4%;
+  --foreground: 220 20% 88%;
+  --card: 240 20% 8%;
+  --card-foreground: 220 20% 88%;
+  --popover: 240 20% 8%;
+  --popover-foreground: 220 20% 88%;
+  --primary: 72 100% 50%;
+  --primary-foreground: 240 33% 4%;
+  --secondary: 240 20% 12%;
+  --secondary-foreground: 220 20% 78%;
+  --muted: 240 15% 14%;
+  --muted-foreground: 220 10% 50%;
+  --accent: 160 100% 50%;
+  --accent-foreground: 240 33% 4%;
+  --destructive: 0 72% 51%;
+  --destructive-foreground: 0 0% 100%;
+  --border: 240 12% 18%;
+  --input: 240 12% 18%;
+  --ring: 72 100% 50%;
+
+  --chart-1: 72 100% 50%;
+  --chart-2: 160 100% 50%;
+  --chart-3: 200 100% 60%;
+  --chart-4: 280 80% 65%;
+  --chart-5: 340 80% 60%;
+
+  --sidebar: 240 20% 6%;
+  --sidebar-foreground: 220 20% 88%;
+  --sidebar-primary: 72 100% 50%;
+  --sidebar-primary-foreground: 240 33% 4%;
+  --sidebar-accent: 160 100% 50%;
+  --sidebar-accent-foreground: 240 33% 4%;
+  --sidebar-border: 240 12% 18%;
+  --sidebar-ring: 72 100% 50%;
+
+  --font-sans: 'DM Sans', sans-serif;
+  --font-heading: 'Space Grotesk', sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+
+  --shadow-2xs: 0px 4px 8px -1px hsl(0 0% 0% / 0.08);
+  --shadow-xs: 0px 4px 8px -1px hsl(0 0% 0% / 0.1);
+  --shadow-sm: 0px 4px 8px -1px hsl(0 0% 0% / 0.15), 0px 1px 2px -2px hsl(0 0% 0% / 0.1);
+  --shadow: 0px 4px 8px -1px hsl(0 0% 0% / 0.2), 0px 1px 2px -2px hsl(0 0% 0% / 0.15);
+  --shadow-md: 0px 4px 12px -2px hsl(0 0% 0% / 0.25), 0px 2px 4px -2px hsl(0 0% 0% / 0.15);
+  --shadow-lg: 0px 8px 24px -4px hsl(0 0% 0% / 0.3), 0px 4px 6px -2px hsl(0 0% 0% / 0.15);
+  --shadow-xl: 0px 12px 40px -8px hsl(0 0% 0% / 0.4), 0px 8px 10px -2px hsl(0 0% 0% / 0.2);
+  --shadow-2xl: 0px 20px 60px -12px hsl(0 0% 0% / 0.5);
+
+  --tracking-normal: -0.01em;
+  --spacing: 0.25rem;
+  --radius: 0.75rem;
+}
+
+/* Light mode override */
+:root.light,
+.theme-linear.light,
+.theme-glass.light,
+.theme-midnight.light,
+.theme-minimal.light {
+  --background: 220 20% 97%;
+  --foreground: 240 20% 10%;
+  --card: 0 0% 100%;
+  --card-foreground: 240 20% 10%;
+  --popover: 0 0% 100%;
+  --popover-foreground: 240 20% 10%;
+  --primary: 72 90% 38%;
+  --primary-foreground: 0 0% 100%;
+  --secondary: 220 20% 94%;
+  --secondary-foreground: 240 20% 30%;
+  --muted: 220 14% 92%;
+  --muted-foreground: 220 10% 44%;
+  --accent: 160 80% 38%;
+  --accent-foreground: 0 0% 100%;
+  --destructive: 0 72% 51%;
+  --destructive-foreground: 0 0% 100%;
+  --border: 220 14% 88%;
+  --input: 220 14% 88%;
+  --ring: 72 90% 38%;
+}
+
+/* Dark mode (default) */
+:root.dark,
+.theme-linear.dark,
+.theme-glass.dark,
+.theme-midnight.dark,
+.theme-minimal.dark {
+  --background: 240 33% 4%;
+  --foreground: 220 20% 88%;
+  --card: 240 20% 8%;
+  --card-foreground: 220 20% 88%;
+  --popover: 240 20% 8%;
+  --popover-foreground: 220 20% 88%;
+  --primary: 72 100% 50%;
+  --primary-foreground: 240 33% 4%;
+  --secondary: 240 20% 12%;
+  --secondary-foreground: 220 20% 78%;
+  --muted: 240 15% 14%;
+  --muted-foreground: 220 10% 50%;
+  --accent: 160 100% 50%;
+  --accent-foreground: 240 33% 4%;
+  --destructive: 0 72% 51%;
+  --destructive-foreground: 0 0% 100%;
+  --border: 240 12% 18%;
+  --input: 240 12% 18%;
+  --ring: 72 100% 50%;
+}
+
+/* ── Custom Utilities ──────────────────────────────────────────────────────── */
+
+.glass-panel {
+  background: hsl(240 20% 8% / 0.6);
+  backdrop-filter: blur(20px) saturate(150%);
+  border: 1px solid hsl(240 12% 18% / 0.6);
+}
+
+.light .glass-panel {
+  background: hsl(0 0% 100% / 0.7);
+  border: 1px solid hsl(220 14% 88% / 0.8);
+}
+
+.text-gradient-primary {
+  background: linear-gradient(135deg, hsl(72 100% 50%), hsl(90 100% 60%));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.text-gradient-accent {
+  background: linear-gradient(135deg, hsl(160 100% 50%), hsl(180 100% 60%));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.glow-primary {
+  box-shadow: 0 0 30px -5px hsl(72 100% 50% / 0.3), 0 0 60px -10px hsl(72 100% 50% / 0.15);
+}
+
+.glow-accent {
+  box-shadow: 0 0 30px -5px hsl(160 100% 50% / 0.3), 0 0 60px -10px hsl(160 100% 50% / 0.15);
+}
+
+.bg-grid {
+  background-image:
+    linear-gradient(hsl(240 12% 18% / 0.4) 1px, transparent 1px),
+    linear-gradient(90deg, hsl(240 12% 18% / 0.4) 1px, transparent 1px);
+  background-size: 60px 60px;
+}
+
+.bg-dots {
+  background-image: radial-gradient(circle, hsl(240 12% 18% / 0.6) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
+.section-divider {
+  position: relative;
+}
+.section-divider::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 120px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, hsl(72 100% 50% / 0.4), transparent);
+}
+
+/* ── Scroll Behavior ───────────────────────────────────────────────────────── */
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 80px;
+}
+
+/* ── Selection ─────────────────────────────────────────────────────────────── */
+::selection {
+  background: hsl(72 100% 50% / 0.25);
+  color: hsl(220 20% 95%);
+}
+
+/* ── Scrollbar ─────────────────────────────────────────────────────────────── */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: hsl(240 33% 4%);
+}
+::-webkit-scrollbar-thumb {
+  background: hsl(240 12% 22%);
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: hsl(240 12% 30%);
+}
+
+/* ── Shimmer Badge Animation ───────────────────────────────────────────────── */
+@keyframes shimmer-border {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.badge-shimmer {
+  position: relative;
+  overflow: hidden;
+}
+.badge-shimmer::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(90deg, hsl(72 100% 50% / 0.3), hsl(160 100% 50% / 0.3), hsl(72 100% 50% / 0.3));
+  background-size: 200% 100%;
+  animation: shimmer-border 3s ease infinite;
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+}
+
+/* ── Service Card Top Gradient Line ────────────────────────────────────────── */
+.service-card-glow::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, hsl(72 100% 50%), hsl(160 100% 50%));
+  transform: scaleX(0);
+  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  transform-origin: left;
+  border-radius: 2px 2px 0 0;
+}
+.service-card-glow:hover::before {
+  transform: scaleX(1);
+}
+
+/* ── Reduced Motion ────────────────────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
