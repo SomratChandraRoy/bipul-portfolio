@@ -23,6 +23,10 @@ npm run lint:js    # ESLint
 npm run lint:css   # Stylelint
 ```
 
+## Build Output
+
+The Vite build output is configured to `dist/angular` to match the deployment bundler's expected path.
+
 ## Environment Setup
 
 Copy `.env.example` to `.env.local` and fill in the values below:
