@@ -23,6 +23,21 @@ npm run lint:js    # ESLint
 npm run lint:css   # Stylelint
 ```
 
+## Environment Setup
+
+Copy `.env.example` to `.env.local` and fill in the values below:
+
+- `VITE_BLINK_PROJECT_ID` / `VITE_BLINK_PUBLISHABLE_KEY`: Blink SDK configuration
+- `VITE_APPWRITE_ENDPOINT`: Appwrite endpoint (e.g. `https://cloud.appwrite.io/v1`)
+- `VITE_APPWRITE_PROJECT_ID`: Appwrite project ID
+- `VITE_APPWRITE_DATABASE_ID`: Appwrite database ID
+- `VITE_APPWRITE_CONTACT_COLLECTION_ID`: Appwrite collection ID for contact messages
+
+### Appwrite Contact Collection
+
+The contact form creates documents with the fields `name`, `email`, `message`, and `source`.
+Make sure the collection permissions allow `create` for your desired audience (e.g. `any` for a public form).
+
 ## CSS Variable Detection
 
 The template includes a custom script that:

@@ -1,5 +1,6 @@
 import { Heart } from 'lucide-react'
 import { GitHubIcon, LinkedInIcon, XIcon } from '../ui/SocialIcons'
+import { socialLinks } from '../../data/portfolio'
 
 const quickLinks = [
   { label: 'About', href: '#about' },
@@ -8,10 +9,10 @@ const quickLinks = [
   { label: 'Contact', href: '#contact' },
 ]
 
-const socialLinks = [
-  { icon: GitHubIcon, href: 'https://github.com', label: 'GitHub' },
-  { icon: LinkedInIcon, href: 'https://linkedin.com', label: 'LinkedIn' },
-  { icon: XIcon, href: 'https://x.com', label: 'Twitter' },
+const socialProfiles = [
+  { icon: GitHubIcon, href: socialLinks.github, label: 'GitHub' },
+  { icon: LinkedInIcon, href: socialLinks.linkedin, label: 'LinkedIn' },
+  { icon: XIcon, href: socialLinks.twitter, label: 'Twitter' },
 ]
 
 export function Footer() {
@@ -45,7 +46,7 @@ export function Footer() {
 
           {/* Social icons */}
           <div className="flex items-center gap-3">
-            {socialLinks.map((social) => {
+            {socialProfiles.map((social) => {
               const Icon = social.icon
               return (
                 <a
