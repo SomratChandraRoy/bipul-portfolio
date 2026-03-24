@@ -1,0 +1,13 @@
+.vfrc-message--ai .vfrc-message-content,
+.vfrc-system-response .vfrc-bubble-content,
+.vfrc-chat-input textarea,
+.vfrc-chat-input,
+.vfrc-message .vfrc-bubble {
+  background-color: #ffffff !important;
+  color: #1a1a1a !important;
+}
+
+.vfrc-chat-input textarea::placeholder {
+  color: #9ca3af !important;
+  opacity: 1 !important;
+}
