@@ -5,9 +5,22 @@ import path from 'path';
 export default defineConfig({
   plugins: [react()],
   resolve: {
-    alias: {
-      '@': path.resolve(import.meta.dirname, './src'),
-    },
+    alias: [
+      {
+        find: '@',
+        replacement: path.resolve(import.meta.dirname, './src'),
+      },
+      {
+        find: /^react-resizable-panels$/,
+        replacement: path.resolve(
+          import.meta.dirname,
+          './src/shims/react-resizable-panels.ts'
+        ),
+      },
+    ],
+  },
+  build: {
+    outDir: 'dist/angular',
   },
   server: {
     port: 3000,
