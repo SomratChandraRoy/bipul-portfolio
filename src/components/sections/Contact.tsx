@@ -43,6 +43,7 @@ export function Contact() {
       setFormData({ name: '', email: '', message: '' })
       setFormStatus({ type: 'success', message: 'Thanks! Your message has been sent.' })
     } catch (error) {
+      console.error('Failed to submit contact message', error)
       setFormStatus({ type: 'error', message: 'Something went wrong. Please try again shortly.' })
     }
   }
@@ -168,7 +169,8 @@ export function Contact() {
                 {formStatus.type !== 'idle' && formStatus.message && (
                   <p
                     className={`text-xs ${formStatus.type === 'error' ? 'text-destructive' : 'text-muted-foreground'}`}
-                    role={formStatus.type === 'error' ? 'alert' : undefined}
+                    role={formStatus.type === 'error' ? 'alert' : 'status'}
+                    aria-live={formStatus.type === 'error' ? 'assertive' : 'polite'}
                   >
                     {formStatus.message}
                   </p>

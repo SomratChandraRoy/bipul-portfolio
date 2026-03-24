@@ -1,9 +1,9 @@
 import { Client, Databases, ID } from 'appwrite'
 
-const endpoint = import.meta.env.VITE_APPWRITE_ENDPOINT
-const projectId = import.meta.env.VITE_APPWRITE_PROJECT_ID
-const databaseId = import.meta.env.VITE_APPWRITE_DATABASE_ID
-const contactCollectionId = import.meta.env.VITE_APPWRITE_CONTACT_COLLECTION_ID
+const endpoint = import.meta.env.VITE_APPWRITE_ENDPOINT ?? ''
+const projectId = import.meta.env.VITE_APPWRITE_PROJECT_ID ?? ''
+const databaseId = import.meta.env.VITE_APPWRITE_DATABASE_ID ?? ''
+const contactCollectionId = import.meta.env.VITE_APPWRITE_CONTACT_COLLECTION_ID ?? ''
 
 const isConfigured = Boolean(endpoint && projectId && databaseId && contactCollectionId)
 
