@@ -12,8 +12,7 @@ const fadeUp = {
 export function Contact() {
   const ref = useRef(null)
   const isInView = useInView(ref, { once: true, margin: '-100px' })
-  const tallyFormId = import.meta.env.VITE_TALLY_FORM_ID
-  const isTallyConfigured = Boolean(tallyFormId)
+  const tallyFormId = 'VLVJEa'
 
   const socialProfiles = [
     { icon: GitHubIcon, href: socialLinks.github, label: 'GitHub' },
@@ -107,18 +106,12 @@ export function Contact() {
                     data-tally-open={tallyFormId}
                     data-tally-layout="modal"
                     data-tally-width="600"
-                    disabled={!isTallyConfigured}
-                    className="inline-flex w-full items-center justify-center gap-2 rounded-lg bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground transition-all duration-200 hover:scale-[1.01] active:scale-[0.99] disabled:cursor-not-allowed disabled:opacity-70"
+                    className="inline-flex w-full items-center justify-center gap-2 rounded-lg bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground transition-all duration-200 hover:scale-[1.01] active:scale-[0.99]"
                     style={{ fontFamily: "'Space Grotesk', sans-serif" }}
                   >
                     <Send className="w-4 h-4" />
                     Open contact form
                   </button>
-                  {!isTallyConfigured && (
-                    <p className="text-xs text-muted-foreground" role="status">
-                      Add VITE_TALLY_FORM_ID to enable the Tally popup form.
-                    </p>
-                  )}
                 </div>
               </div>
             </motion.div>

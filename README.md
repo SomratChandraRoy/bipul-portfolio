@@ -32,7 +32,6 @@ The Vite build output is configured to `dist/angular` to match the deployment bu
 Copy `.env.example` to `.env.local` and fill in the values below:
 
 - `VITE_BLINK_PROJECT_ID` / `VITE_BLINK_PUBLISHABLE_KEY`: Blink SDK configuration
-- `VITE_TALLY_FORM_ID`: Tally form ID used for the contact popup (the part after `https://tally.so/r/`)
 
 ## CSS Variable Detection
 
