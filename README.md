@@ -32,15 +32,7 @@ The Vite build output is configured to `dist/angular` to match the deployment bu
 Copy `.env.example` to `.env.local` and fill in the values below:
 
 - `VITE_BLINK_PROJECT_ID` / `VITE_BLINK_PUBLISHABLE_KEY`: Blink SDK configuration
-- `VITE_APPWRITE_ENDPOINT`: Appwrite endpoint (e.g. `https://cloud.appwrite.io/v1`)
-- `VITE_APPWRITE_PROJECT_ID`: Appwrite project ID
-- `VITE_APPWRITE_DATABASE_ID`: Appwrite database ID
-- `VITE_APPWRITE_CONTACT_COLLECTION_ID`: Appwrite collection ID for contact messages
-
-### Appwrite Contact Collection
-
-The contact form creates documents with the fields `name`, `email`, `message`, and `source`.
-Make sure the collection permissions allow `create` for your desired audience (e.g. `any` for a public form).
+- `VITE_TALLY_FORM_ID`: Tally form ID used for the contact popup (the part after `https://tally.so/r/`)
 
 ## CSS Variable Detection
 

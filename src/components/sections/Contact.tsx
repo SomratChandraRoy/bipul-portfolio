@@ -1,8 +1,7 @@
-import { useRef, useState, type ChangeEvent, type FormEvent } from 'react'
+import { useRef } from 'react'
 import { motion, useInView } from 'framer-motion'
 import { Mail, MapPin, Send } from 'lucide-react'
 import { GitHubIcon, LinkedInIcon, XIcon } from '../ui/SocialIcons'
-import { appwriteConfig, submitContactMessage } from '../../lib/appwrite'
 import { socialLinks } from '../../data/portfolio'
 
 const fadeUp = {
@@ -13,40 +12,14 @@ const fadeUp = {
 export function Contact() {
   const ref = useRef(null)
   const isInView = useInView(ref, { once: true, margin: '-100px' })
-  const [formData, setFormData] = useState({ name: '', email: '', message: '' })
-  const [formStatus, setFormStatus] = useState<{ type: 'idle' | 'submitting' | 'success' | 'error'; message?: string }>({ type: 'idle' })
+  const tallyFormId = import.meta.env.VITE_TALLY_FORM_ID
+  const isTallyConfigured = Boolean(tallyFormId)
 
   const socialProfiles = [
     { icon: GitHubIcon, href: socialLinks.github, label: 'GitHub' },
     { icon: LinkedInIcon, href: socialLinks.linkedin, label: 'LinkedIn' },
     { icon: XIcon, href: socialLinks.twitter, label: 'Twitter' },
   ]
-
-  const handleChange = (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const { name, value } = event.target
-    setFormData((prev) => ({ ...prev, [name]: value }))
-  }
-
-  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault()
-    if (!appwriteConfig.configured) {
-      setFormStatus({
-        type: 'error',
-        message: 'Contact form is not configured yet. Please add your Appwrite environment variables.',
-      })
-      return
-    }
-
-    setFormStatus({ type: 'submitting' })
-    try {
-      await submitContactMessage(formData)
-      setFormData({ name: '', email: '', message: '' })
-      setFormStatus({ type: 'success', message: 'Thanks! Your message has been sent.' })
-    } catch (error) {
-      console.error('Failed to submit contact message', error)
-      setFormStatus({ type: 'error', message: 'Something went wrong. Please try again shortly.' })
-    }
-  }
 
   return (
     <section id="contact" className="relative py-24 md:py-32" ref={ref}>
@@ -116,7 +89,7 @@ export function Contact() {
               </div>
             </motion.div>
 
-            {/* Right: Appwrite contact form */}
+            {/* Right: Tally contact form */}
             <motion.div variants={fadeUp}>
               <div className="glass-panel rounded-xl p-8 md:p-10 text-center space-y-6">
                 <div className="w-16 h-16 rounded-2xl bg-primary/10 flex items-center justify-center mx-auto">
@@ -126,55 +99,27 @@ export function Contact() {
                   Send me a message
                 </h3>
                 <p className="text-sm text-muted-foreground leading-relaxed max-w-sm mx-auto">
-                  Fill out a quick form and I&apos;ll get back to you within 24 hours. Let&apos;s turn your idea into reality.
+                  Use the quick Tally form to share your project details. I&apos;ll get back to you within 24 hours.
                 </p>
-                <form className="space-y-4 text-left" onSubmit={handleSubmit}>
-                  <input
-                    type="text"
-                    name="name"
-                    value={formData.name}
-                    onChange={handleChange}
-                    placeholder="Your name"
-                    required
-                    className="w-full rounded-lg border border-border bg-secondary/40 px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary/40"
-                  />
-                  <input
-                    type="email"
-                    name="email"
-                    value={formData.email}
-                    onChange={handleChange}
-                    placeholder="Email address"
-                    required
-                    className="w-full rounded-lg border border-border bg-secondary/40 px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary/40"
-                  />
-                  <textarea
-                    name="message"
-                    value={formData.message}
-                    onChange={handleChange}
-                    placeholder="Tell me about your project"
-                    rows={4}
-                    required
-                    className="w-full rounded-lg border border-border bg-secondary/40 px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary/40"
-                  />
+                <div className="space-y-3">
                   <button
-                    type="submit"
-                    disabled={formStatus.type === 'submitting'}
+                    type="button"
+                    data-tally-open={tallyFormId}
+                    data-tally-layout="modal"
+                    data-tally-width="600"
+                    disabled={!isTallyConfigured}
                     className="inline-flex w-full items-center justify-center gap-2 rounded-lg bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground transition-all duration-200 hover:scale-[1.01] active:scale-[0.99] disabled:cursor-not-allowed disabled:opacity-70"
                     style={{ fontFamily: "'Space Grotesk', sans-serif" }}
                   >
                     <Send className="w-4 h-4" />
-                    {formStatus.type === 'submitting' ? 'Sending...' : 'Send message'}
+                    Open contact form
                   </button>
-                </form>
-                {formStatus.type !== 'idle' && formStatus.message && (
-                  <p
-                    className={`text-xs ${formStatus.type === 'error' ? 'text-destructive' : 'text-muted-foreground'}`}
-                    role={formStatus.type === 'error' ? 'alert' : 'status'}
-                    aria-live={formStatus.type === 'error' ? 'assertive' : 'polite'}
-                  >
-                    {formStatus.message}
-                  </p>
-                )}
+                  {!isTallyConfigured && (
+                    <p className="text-xs text-muted-foreground" role="status">
+                      Add VITE_TALLY_FORM_ID to enable the Tally popup form.
+                    </p>
+                  )}
+                </div>
               </div>
             </motion.div>
           </div>

@@ -102,6 +102,8 @@ function ShapeRenderer({ shape }: { shape: FloatingShape }) {
 /* ── Hero Section ────────────────────────────────────────────────────────── */
 
 export function Hero() {
+  const tallyFormId = import.meta.env.VITE_TALLY_FORM_ID
+
   return (
     <section
       id="hero"
@@ -223,6 +225,9 @@ export function Hero() {
             </a>
             <a
               href="#contact"
+              data-tally-open={tallyFormId}
+              data-tally-layout="modal"
+              data-tally-width="600"
               className="inline-flex items-center gap-2 rounded-lg border border-border px-7 py-3.5 text-sm font-semibold text-foreground transition-all duration-200 hover:border-primary hover:text-primary hover:scale-[1.03] active:scale-[0.97]"
               style={{ fontFamily: "'Space Grotesk', sans-serif" }}
             >
