@@ -292,3 +292,5 @@ export const socialLinks = {
   twitter: 'https://x.com',
   email: 'hello@bipul.dev',
 }
+
+export const tallyFormId = 'VLVJEa'

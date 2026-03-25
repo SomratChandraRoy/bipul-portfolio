@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion'
 import { ChevronDown, ArrowRight } from 'lucide-react'
+import { tallyFormId } from '../../data/portfolio'
 
 /* ── Animation Orchestration ─────────────────────────────────────────────── */
 
@@ -102,8 +103,6 @@ function ShapeRenderer({ shape }: { shape: FloatingShape }) {
 /* ── Hero Section ────────────────────────────────────────────────────────── */
 
 export function Hero() {
-  const tallyFormId = 'VLVJEa'
-
   return (
     <section
       id="hero"

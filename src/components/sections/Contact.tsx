@@ -2,7 +2,7 @@ import { useRef } from 'react'
 import { motion, useInView } from 'framer-motion'
 import { Mail, MapPin, Send } from 'lucide-react'
 import { GitHubIcon, LinkedInIcon, XIcon } from '../ui/SocialIcons'
-import { socialLinks } from '../../data/portfolio'
+import { socialLinks, tallyFormId } from '../../data/portfolio'
 
 const fadeUp = {
   hidden: { opacity: 0, y: 30 },
@@ -12,7 +12,6 @@ const fadeUp = {
 export function Contact() {
   const ref = useRef(null)
   const isInView = useInView(ref, { once: true, margin: '-100px' })
-  const tallyFormId = 'VLVJEa'
 
   const socialProfiles = [
     { icon: GitHubIcon, href: socialLinks.github, label: 'GitHub' },
