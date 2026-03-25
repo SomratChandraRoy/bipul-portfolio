@@ -71,8 +71,8 @@ export function About() {
                 <span className="text-foreground font-medium">React and Django ecosystems</span>,
                 designing systems from database schemas to pixel-perfect interfaces. Every project starts
                 with understanding the problem deeply—then architecting a solution that&apos;s maintainable,
-                performant, and built to last. Clients looking for a website building agency in Bangladesh
-                trust me to deliver end-to-end web development.
+                performant, and built to last. I deliver end-to-end web development for clients across
+                Bangladesh with clear scope, pricing, and reliable delivery.
               </motion.p>
 
               <motion.p variants={fadeUp} className="text-muted-foreground leading-relaxed">
