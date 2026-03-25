@@ -59,10 +59,11 @@ export function About() {
             {/* Right: story text */}
             <div className="space-y-6">
               <motion.p variants={fadeUp} className="text-muted-foreground leading-relaxed">
-                I&apos;m a senior full-stack developer with{' '}
-                <span className="text-foreground font-medium">8+ years of experience</span>{' '}
-                building digital products that scale. My work sits at the intersection of clean engineering,
-                thoughtful design, and real business outcomes.
+                I&apos;m a senior full-stack developer based in{' '}
+                <span className="text-foreground font-medium">Dinajpur, Bangladesh</span> with{' '}
+                <span className="text-foreground font-medium">8+ years of experience</span> building
+                affordable websites and digital products that scale. My work sits at the intersection of
+                clean engineering, thoughtful design, and real business outcomes.
               </motion.p>
 
               <motion.p variants={fadeUp} className="text-muted-foreground leading-relaxed">
@@ -70,7 +71,8 @@ export function About() {
                 <span className="text-foreground font-medium">React and Django ecosystems</span>,
                 designing systems from database schemas to pixel-perfect interfaces. Every project starts
                 with understanding the problem deeply—then architecting a solution that&apos;s maintainable,
-                performant, and built to last.
+                performant, and built to last. I deliver end-to-end web development for clients across
+                Bangladesh with clear scope, pricing, and reliable delivery.
               </motion.p>
 
               <motion.p variants={fadeUp} className="text-muted-foreground leading-relaxed">

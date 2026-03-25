@@ -204,9 +204,9 @@ export function Hero() {
             variants={fadeUp}
             className="mx-auto mt-8 max-w-2xl text-base sm:text-lg leading-relaxed text-muted-foreground"
           >
-            Senior full-stack developer specializing in React, Django, and cloud-native
-            infrastructure. I transform complex challenges into elegant, high-performance
-            solutions.
+            Senior full-stack developer in Dinajpur, Bangladesh, specializing in React, Django,
+            and cloud-native infrastructure. I build affordable websites and high-performance
+            products for growing businesses.
           </motion.p>
 
           {/* CTA Buttons */}

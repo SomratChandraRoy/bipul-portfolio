@@ -288,9 +288,9 @@ export const navLinks = [
 
 export const socialLinks = {
   github: 'https://github.com',
-  linkedin: 'https://linkedin.com',
-  twitter: 'https://x.com',
-  email: 'hello@bipul.dev',
+  linkedin: 'https://www.linkedin.com/in/bipul-roy',
+  twitter: 'https://x.com/BipulUnexpected',
+  email: 'info@bipul.tech',
 }
 
 export const tallyFormId = 'VLVJEa'
