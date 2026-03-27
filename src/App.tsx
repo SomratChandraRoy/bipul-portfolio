@@ -52,8 +52,6 @@ function App() {
       <Navbar
         scrollProgress={scrollProgress}
         activeSection={activeSection}
-        onThemeToggle={toggleTheme}
-        isDark={isDark}
         isScrolled={isScrolled}
       />
       <main>

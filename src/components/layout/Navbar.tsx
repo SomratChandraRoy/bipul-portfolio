@@ -1,6 +1,6 @@
 import { useState, useRef } from 'react'
 import { motion, AnimatePresence, useMotionValue, useSpring, useTransform } from 'framer-motion'
-import { Menu, X, Sun, Moon, Search, Layers } from 'lucide-react'
+import { Menu, X, Layers } from 'lucide-react'
 
 const navLinks = [
   { label: 'About', href: '#about', section: 'about' },
@@ -13,8 +13,6 @@ const navLinks = [
 interface NavbarProps {
   scrollProgress: number
   activeSection: string
-  onThemeToggle: () => void
-  isDark: boolean
   isScrolled: boolean
 }
 
@@ -49,7 +47,7 @@ function use3DTilt() {
   return { rotateX, rotateY, x, y, handleMouseMove, handleMouseLeave }
 }
 
-export function Navbar({ scrollProgress, activeSection, onThemeToggle, isDark, isScrolled }: NavbarProps) {
+export function Navbar({ scrollProgress, activeSection, isScrolled }: NavbarProps) {
   const [mobileOpen, setMobileOpen] = useState(false)
   const [compactMenuOpen, setCompactMenuOpen] = useState(false)
   
@@ -59,8 +57,19 @@ export function Navbar({ scrollProgress, activeSection, onThemeToggle, isDark, i
   // Calculate dynamic glow position based on mouse pct
   const backgroundGlow = useTransform(
     [x, y],
-    ([latestX, latestY]) => `radial-gradient(circle at ${(latestX as number + 0.5) * 100}% ${(latestY as number + 0.5) * 100}%, rgba(114, 255, 0, 0.12), transparent 40%)`
+    ([latestX, latestY]) => `radial-gradient(circle at ${(latestX as number + 0.5) * 100}% ${(latestY as number + 0.5) * 100}%, rgba(255, 255, 255, 0.08), transparent 40%)`
   )
+
+  const handleScrollTo = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+    e.preventDefault()
+    const id = href.replace('#', '')
+    const element = document.getElementById(id)
+    if (element) {
+      const topOffset = element.getBoundingClientRect().top + window.scrollY - 100
+      window.scrollTo({ top: topOffset, behavior: 'smooth' })
+      window.history.pushState(null, '', href)
+    }
+  }
 
   return (
     <>
@@ -88,13 +97,15 @@ export function Navbar({ scrollProgress, activeSection, onThemeToggle, isDark, i
 
       <div className={`fixed top-0 left-0 right-0 z-50 flex justify-center transition-all duration-700 ease-out ${isScrolled ? 'pt-4' : 'pt-6 md:pt-8'}`}>
         <motion.nav 
+          layout
+          transition={{ type: 'spring', stiffness: 350, damping: 30 }}
           onMouseMove={handleMouseMove}
           onMouseLeave={handleMouseLeave}
           style={{ 
             rotateX, rotateY,
             transformStyle: "preserve-3d" // Enables 3D stacking inside
           }}
-          className={`relative flex items-center justify-between transition-all duration-700 ${isScrolled ? 'w-[calc(100%-2rem)] md:w-auto px-4 py-2 bg-background/80 backdrop-blur-3xl border border-white/10 rounded-full shadow-[0_10px_40px_-10px_rgba(0,0,0,0.5)]' : 'w-[calc(100%-2rem)] max-w-5xl px-4 md:px-6 py-2 md:py-3 bg-secondary/80 backdrop-blur-2xl border border-white/5 rounded-[2rem] shadow-[0_20px_50px_-12px_rgba(0,0,0,0.5),inset_0_1px_1px_rgba(255,255,255,0.05)]'}`}
+          className={`relative flex items-center justify-between transition-colors duration-700 ${isScrolled ? 'w-[calc(100%-2rem)] md:w-auto px-4 py-2 bg-background/80 backdrop-blur-3xl border border-white/10 rounded-full shadow-[0_10px_40px_-10px_rgba(0,0,0,0.5)]' : 'w-[calc(100%-2rem)] max-w-5xl px-4 md:px-6 py-2 md:py-3 bg-secondary/80 backdrop-blur-2xl border border-white/5 rounded-[2rem] shadow-[0_20px_50px_-12px_rgba(0,0,0,0.5),inset_0_1px_1px_rgba(255,255,255,0.05)]'}`}
         >
           {/* Dynamic Glow Overlay for 3D tension */}
           <motion.div 
@@ -103,7 +114,7 @@ export function Navbar({ scrollProgress, activeSection, onThemeToggle, isDark, i
           />
 
           {/* Left: Logo & Status */}
-          <div className="flex items-center gap-3 relative z-10" style={{ transform: "translateZ(30px)" }}>
+          <motion.div layout className="flex items-center gap-3 relative z-10" style={{ transform: "translateZ(30px)" }}>
             <a href="#hero" className="flex items-center gap-2 group cursor-pointer focus:outline-none">
               <div className="relative w-10 h-10 md:w-12 md:h-12 rounded-full bg-black/40 border border-white/10 flex items-center justify-center overflow-hidden shadow-inner flex-shrink-0">
                 {/* 3D Spin core */}
@@ -145,12 +156,13 @@ export function Navbar({ scrollProgress, activeSection, onThemeToggle, isDark, i
                 </AnimatePresence>
               </div>
             </a>
-          </div>
+          </motion.div>
 
           {/* Center: Links (Desktop) */}
           <AnimatePresence mode="popLayout">
             {!isScrolled && (
               <motion.div 
+                layout
                 initial={{ opacity: 0, scale: 0.95, y: -10 }}
                 animate={{ opacity: 1, scale: 1, y: 0 }}
                 exit={{ opacity: 0, scale: 0.95, y: -10, filter: "blur(4px)" }}
@@ -161,20 +173,25 @@ export function Navbar({ scrollProgress, activeSection, onThemeToggle, isDark, i
                 {navLinks.map((link, i) => (
                   <motion.div 
                     key={link.section} 
-                    className="flex items-center relative"
+                    className="flex items-center relative group/link"
                     whileHover={{ y: -2, scale: 1.05 }}
                     transition={{ type: "spring", stiffness: 400, damping: 17 }}
                   >
                     <a
                       href={link.href}
-                      className="relative text-[14px] font-medium tracking-wide px-1 py-1"
+                      onClick={(e) => handleScrollTo(e, link.href)}
+                      className="relative text-[14px] font-medium tracking-wide px-3 py-1.5 rounded-full transition-all duration-300"
                     >
-                      <span className={activeSection === link.section ? 'text-primary drop-shadow-[0_0_8px_rgba(114,255,0,0.5)]' : 'text-white/60 hover:text-white transition-colors duration-300'}>
+                      {/* Premium Hover Glow Backdrop */}
+                      <span className="absolute inset-0 bg-white/5 rounded-full blur-md opacity-0 group-hover/link:opacity-100 transition-all duration-500 pointer-events-none" />
+                      <span className="absolute inset-0 bg-gradient-to-b from-white/10 to-transparent opacity-0 group-hover/link:opacity-100 rounded-full transition-all duration-400 border border-white/0 group-hover/link:border-white/10 pointer-events-none" />
+                      
+                      <span className={`relative z-10 ${activeSection === link.section ? 'text-primary drop-shadow-[0_0_8px_rgba(114,255,0,0.5)]' : 'text-white/60 group-hover/link:text-white group-hover/link:drop-shadow-[0_0_8px_rgba(255,255,255,0.4)] transition-all duration-300'}`}>
                         {link.label}
                       </span>
                     </a>
                     {i < navLinks.length - 1 && (
-                      <span className="mx-4 text-white/10 text-xs">|</span>
+                      <span className="mx-1.5 text-white/10 text-xs shrink-0 font-light">|</span>
                     )}
                   </motion.div>
                 ))}
@@ -183,28 +200,17 @@ export function Navbar({ scrollProgress, activeSection, onThemeToggle, isDark, i
           </AnimatePresence>
 
           {/* Right: Actions */}
-          <div className="flex items-center gap-2 md:gap-3 relative z-10 shrink-0" style={{ transform: "translateZ(30px)" }}>
-             <button
-                className="hidden md:flex p-2 md:p-2.5 rounded-full text-white/60 hover:text-white hover:bg-white/5 transition-all duration-300 focus:outline-none"
-                aria-label="Search"
-              >
-                <Search className="w-[18px] h-[18px]" />
-              </button>
-            <button
-              onClick={onThemeToggle}
-              className="hidden sm:flex p-2 md:p-2.5 rounded-full text-white/60 hover:text-white hover:bg-white/5 transition-all duration-300 focus:outline-none"
-              aria-label="Toggle theme"
-            >
-              {isDark ? <Sun className="w-[18px] h-[18px]" /> : <Moon className="w-[18px] h-[18px]" />}
-            </button>
+          <motion.div layout className="flex items-center gap-2 md:gap-3 relative z-10 shrink-0" style={{ transform: "translateZ(30px)" }}>
 
-            <AnimatePresence mode="wait">
+            <AnimatePresence mode="popLayout">
               {!isScrolled ? (
                 <motion.a
-                  initial={{ opacity: 0, scale: 0.9 }}
+                  layout
+                  initial={{ opacity: 0, scale: 0.8 }}
                   animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.9 }}
+                  exit={{ opacity: 0, scale: 0.8 }}
                   href="#contact"
+                  onClick={(e) => handleScrollTo(e, '#contact')}
                   className="hidden md:flex items-center justify-center h-10 md:h-11 px-6 md:px-8 rounded-full bg-[#1a1c18]/80 text-[#fde047] border border-[#fde047]/40 text-sm font-semibold hover:border-[#fde047]/80 hover:shadow-[0_0_25px_rgba(253,224,71,0.25)] transition-all duration-500 overflow-hidden relative group focus:outline-none shadow-[inset_0_0_15px_rgba(253,224,71,0.1)] backdrop-blur-md shrink-0"
                   style={{ fontFamily: "'Space Grotesk', sans-serif" }}
                 >
@@ -223,13 +229,14 @@ export function Navbar({ scrollProgress, activeSection, onThemeToggle, isDark, i
                   <span className="whitespace-nowrap relative z-10 tracking-wide drop-shadow-[0_0_4px_rgba(253,224,71,0.2)] group-hover:text-[#fef08a] group-hover:drop-shadow-[0_0_8px_rgba(253,224,71,0.5)] transition-all duration-300">Let's Talk</span>
                 </motion.a>
               ) : (
-                <div className="relative" 
+                <motion.div layout className="relative" 
                      onMouseEnter={() => setCompactMenuOpen(true)}
                      onMouseLeave={() => setCompactMenuOpen(false)}>
                   <motion.button
-                    initial={{ opacity: 0, scale: 0.8 }}
+                    layout
+                    initial={{ opacity: 0, scale: 0.5 }}
                     animate={{ opacity: 1, scale: 1 }}
-                    exit={{ opacity: 0, scale: 0.8 }}
+                    exit={{ opacity: 0, scale: 0.5 }}
                     className="hidden lg:flex items-center justify-center w-10 h-10 rounded-full bg-white/5 border border-white/10 text-white/80 hover:bg-primary hover:border-primary hover:text-primary-foreground hover:shadow-[0_0_15px_rgba(114,255,0,0.3)] transition-all focus:outline-none"
                     aria-label="Compact Menu"
                   >
@@ -247,35 +254,36 @@ export function Navbar({ scrollProgress, activeSection, onThemeToggle, isDark, i
                         className="absolute right-0 top-full mt-4 w-48 bg-black/90 backdrop-blur-xl border border-white/10 rounded-2xl shadow-2xl p-2 z-50 flex flex-col"
                       >
                          {navLinks.map((link) => (
-                           <a key={link.section} href={link.href} className="px-4 py-2.5 text-sm font-medium text-white/70 hover:text-primary hover:bg-white/5 rounded-xl transition-colors">
+                           <a key={link.section} href={link.href} onClick={(e) => { setCompactMenuOpen(false); handleScrollTo(e, link.href); }} className="px-4 py-2.5 text-sm font-medium text-white/70 hover:text-primary hover:bg-white/5 rounded-xl transition-colors">
                              {link.label}
                            </a>
                          ))}
                       </motion.div>
                     )}
                   </AnimatePresence>
-                </div>
+                </motion.div>
               )}
             </AnimatePresence>
             
-            <a href="#contact" onClick={() => setMobileOpen(false)} className="md:hidden flex items-center justify-center h-8 px-5 rounded-full bg-[#c8ff00] text-black text-[11px] font-bold shadow-[0_0_20px_rgba(200,255,0,0.3)] hover:shadow-[0_0_25px_rgba(200,255,0,0.5)] active:scale-95 transition-all focus:outline-none tracking-wider shrink-0 relative overflow-hidden group">
+            <motion.a layout href="#contact" onClick={(e) => { setMobileOpen(false); handleScrollTo(e, '#contact'); }} className="md:hidden flex items-center justify-center h-8 px-5 rounded-full bg-[#c8ff00] text-black text-[11px] font-bold shadow-[0_0_20px_rgba(200,255,0,0.3)] hover:shadow-[0_0_25px_rgba(200,255,0,0.5)] active:scale-95 transition-all focus:outline-none tracking-wider shrink-0 relative overflow-hidden group">
                 <div className="absolute inset-x-0 top-0 h-1/2 bg-white/20 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none"></div>
                 LET'S TALK
-            </a>
+            </motion.a>
 
-            <div className="w-9 h-9 md:w-11 md:h-11 rounded-full border border-white/20 overflow-hidden ml-1 sm:ml-2 flex-shrink-0 shadow-inner group cursor-pointer relative">
+            <motion.div layout className="w-9 h-9 md:w-11 md:h-11 rounded-full border border-white/10 overflow-hidden ml-1 sm:ml-2 flex-shrink-0 shadow-[0_0_15px_rgba(200,255,0,0.15)] group cursor-pointer relative">
               <img src={`https://api.dicebear.com/7.x/notionists/svg?seed=Bipul&backgroundColor=c8ff00`} alt="Avatar" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
-              <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors duration-500" />
-            </div>
+              <div className="absolute inset-0 ring-1 ring-inset ring-black/10 rounded-full pointer-events-none" />
+            </motion.div>
 
-            <button
+            <motion.button
+              layout
               onClick={() => setMobileOpen(!mobileOpen)}
               className="lg:hidden p-2 rounded-full text-white/70 hover:text-white hover:bg-white/10 transition-all duration-200 focus:outline-none border border-transparent hover:border-white/10"
               aria-label="Toggle menu"
             >
               {mobileOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
-            </button>
-          </div>
+            </motion.button>
+          </motion.div>
         </motion.nav>
       </div>
 
@@ -293,7 +301,7 @@ export function Navbar({ scrollProgress, activeSection, onThemeToggle, isDark, i
               <motion.a
                 key={link.section}
                 href={link.href}
-                onClick={() => setMobileOpen(false)}
+                onClick={(e) => { setMobileOpen(false); handleScrollTo(e, link.href); }}
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: 30 }}
@@ -309,7 +317,7 @@ export function Navbar({ scrollProgress, activeSection, onThemeToggle, isDark, i
             
              <motion.a
                 href="#contact"
-                onClick={() => setMobileOpen(false)}
+                onClick={(e) => { setMobileOpen(false); handleScrollTo(e, '#contact'); }}
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: 30 }}
