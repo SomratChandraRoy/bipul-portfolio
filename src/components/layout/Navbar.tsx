@@ -16,16 +16,60 @@ interface NavbarProps {
   isScrolled: boolean
 }
 
+// High-End Magnetic Interaction Hook
+function useMagneticInteraction() {
+  const ref = useRef<HTMLDivElement>(null)
+  const x = useMotionValue(0)
+  const y = useMotionValue(0)
+  
+  const springX = useSpring(x, { stiffness: 450, damping: 25, mass: 0.2 })
+  const springY = useSpring(y, { stiffness: 450, damping: 25, mass: 0.2 })
+
+  const handleMouse = (e: React.MouseEvent<HTMLElement>) => {
+    if (!ref.current) return
+    const { clientX, clientY } = e
+    const { height, width, left, top } = ref.current.getBoundingClientRect()
+    const middleX = clientX - (left + width / 2)
+    const middleY = clientY - (top + height / 2)
+    x.set(middleX * 0.18) // Apply exact gravitational inertia
+    y.set(middleY * 0.18)
+  }
+
+  const handleLeave = () => {
+    x.set(0)
+    y.set(0)
+  }
+
+  return { ref, x: springX, y: springY, handleMouse, handleLeave }
+}
+
+function MagneticItem({ children, className = "" }: { children: React.ReactNode, className?: string }) {
+  const { ref, x, y, handleMouse, handleLeave } = useMagneticInteraction()
+  return (
+    <motion.div 
+      ref={ref} 
+      onMouseMove={handleMouse} 
+      onMouseLeave={handleLeave} 
+      style={{ x, y }}
+      className={className}
+      whileTap={{ scale: 0.90 }}
+      transition={{ type: "spring", stiffness: 400, damping: 17 }}
+    >
+      {children}
+    </motion.div>
+  )
+}
+
 // 3D Tilt Hook
 function use3DTilt() {
   const x = useMotionValue(0)
   const y = useMotionValue(0)
 
-  const mouseXSpring = useSpring(x, { stiffness: 400, damping: 40 })
-  const mouseYSpring = useSpring(y, { stiffness: 400, damping: 40 })
+  const mouseXSpring = useSpring(x, { stiffness: 350, damping: 30 })
+  const mouseYSpring = useSpring(y, { stiffness: 350, damping: 30 })
 
-  const rotateX = useTransform(mouseYSpring, [-0.5, 0.5], ["10deg", "-10deg"])
-  const rotateY = useTransform(mouseXSpring, [-0.5, 0.5], ["-10deg", "10deg"])
+  const rotateX = useTransform(mouseYSpring, [-0.5, 0.5], ["8deg", "-8deg"])
+  const rotateY = useTransform(mouseXSpring, [-0.5, 0.5], ["-8deg", "8deg"])
 
   const handleMouseMove = (e: React.MouseEvent<HTMLElement>) => {
     const rect = e.currentTarget.getBoundingClientRect()
@@ -121,7 +165,12 @@ export function Navbar({ scrollProgress, activeSection, isScrolled }: NavbarProp
         )}
       </AnimatePresence>
 
-      <div className={`fixed top-0 left-0 right-0 z-50 flex justify-center transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] ${isScrolled ? 'pt-4' : 'pt-6 md:pt-8'}`} style={{ perspective: 1200 }}>
+      <motion.div 
+        initial={{ y: -120, opacity: 0, rotateX: -20, scale: 0.95 }}
+        animate={{ y: 0, opacity: 1, rotateX: 0, scale: 1 }}
+        transition={{ duration: 1.4, ease: [0.16, 1, 0.3, 1], delay: 0.1 }}
+        className={`fixed top-0 left-0 right-0 z-50 flex justify-center transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] ${isScrolled ? 'pt-4' : 'pt-6 md:pt-8'}`} style={{ perspective: 1200 }}
+      >
         <motion.nav 
           layout
           transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
@@ -141,32 +190,36 @@ export function Navbar({ scrollProgress, activeSection, isScrolled }: NavbarProp
 
           {/* Left: Logo & Status */}
           <motion.div layout className="flex items-center gap-3 relative z-10 shrink-0" style={{ transform: "translateZ(30px)" }}>
-            <a href="#hero" className="flex items-center gap-2 group cursor-pointer focus:outline-none">
-              <div className="relative w-10 h-10 md:w-12 md:h-12 rounded-full bg-black/40 border border-white/10 flex items-center justify-center overflow-hidden shadow-inner flex-shrink-0">
-                {/* 3D Spin core */}
-                <motion.div 
-                   animate={{ rotate: [0, 360] }}
-                   transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-                   className="w-[60%] h-[60%] border border-primary/40 rounded-full flex items-center justify-center relative shadow-[inset_0_0_10px_rgba(114,255,0,0.2)]"
-                >
-                    <motion.div 
-                        animate={{ rotateX: [0, 360], rotateY: [0, 360] }}
-                        transition={{ duration: 10, repeat: Infinity, ease: "linear" }}
-                        className="w-[70%] h-[70%] border-[1.5px] border-primary rounded-full absolute"
-                    />
-                    <motion.div 
-                        animate={{ rotateX: [360, 0], rotateZ: [0, 360] }}
-                        transition={{ duration: 15, repeat: Infinity, ease: "linear" }}
-                        className="w-[80%] h-[80%] border border-white/40 rounded-full absolute"
-                    />
-                </motion.div>
-                {/* Glow behind icon */}
-                <div className="absolute inset-0 bg-primary/20 blur-xl rounded-full scale-0 group-hover:scale-150 transition-transform duration-500" />
-              </div>
+            <a href="#hero" className="flex items-center gap-2 group cursor-pointer focus:outline-none pr-2">
+              
               <div className="flex flex-col justify-center">
-                <div className="text-xl md:text-2xl font-bold tracking-tight text-white/90 group-hover:text-white transition-colors drop-shadow-sm" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
-                  Bipul<span className="text-primary group-hover:text-white transition-colors">.</span>
+                
+                {/* Typography Logo Engine - Expanding Apple-style Hover Reveal */}
+                <div className="flex items-center text-2xl md:text-[28px] font-bold tracking-tight text-white/90 group-hover:text-white transition-all duration-700" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
+                  
+                  {/* Large Floating Hero "B" */}
+                  <div className="relative flex items-center justify-center flex-shrink-0 h-9 md:h-11 lg:h-[48px] z-20">
+                    <motion.img 
+                      src="/b.png" 
+                      alt="Bipul" 
+                      className="h-full w-auto object-contain relative z-10 transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-105 group-hover:-translate-y-1"
+                      initial={{ filter: "drop-shadow(0px 0px 0px rgba(200,255,0,0))" }}
+                      whileHover={{ filter: "drop-shadow(0px 10px 25px rgba(200,255,0,0.6))" }}
+                    />
+                    {/* Glowing footprint physics */}
+                    <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-full h-8 bg-primary/30 blur-2xl rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" />
+                  </div>
+                  
+                  {/* Dynamic Name Reveal - 'ipul.' hidden by default */}
+                  <div 
+                    className="overflow-hidden flex items-baseline max-w-0 opacity-0 -ml-4 group-hover:ml-0.5 group-hover:max-w-[100px] group-hover:opacity-100 transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] pointer-events-none" 
+                  >
+                    <span className="tracking-tighter">ipul</span>
+                    <span className="text-primary drop-shadow-[0_0_8px_rgba(200,255,0,0.6)]">.</span>
+                  </div>
+
                 </div>
+                
                 <motion.div 
                   initial={false}
                   animate={{ 
@@ -175,11 +228,12 @@ export function Navbar({ scrollProgress, activeSection, isScrolled }: NavbarProp
                     overflow: 'hidden'
                   }}
                   transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-                  className="hidden md:flex items-center gap-1.5 whitespace-nowrap mt-0.5"
+                  className="hidden md:flex items-center gap-1.5 whitespace-nowrap mt-0"
                 >
                   <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse shadow-[0_0_8px_hsl(var(--primary))]" />
                   <span className="text-[11px] text-white/50 font-medium">Available for new projects</span>
                 </motion.div>
+
               </div>
             </a>
           </motion.div>
@@ -198,10 +252,9 @@ export function Navbar({ scrollProgress, activeSection, isScrolled }: NavbarProp
             style={{ transform: "translateZ(40px)", pointerEvents: isScrolled ? 'none' : 'auto' }}
           >
             {navLinks.map((link) => (
-              <motion.div 
+              <MagneticItem 
                 key={link.section} 
                 className="flex items-center relative group/link shrink-0"
-                whileTap={{ scale: 0.95 }}
               >
                 <a
                   href={link.href}
@@ -226,7 +279,7 @@ export function Navbar({ scrollProgress, activeSection, isScrolled }: NavbarProp
                           </motion.div>
                       )}
                     </a>
-                  </motion.div>
+              </MagneticItem>
                 ))}
           </motion.div>
 
@@ -235,12 +288,12 @@ export function Navbar({ scrollProgress, activeSection, isScrolled }: NavbarProp
 
             <AnimatePresence mode="popLayout">
               {!isScrolled ? (
+                <MagneticItem>
                 <motion.a
                   layout
                   initial={{ opacity: 0, scale: 0.8 }}
                   animate={{ opacity: 1, scale: 1 }}
                   exit={{ opacity: 0, scale: 0.8 }}
-                  whileTap={{ scale: 0.95 }}
                   href="#contact"
                   onClick={(e) => premiumScrollTo(e, '#contact')}
                   className="hidden md:flex items-center justify-center h-10 md:h-11 px-6 md:px-8 rounded-full bg-black border border-white/10 text-white/90 text-[13px] font-semibold hover:border-white/30 hover:text-white transition-all duration-500 overflow-hidden relative group focus:outline-none backdrop-blur-xl shrink-0"
@@ -259,6 +312,7 @@ export function Navbar({ scrollProgress, activeSection, isScrolled }: NavbarProp
                   
                   <span className="whitespace-nowrap relative z-10 tracking-wide transition-all duration-300 group-hover:drop-shadow-[0_0_8px_rgba(255,255,255,0.6)]">Let's Talk</span>
                 </motion.a>
+                </MagneticItem>
               ) : (
                 <motion.div layout className="relative" 
                      onMouseEnter={() => setCompactMenuOpen(true)}
@@ -312,22 +366,27 @@ export function Navbar({ scrollProgress, activeSection, isScrolled }: NavbarProp
                 LET'S TALK
             </motion.a>
 
-            <motion.div layout className="w-9 h-9 md:w-11 md:h-11 rounded-full border border-white/10 overflow-hidden ml-1 sm:ml-2 flex-shrink-0 shadow-[0_0_15px_rgba(200,255,0,0.15)] group cursor-pointer relative">
-              <img src={`https://api.dicebear.com/7.x/notionists/svg?seed=Bipul&backgroundColor=c8ff00`} alt="Avatar" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
-              <div className="absolute inset-0 ring-1 ring-inset ring-black/10 rounded-full pointer-events-none" />
-            </motion.div>
+            <MagneticItem className="flex-shrink-0 relative">
+              <motion.div layout className="w-9 h-9 md:w-11 md:h-11 rounded-full border border-white/10 overflow-hidden sm:ml-2 shadow-[0_0_15px_rgba(200,255,0,0.15)] group cursor-pointer relative">
+                <img src={`https://api.dicebear.com/7.x/notionists/svg?seed=Bipul&backgroundColor=c8ff00`} alt="Avatar" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
+                <div className="absolute inset-0 ring-1 ring-inset ring-black/10 rounded-full pointer-events-none" />
+              </motion.div>
+            </MagneticItem>
 
-            <motion.button
-              layout
-              onClick={() => setMobileOpen(!mobileOpen)}
-              className="lg:hidden p-2 rounded-full text-white/70 hover:text-white hover:bg-white/10 transition-all duration-200 focus:outline-none border border-transparent hover:border-white/10"
-              aria-label="Toggle menu"
-            >
-              {mobileOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
-            </motion.button>
+            <MagneticItem className="lg:hidden flex-shrink-0">
+              <motion.button
+                layout
+                onClick={() => setMobileOpen(!mobileOpen)}
+                className="p-2 rounded-full text-white/70 hover:text-white hover:bg-white/10 transition-all duration-200 focus:outline-none border border-transparent hover:border-white/10 relative overflow-hidden"
+                aria-label="Toggle menu"
+              >
+                {mobileOpen ? <X className="w-5 h-5 relative z-10" /> : <Menu className="w-5 h-5 relative z-10" />}
+                <div className="absolute inset-0 bg-white/10 opacity-0 active:opacity-100 transition-opacity" />
+              </motion.button>
+            </MagneticItem>
           </motion.div>
         </motion.nav>
-      </div>
+      </motion.div>
 
       {/* Mobile Fullscreen Menu */}
       <AnimatePresence>
