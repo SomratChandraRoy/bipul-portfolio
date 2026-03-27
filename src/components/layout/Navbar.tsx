@@ -140,7 +140,7 @@ export function Navbar({ scrollProgress, activeSection, isScrolled }: NavbarProp
           />
 
           {/* Left: Logo & Status */}
-          <motion.div layout className="flex items-center gap-3 relative z-10" style={{ transform: "translateZ(30px)" }}>
+          <motion.div layout className="flex items-center gap-3 relative z-10 shrink-0" style={{ transform: "translateZ(30px)" }}>
             <a href="#hero" className="flex items-center gap-2 group cursor-pointer focus:outline-none">
               <div className="relative w-10 h-10 md:w-12 md:h-12 rounded-full bg-black/40 border border-white/10 flex items-center justify-center overflow-hidden shadow-inner flex-shrink-0">
                 {/* 3D Spin core */}
@@ -193,41 +193,39 @@ export function Navbar({ scrollProgress, activeSection, isScrolled }: NavbarProp
               scale: isScrolled ? 0.9 : 1
             }}
             transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-            className={`hidden lg:flex items-center bg-black/20 border border-white/5 rounded-full py-2 shadow-[inset_0_0_20px_rgba(0,0,0,0.5)] backdrop-blur-md overflow-hidden whitespace-nowrap ${isScrolled ? 'mx-0 px-0' : 'mx-6 px-4'}`}
+            // Prevent flex-shrinking clipping and remove dangerous wide margins that force squeeze bugs
+            className={`hidden lg:flex items-center justify-center gap-1 bg-black/30 border border-white/[0.08] rounded-full py-1.5 shadow-[0_4px_20px_rgba(0,0,0,0.2),inset_0_1px_1px_rgba(255,255,255,0.05)] backdrop-blur-xl overflow-hidden whitespace-nowrap min-w-max shrink-0 ${isScrolled ? 'mx-0 px-0' : 'mx-2 xl:mx-auto px-2'}`}
             style={{ transform: "translateZ(40px)", pointerEvents: isScrolled ? 'none' : 'auto' }}
           >
-            {navLinks.map((link, i) => (
+            {navLinks.map((link) => (
               <motion.div 
                 key={link.section} 
-                className="flex items-center relative group/link"
-                whileTap={{ scale: 0.92 }}
-                transition={{ type: "spring", stiffness: 400, damping: 17 }}
+                className="flex items-center relative group/link shrink-0"
+                whileTap={{ scale: 0.95 }}
               >
                 <a
                   href={link.href}
                   onClick={(e) => premiumScrollTo(e, link.href)}
-                  className="relative flex items-center justify-center text-[14px] font-medium tracking-wide px-4 py-2 rounded-full transition-all duration-300 w-full h-full"
+                  className="relative flex items-center justify-center text-[14px] font-medium px-5 py-2 rounded-full transition-all duration-400 w-full h-full tracking-wide"
                 >
-                      {/* Premium Hover Glow Backdrop */}
-                      <span className="absolute inset-0 bg-white/5 rounded-full blur-md opacity-0 group-hover/link:opacity-100 transition-all duration-500 pointer-events-none" />
-                      <span className="absolute inset-0 bg-gradient-to-b from-white/10 to-transparent opacity-0 group-hover/link:opacity-100 rounded-full transition-all duration-400 border border-white/0 group-hover/link:border-white/10 pointer-events-none" />
+                      {/* Floating Apple-like Hover Capsule */}
+                      <span className="absolute inset-0 bg-white/[0.04] rounded-full opacity-0 group-hover/link:opacity-100 transition-opacity duration-300 pointer-events-none" />
                       
-                      <span className={`relative z-10 transition-all duration-300 ${activeSection === link.section ? 'text-white font-semibold drop-shadow-[0_0_8px_rgba(255,255,255,0.8)]' : 'text-white/60 group-hover/link:text-white group-hover/link:drop-shadow-[0_0_12px_rgba(255,255,255,0.6)]'}`}>
+                      <span className={`relative z-10 transition-colors duration-400 ${activeSection === link.section ? 'text-white font-semibold drop-shadow-[0_0_8px_rgba(255,255,255,0.4)]' : 'text-neutral-400 group-hover/link:text-white'}`}>
                         {link.label}
                       </span>
                       
-                      {/* Premium Active Dot Marker */}
+                      {/* Premium Active Marker Jump */}
                       {activeSection === link.section && (
                           <motion.div 
                              layoutId="activeNavIndicator"
-                             className="absolute bottom-1 left-1/2 -translate-x-1/2 w-1.5 h-1.5 rounded-full bg-primary shadow-[0_0_8px_rgba(200,255,0,0.8)]"
-                             transition={{ type: "spring", stiffness: 400, damping: 30 }}
-                          />
+                             className="absolute inset-0 rounded-full border border-white/10 bg-white/[0.02]"
+                             transition={{ type: "spring", stiffness: 350, damping: 30 }}
+                          >
+                             <div className="absolute -bottom-px left-1/2 -translate-x-1/2 w-8 h-[2px] rounded-t-full bg-gradient-to-r from-transparent via-primary to-transparent opacity-80 shadow-[0_-2px_8px_rgba(200,255,0,0.6)]" />
+                          </motion.div>
                       )}
                     </a>
-                    {i < navLinks.length - 1 && (
-                      <span className="mx-1.5 text-white/10 text-xs shrink-0 font-light">|</span>
-                    )}
                   </motion.div>
                 ))}
           </motion.div>
