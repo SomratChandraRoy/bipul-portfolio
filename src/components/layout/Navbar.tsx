@@ -43,19 +43,26 @@ function useMagneticInteraction() {
   return { ref, x: springX, y: springY, handleMouse, handleLeave }
 }
 
-function MagneticItem({ children, className = "" }: { children: React.ReactNode, className?: string }) {
+function MagneticItem({ children, className = "", delay = 0 }: { children: React.ReactNode, className?: string, delay?: number }) {
   const { ref, x, y, handleMouse, handleLeave } = useMagneticInteraction()
   return (
     <motion.div 
-      ref={ref} 
-      onMouseMove={handleMouse} 
-      onMouseLeave={handleLeave} 
-      style={{ x, y }}
-      className={className}
-      whileTap={{ scale: 0.90 }}
-      transition={{ type: "spring", stiffness: 400, damping: 17 }}
+      initial={{ opacity: 0, scale: 0.8 }}
+      animate={{ opacity: 1, scale: 1 }}
+      transition={{ duration: 0.8, delay: 0.9 + delay, ease: [0.16, 1, 0.3, 1] }}
+      className={className}  
     >
-      {children}
+      <motion.div 
+        ref={ref} 
+        onMouseMove={handleMouse} 
+        onMouseLeave={handleLeave} 
+        style={{ x, y }}
+        className="w-full h-full"
+        whileTap={{ scale: 0.90 }}
+        transition={{ type: "spring", stiffness: 400, damping: 17 }}
+      >
+        {children}
+      </motion.div>
     </motion.div>
   )
 }
@@ -91,17 +98,18 @@ function use3DTilt() {
   return { rotateX, rotateY, x, y, handleMouseMove, handleMouseLeave }
 }
 
-export function Navbar({ scrollProgress, activeSection, isScrolled }: NavbarProps) {
+  export function Navbar({ scrollProgress, activeSection, isScrolled }: NavbarProps) {
   const [mobileOpen, setMobileOpen] = useState(false)
   const [compactMenuOpen, setCompactMenuOpen] = useState(false)
+  const [hoveredLink, setHoveredLink] = useState<string | null>(null)
   
   // Outer Container Tilt
   const { rotateX, rotateY, handleMouseMove, handleMouseLeave, x, y } = use3DTilt()
   
-  // Calculate dynamic glow position based on mouse pct
+  // Calculate intense premium dynamic glow position based on mouse pct
   const backgroundGlow = useTransform(
     [x, y],
-    ([latestX, latestY]) => `radial-gradient(circle at ${(latestX as number + 0.5) * 100}% ${(latestY as number + 0.5) * 100}%, rgba(255, 255, 255, 0.08), transparent 40%)`
+    ([latestX, latestY]) => `radial-gradient(1200px circle at ${(latestX as number + 0.5) * 100}% ${(latestY as number + 0.5) * 100}%, rgba(200, 255, 0, 0.08), transparent 40%)`
   )
 
   // Bulletproof custom cinematic scroll engine bridging Framer layout conflicts
@@ -182,9 +190,24 @@ export function Navbar({ scrollProgress, activeSection, isScrolled }: NavbarProp
           }}
           className={`relative flex items-center justify-between transition-colors duration-700 ${isScrolled ? 'w-[calc(100%-2rem)] md:w-auto px-4 py-2 bg-background/80 backdrop-blur-3xl border border-white/10 rounded-full shadow-[0_10px_40px_-10px_rgba(0,0,0,0.5)]' : 'w-[calc(100%-2rem)] max-w-5xl px-4 md:px-6 py-2 md:py-3 bg-secondary/80 backdrop-blur-2xl border border-white/5 rounded-[2rem] shadow-[0_20px_50px_-12px_rgba(0,0,0,0.5),inset_0_1px_1px_rgba(255,255,255,0.05)]'}`}
         >
+          {/* Hardware-Accelerated Dynamic Spotlight Geometry Tracing Layer */}
+          <motion.div 
+            className="absolute inset-0 z-0 pointer-events-none rounded-[inherit]"
+            style={{ 
+              background: useTransform(
+                [x, y],
+                ([latestX, latestY]) => `radial-gradient(150px circle at ${(latestX as number + 0.5) * 100}% ${(latestY as number + 0.5) * 100}%, rgba(200, 255, 0, 0.45), transparent 100%)`
+              ),
+              WebkitMask: 'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)',
+              WebkitMaskComposite: 'xor',
+              maskComposite: 'exclude',
+              padding: '1px' // Exactly tracing the 1px perimeter
+            }}
+          />
+
           {/* Dynamic Glow Overlay for 3D tension */}
           <motion.div 
-            className="absolute inset-0 pointer-events-none rounded-[inherit] overflow-hidden mix-blend-screen"
+            className="absolute inset-0 pointer-events-none rounded-[inherit] overflow-hidden mix-blend-screen z-0"
             style={{ background: backgroundGlow }}
           />
 
@@ -251,20 +274,37 @@ export function Navbar({ scrollProgress, activeSection, isScrolled }: NavbarProp
             className={`hidden lg:flex items-center justify-center gap-1 bg-black/30 border border-white/[0.08] rounded-full py-1.5 shadow-[0_4px_20px_rgba(0,0,0,0.2),inset_0_1px_1px_rgba(255,255,255,0.05)] backdrop-blur-xl overflow-hidden whitespace-nowrap min-w-max shrink-0 ${isScrolled ? 'mx-0 px-0' : 'mx-2 xl:mx-auto px-2'}`}
             style={{ transform: "translateZ(40px)", pointerEvents: isScrolled ? 'none' : 'auto' }}
           >
-            {navLinks.map((link) => (
+            {navLinks.map((link, i) => (
               <MagneticItem 
                 key={link.section} 
                 className="flex items-center relative group/link shrink-0"
+                delay={i * 0.08}
               >
                 <a
                   href={link.href}
                   onClick={(e) => premiumScrollTo(e, link.href)}
+                  onMouseEnter={() => setHoveredLink(link.section)}
+                  onMouseLeave={() => setHoveredLink(null)}
                   className="relative flex items-center justify-center text-[14px] font-medium px-5 py-2 rounded-full transition-all duration-400 w-full h-full tracking-wide"
                 >
-                      {/* Floating Apple-like Hover Capsule */}
-                      <span className="absolute inset-0 bg-white/[0.04] rounded-full opacity-0 group-hover/link:opacity-100 transition-opacity duration-300 pointer-events-none" />
+                      {/* Fluid Sliding Hover Capsule Geometry */}
+                      {hoveredLink === link.section && (
+                         <motion.span 
+                           layoutId="navHoverPill"
+                           className="absolute inset-0 bg-white/[0.05] border border-white/5 rounded-full z-0 block" 
+                           transition={{ type: "spring", stiffness: 450, damping: 30 }}
+                         />
+                      )}
                       
-                      <span className={`relative z-10 transition-colors duration-400 ${activeSection === link.section ? 'text-white font-semibold drop-shadow-[0_0_8px_rgba(255,255,255,0.4)]' : 'text-neutral-400 group-hover/link:text-white'}`}>
+                      <span className={`relative z-10 transition-all duration-400 ease-[cubic-bezier(0.16,1,0.3,1)] ${
+                        activeSection === link.section 
+                          ? 'text-white font-semibold drop-shadow-[0_0_8px_rgba(255,255,255,0.4)]' 
+                          : hoveredLink === null 
+                            ? 'text-neutral-400'
+                            : hoveredLink === link.section
+                              ? 'text-white drop-shadow-[0_0_8px_rgba(255,255,255,0.8)]'
+                              : 'text-neutral-400 scale-[0.93] blur-[0.6px] opacity-40'
+                      }`}>
                         {link.label}
                       </span>
                       
@@ -392,31 +432,34 @@ export function Navbar({ scrollProgress, activeSection, isScrolled }: NavbarProp
       <AnimatePresence>
         {mobileOpen && (
           <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.3 }}
-            className="fixed inset-0 z-[45] bg-black/95 backdrop-blur-2xl lg:hidden flex flex-col items-center justify-center gap-8"
+            initial={{ opacity: 0, backdropFilter: "blur(0px)" }}
+            animate={{ opacity: 1, backdropFilter: "blur(32px)" }}
+            exit={{ opacity: 0, backdropFilter: "blur(0px)" }}
+            transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+            className="fixed inset-0 z-[45] bg-black/90 lg:hidden flex flex-col items-center justify-center gap-8"
           >
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_120%,rgba(200,255,0,0.15),transparent_60%)] pointer-events-none" />
+
             {navLinks.map((link, i) => (
-              <motion.a
-                key={link.section}
-                href={link.href}
-                onClick={(e) => {
-                  setMobileOpen(false);
-                  premiumScrollTo(e, link.href);
-                }}
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: 30 }}
-                transition={{ delay: i * 0.05 + 0.1, type: "spring", stiffness: 300, damping: 25 }}
-                className={`text-4xl font-bold tracking-tighter transition-all ${
-                  activeSection === link.section ? 'text-primary drop-shadow-[0_0_20px_rgba(114,255,0,0.6)]' : 'text-white/60 hover:text-white'
-                }`}
-                style={{ fontFamily: "'Space Grotesk', sans-serif" }}
-              >
-                {link.label}
-              </motion.a>
+              <div key={link.section} className="overflow-hidden">
+                <motion.a
+                  href={link.href}
+                  onClick={(e) => {
+                    setMobileOpen(false);
+                    premiumScrollTo(e, link.href);
+                  }}
+                  initial={{ y: "110%", opacity: 0, rotate: 6 }}
+                  animate={{ y: 0, opacity: 1, rotate: 0 }}
+                  exit={{ y: "-110%", opacity: 0, rotate: -6 }}
+                  transition={{ delay: i * 0.08, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+                  className={`block text-5xl md:text-6xl font-black tracking-tighter uppercase ${
+                    activeSection === link.section ? 'text-primary drop-shadow-[0_0_30px_rgba(200,255,0,0.3)]' : 'text-transparent bg-clip-text bg-gradient-to-b from-white to-white/40 hover:text-white'
+                  }`}
+                  style={{ fontFamily: "'Space Grotesk', sans-serif" }}
+                >
+                  {link.label}
+                </motion.a>
+              </div>
             ))}
             
              <motion.a
@@ -425,13 +468,14 @@ export function Navbar({ scrollProgress, activeSection, isScrolled }: NavbarProp
                   setMobileOpen(false);
                   premiumScrollTo(e, '#contact');
                 }}
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: 30 }}
-                transition={{ delay: 0.4 }}
-                className="mt-8 px-8 py-3 rounded-full bg-primary/10 border border-primary text-primary text-lg font-semibold hover:bg-primary hover:text-primary-foreground focus:outline-none"
+                initial={{ opacity: 0, scale: 0.8, filter: "blur(10px)" }}
+                animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
+                exit={{ opacity: 0, scale: 0.8 }}
+                transition={{ delay: 0.5, duration: 1, ease: [0.16, 1, 0.3, 1] }}
+                className="mt-8 px-10 py-4 rounded-full bg-black border border-white/10 text-white shadow-[inset_0_0_20px_rgba(200,255,0,0.1)] text-lg font-bold hover:border-primary/50 transition-all focus:outline-none tracking-widest uppercase relative overflow-hidden group"
                 style={{ fontFamily: "'Space Grotesk', sans-serif" }}
               >
+                <div className="absolute inset-0 w-[50%] h-[150%] bg-gradient-to-tr from-transparent via-white/20 to-transparent skew-x-[-30deg] pointer-events-none z-20 group-hover:translate-x-[250%] transition-transform duration-1000" />
                 Let's Talk
               </motion.a>
           </motion.div>
