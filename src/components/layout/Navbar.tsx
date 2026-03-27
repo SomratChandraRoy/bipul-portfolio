@@ -102,6 +102,7 @@ function use3DTilt() {
   const [mobileOpen, setMobileOpen] = useState(false)
   const [compactMenuOpen, setCompactMenuOpen] = useState(false)
   const [hoveredLink, setHoveredLink] = useState<string | null>(null)
+  const [isNavHovered, setIsNavHovered] = useState(false)
   
   // Outer Container Tilt
   const { rotateX, rotateY, handleMouseMove, handleMouseLeave, x, y } = use3DTilt()
@@ -182,17 +183,17 @@ function use3DTilt() {
         <motion.nav 
           layout
           transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-          onMouseMove={handleMouseMove}
-          onMouseLeave={handleMouseLeave}
+          onMouseMove={(e) => { handleMouseMove(e); setIsNavHovered(true); }}
+          onMouseLeave={() => { handleMouseLeave(); setIsNavHovered(false); }}
           style={{ 
             rotateX, rotateY,
             transformStyle: "preserve-3d" // Enables 3D stacking inside
           }}
-          className={`relative flex items-center justify-between transition-colors duration-700 ${isScrolled ? 'w-[calc(100%-2rem)] md:w-auto px-4 py-2 bg-background/80 backdrop-blur-3xl border border-white/10 rounded-full shadow-[0_10px_40px_-10px_rgba(0,0,0,0.5)]' : 'w-[calc(100%-2rem)] max-w-5xl px-4 md:px-6 py-2 md:py-3 bg-secondary/80 backdrop-blur-2xl border border-white/5 rounded-[2rem] shadow-[0_20px_50px_-12px_rgba(0,0,0,0.5),inset_0_1px_1px_rgba(255,255,255,0.05)]'}`}
+          className={`relative flex items-center justify-between transition-all duration-700 ${isScrolled ? 'w-[calc(100%-2rem)] md:w-auto px-4 py-2 bg-[#020617]/90 backdrop-blur-3xl border border-white/10 rounded-full shadow-[0_10px_40px_-10px_rgba(0,0,0,0.5)]' : `w-[calc(100%-2rem)] max-w-5xl px-4 md:px-6 py-2 md:py-3 rounded-[2rem] ${isNavHovered ? 'bg-[#0f172a]/60 backdrop-blur-xl border border-white/10 shadow-[0_20px_50px_-12px_rgba(0,0,0,0.5),inset_0_1px_1px_rgba(255,255,255,0.1)]' : 'bg-transparent border-transparent shadow-none backdrop-blur-none'}`}`}
         >
           {/* Hardware-Accelerated Dynamic Spotlight Geometry Tracing Layer */}
           <motion.div 
-            className="absolute inset-0 z-0 pointer-events-none rounded-[inherit]"
+            className={`absolute inset-0 z-0 pointer-events-none rounded-[inherit] transition-opacity duration-700 ${isNavHovered ? 'opacity-100' : 'opacity-0'}`}
             style={{ 
               background: useTransform(
                 [x, y],
@@ -207,7 +208,7 @@ function use3DTilt() {
 
           {/* Dynamic Glow Overlay for 3D tension */}
           <motion.div 
-            className="absolute inset-0 pointer-events-none rounded-[inherit] overflow-hidden mix-blend-screen z-0"
+            className={`absolute inset-0 pointer-events-none rounded-[inherit] overflow-hidden mix-blend-screen z-0 transition-opacity duration-700 ${isNavHovered ? 'opacity-100' : 'opacity-0'}`}
             style={{ background: backgroundGlow }}
           />
 
