@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from 'react'
 import { Navbar } from './components/layout/Navbar'
+import { EntropyBackground } from './components/ui/EntropyBackground'
 
 import { Hero } from './components/sections/Hero'
 import { Stats } from './components/sections/Stats'
@@ -48,13 +49,14 @@ function App() {
   }, [isDark])
 
   return (
-    <div className="min-h-screen bg-background text-foreground">
+    <div className="min-h-screen bg-background text-foreground relative">
+      <EntropyBackground />
       <Navbar
         scrollProgress={scrollProgress}
         activeSection={activeSection}
         isScrolled={isScrolled}
       />
-      <main>
+      <main className="relative z-10">
         <Hero />
         <Stats />
         <About />

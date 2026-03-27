@@ -60,17 +60,7 @@ export function Navbar({ scrollProgress, activeSection, isScrolled }: NavbarProp
     ([latestX, latestY]) => `radial-gradient(circle at ${(latestX as number + 0.5) * 100}% ${(latestY as number + 0.5) * 100}%, rgba(255, 255, 255, 0.08), transparent 40%)`
   )
 
-  const handleScrollTo = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
-    e.preventDefault()
-    const id = href.replace('#', '')
-    const element = document.getElementById(id)
-    if (element) {
-      const topOffset = element.getBoundingClientRect().top + window.scrollY - 100
-      window.scrollTo({ top: topOffset, behavior: 'smooth' })
-      window.history.pushState(null, '', href)
-    }
-  }
-
+  // Native anchor CSS smooth scroll performs better when elements do not unmount mid-click.
   return (
     <>
       <motion.div
@@ -95,10 +85,10 @@ export function Navbar({ scrollProgress, activeSection, isScrolled }: NavbarProp
         )}
       </AnimatePresence>
 
-      <div className={`fixed top-0 left-0 right-0 z-50 flex justify-center transition-all duration-700 ease-out ${isScrolled ? 'pt-4' : 'pt-6 md:pt-8'}`}>
+      <div className={`fixed top-0 left-0 right-0 z-50 flex justify-center transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] ${isScrolled ? 'pt-4' : 'pt-6 md:pt-8'}`} style={{ perspective: 1200 }}>
         <motion.nav 
           layout
-          transition={{ type: 'spring', stiffness: 350, damping: 30 }}
+          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
           onMouseMove={handleMouseMove}
           onMouseLeave={handleMouseLeave}
           style={{ 
@@ -141,47 +131,55 @@ export function Navbar({ scrollProgress, activeSection, isScrolled }: NavbarProp
                 <div className="text-xl md:text-2xl font-bold tracking-tight text-white/90 group-hover:text-white transition-colors drop-shadow-sm" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
                   Bipul<span className="text-primary group-hover:text-white transition-colors">.</span>
                 </div>
-                <AnimatePresence>
-                  {!isScrolled && (
-                    <motion.div 
-                      initial={{ opacity: 0, height: 0, y: -5 }}
-                      animate={{ opacity: 1, height: 'auto', y: 0 }}
-                      exit={{ opacity: 0, height: 0, y: -5 }}
-                      className="hidden md:flex items-center gap-1.5 whitespace-nowrap mt-0.5"
-                    >
-                      <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse shadow-[0_0_8px_hsl(var(--primary))]" />
-                      <span className="text-[11px] text-white/50 font-medium">Available for new projects</span>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
+                <motion.div 
+                  initial={false}
+                  animate={{ 
+                    opacity: isScrolled ? 0 : 1, 
+                    height: isScrolled ? 0 : 'auto',
+                    overflow: 'hidden'
+                  }}
+                  transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+                  className="hidden md:flex items-center gap-1.5 whitespace-nowrap mt-0.5"
+                >
+                  <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse shadow-[0_0_8px_hsl(var(--primary))]" />
+                  <span className="text-[11px] text-white/50 font-medium">Available for new projects</span>
+                </motion.div>
               </div>
             </a>
           </motion.div>
 
           {/* Center: Links (Desktop) */}
-          <AnimatePresence mode="popLayout">
-            {!isScrolled && (
+          <motion.div 
+            initial={false}
+            animate={{ 
+              opacity: isScrolled ? 0 : 1, 
+              width: isScrolled ? 0 : 'auto',
+              paddingLeft: isScrolled ? 0 : '1.5rem',
+              paddingRight: isScrolled ? 0 : '1.5rem',
+              marginLeft: isScrolled ? 0 : '1.5rem',
+              marginRight: isScrolled ? 0 : '1.5rem',
+              scale: isScrolled ? 0.95 : 1
+            }}
+            transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+            className="hidden lg:flex items-center bg-black/20 border border-white/5 rounded-full py-2.5 shadow-inner backdrop-blur-sm overflow-hidden whitespace-nowrap"
+            style={{ transform: "translateZ(40px)" }}
+          >
+            {navLinks.map((link, i) => (
               <motion.div 
-                layout
-                initial={{ opacity: 0, scale: 0.95, y: -10 }}
-                animate={{ opacity: 1, scale: 1, y: 0 }}
-                exit={{ opacity: 0, scale: 0.95, y: -10, filter: "blur(4px)" }}
-                transition={{ duration: 0.4, staggerChildren: 0.05 }}
-                className="hidden lg:flex items-center bg-black/20 border border-white/5 rounded-full px-6 py-2.5 mx-6 shadow-inner backdrop-blur-sm"
-                style={{ transform: "translateZ(40px)" }}
+                key={link.section} 
+                className="flex items-center relative group/link"
+                whileTap={{ scale: 0.92 }}
+                transition={{ type: "spring", stiffness: 400, damping: 17 }}
               >
-                {navLinks.map((link, i) => (
-                  <motion.div 
-                    key={link.section} 
-                    className="flex items-center relative group/link"
-                    whileHover={{ y: -2, scale: 1.05 }}
-                    transition={{ type: "spring", stiffness: 400, damping: 17 }}
-                  >
-                    <a
-                      href={link.href}
-                      onClick={(e) => handleScrollTo(e, link.href)}
-                      className="relative text-[14px] font-medium tracking-wide px-3 py-1.5 rounded-full transition-all duration-300"
-                    >
+                <a
+                  href={link.href}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    document.querySelector(link.href)?.scrollIntoView({ behavior: 'smooth' });
+                    window.history.pushState(null, '', link.href);
+                  }}
+                  className="relative flex items-center justify-center text-[14px] font-medium tracking-wide px-4 py-2 rounded-full transition-all duration-300 w-full h-full"
+                >
                       {/* Premium Hover Glow Backdrop */}
                       <span className="absolute inset-0 bg-white/5 rounded-full blur-md opacity-0 group-hover/link:opacity-100 transition-all duration-500 pointer-events-none" />
                       <span className="absolute inset-0 bg-gradient-to-b from-white/10 to-transparent opacity-0 group-hover/link:opacity-100 rounded-full transition-all duration-400 border border-white/0 group-hover/link:border-white/10 pointer-events-none" />
@@ -195,9 +193,7 @@ export function Navbar({ scrollProgress, activeSection, isScrolled }: NavbarProp
                     )}
                   </motion.div>
                 ))}
-              </motion.div>
-            )}
-          </AnimatePresence>
+          </motion.div>
 
           {/* Right: Actions */}
           <motion.div layout className="flex items-center gap-2 md:gap-3 relative z-10 shrink-0" style={{ transform: "translateZ(30px)" }}>
@@ -209,8 +205,12 @@ export function Navbar({ scrollProgress, activeSection, isScrolled }: NavbarProp
                   initial={{ opacity: 0, scale: 0.8 }}
                   animate={{ opacity: 1, scale: 1 }}
                   exit={{ opacity: 0, scale: 0.8 }}
+                  whileTap={{ scale: 0.95 }}
                   href="#contact"
-                  onClick={(e) => handleScrollTo(e, '#contact')}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    document.querySelector('#contact')?.scrollIntoView({ behavior: 'smooth' });
+                  }}
                   className="hidden md:flex items-center justify-center h-10 md:h-11 px-6 md:px-8 rounded-full bg-[#1a1c18]/80 text-[#fde047] border border-[#fde047]/40 text-sm font-semibold hover:border-[#fde047]/80 hover:shadow-[0_0_25px_rgba(253,224,71,0.25)] transition-all duration-500 overflow-hidden relative group focus:outline-none shadow-[inset_0_0_15px_rgba(253,224,71,0.1)] backdrop-blur-md shrink-0"
                   style={{ fontFamily: "'Space Grotesk', sans-serif" }}
                 >
@@ -254,7 +254,16 @@ export function Navbar({ scrollProgress, activeSection, isScrolled }: NavbarProp
                         className="absolute right-0 top-full mt-4 w-48 bg-black/90 backdrop-blur-xl border border-white/10 rounded-2xl shadow-2xl p-2 z-50 flex flex-col"
                       >
                          {navLinks.map((link) => (
-                           <a key={link.section} href={link.href} onClick={(e) => { setCompactMenuOpen(false); handleScrollTo(e, link.href); }} className="px-4 py-2.5 text-sm font-medium text-white/70 hover:text-primary hover:bg-white/5 rounded-xl transition-colors">
+                           <a 
+                             key={link.section} 
+                             href={link.href} 
+                             onClick={(e) => { 
+                               e.preventDefault();
+                               setCompactMenuOpen(false); 
+                               document.querySelector(link.href)?.scrollIntoView({ behavior: 'smooth' });
+                             }} 
+                             className="px-4 py-2.5 text-sm font-medium text-white/70 hover:text-primary hover:bg-white/5 rounded-xl transition-colors active:scale-95 origin-left"
+                           >
                              {link.label}
                            </a>
                          ))}
@@ -265,7 +274,11 @@ export function Navbar({ scrollProgress, activeSection, isScrolled }: NavbarProp
               )}
             </AnimatePresence>
             
-            <motion.a layout href="#contact" onClick={(e) => { setMobileOpen(false); handleScrollTo(e, '#contact'); }} className="md:hidden flex items-center justify-center h-8 px-5 rounded-full bg-[#c8ff00] text-black text-[11px] font-bold shadow-[0_0_20px_rgba(200,255,0,0.3)] hover:shadow-[0_0_25px_rgba(200,255,0,0.5)] active:scale-95 transition-all focus:outline-none tracking-wider shrink-0 relative overflow-hidden group">
+            <motion.a layout href="#contact" onClick={(e) => {
+              e.preventDefault();
+              setMobileOpen(false);
+              document.querySelector('#contact')?.scrollIntoView({ behavior: 'smooth' });
+            }} className="md:hidden flex items-center justify-center h-8 px-5 rounded-full bg-[#c8ff00] text-black text-[11px] font-bold shadow-[0_0_20px_rgba(200,255,0,0.3)] hover:shadow-[0_0_25px_rgba(200,255,0,0.5)] active:scale-95 transition-all focus:outline-none tracking-wider shrink-0 relative overflow-hidden group">
                 <div className="absolute inset-x-0 top-0 h-1/2 bg-white/20 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none"></div>
                 LET'S TALK
             </motion.a>
@@ -301,7 +314,11 @@ export function Navbar({ scrollProgress, activeSection, isScrolled }: NavbarProp
               <motion.a
                 key={link.section}
                 href={link.href}
-                onClick={(e) => { setMobileOpen(false); handleScrollTo(e, link.href); }}
+                onClick={(e) => {
+                  e.preventDefault();
+                  setMobileOpen(false);
+                  setTimeout(() => document.querySelector(link.href)?.scrollIntoView({ behavior: 'smooth' }), 300);
+                }}
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: 30 }}
@@ -317,7 +334,11 @@ export function Navbar({ scrollProgress, activeSection, isScrolled }: NavbarProp
             
              <motion.a
                 href="#contact"
-                onClick={(e) => { setMobileOpen(false); handleScrollTo(e, '#contact'); }}
+                onClick={(e) => {
+                  e.preventDefault();
+                  setMobileOpen(false);
+                  setTimeout(() => document.querySelector('#contact')?.scrollIntoView({ behavior: 'smooth' }), 300);
+                }}
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: 30 }}
