@@ -3,16 +3,20 @@ import { useState, useEffect } from 'react'
 export function useScrollProgress() {
   const [scrollProgress, setScrollProgress] = useState(0)
   const [activeSection, setActiveSection] = useState('hero')
+  const [isScrolled, setIsScrolled] = useState(false)
 
   useEffect(() => {
     const handleScroll = () => {
       const totalHeight = document.documentElement.scrollHeight - window.innerHeight
       const progress = totalHeight > 0 ? window.scrollY / totalHeight : 0
       setScrollProgress(Math.min(Math.max(progress, 0), 1))
+      setIsScrolled(window.scrollY > 50)
     }
     window.addEventListener('scroll', handleScroll, { passive: true })
+    handleScroll()
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
+
 
   useEffect(() => {
     const sectionIds = ['hero', 'stats', 'about', 'projects', 'case-studies', 'services', 'tech-stack', 'experience', 'testimonials', 'contact']
@@ -33,5 +37,5 @@ export function useScrollProgress() {
     return () => observers.forEach((o) => o.disconnect())
   }, [])
 
-  return { scrollProgress, activeSection }
+  return { scrollProgress, activeSection, isScrolled }
 }

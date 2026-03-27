@@ -15,7 +15,7 @@ import { Footer } from './components/sections/Footer'
 import { useScrollProgress } from './hooks/useScrollProgress'
 
 function App() {
-  const { scrollProgress, activeSection } = useScrollProgress()
+  const { scrollProgress, activeSection, isScrolled } = useScrollProgress()
   const [isDark, setIsDark] = useState(true)
 
   useEffect(() => {
@@ -54,6 +54,7 @@ function App() {
         activeSection={activeSection}
         onThemeToggle={toggleTheme}
         isDark={isDark}
+        isScrolled={isScrolled}
       />
       <main>
         <Hero />
