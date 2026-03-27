@@ -1,6 +1,8 @@
 import { useState, useEffect, useCallback } from 'react'
 import { Navbar } from './components/layout/Navbar'
 import { EntropyBackground } from './components/ui/EntropyBackground'
+import { DottedSurface } from './components/ui/DottedSurface'
+import { useMediaQuery } from 'react-responsive'
 
 import { Hero } from './components/sections/Hero'
 import { Stats } from './components/sections/Stats'
@@ -48,9 +50,11 @@ function App() {
     }
   }, [isDark])
 
+  const isDesktop = useMediaQuery({ query: '(min-width: 1024px)' })
+
   return (
     <div className="min-h-screen bg-background text-foreground relative">
-      <EntropyBackground />
+      {isDesktop ? <EntropyBackground /> : <DottedSurface />}
       <Navbar
         scrollProgress={scrollProgress}
         activeSection={activeSection}

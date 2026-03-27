@@ -60,7 +60,43 @@ export function Navbar({ scrollProgress, activeSection, isScrolled }: NavbarProp
     ([latestX, latestY]) => `radial-gradient(circle at ${(latestX as number + 0.5) * 100}% ${(latestY as number + 0.5) * 100}%, rgba(255, 255, 255, 0.08), transparent 40%)`
   )
 
-  // Native anchor CSS smooth scroll performs better when elements do not unmount mid-click.
+  // Bulletproof custom cinematic scroll engine bridging Framer layout conflicts
+  const premiumScrollTo = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+    e.preventDefault();
+    const id = href.replace('#', '');
+    const target = document.getElementById(id);
+    if (!target) return;
+
+    // Temporarily neuter CSS smooth scroll so our JS loop doesn't fight it and abort halfway!
+    document.documentElement.style.scrollBehavior = 'auto';
+
+    const targetPosition = target.getBoundingClientRect().top + window.scrollY - 80;
+    const startPosition = window.scrollY;
+    const distance = targetPosition - startPosition;
+    const duration = 1000; // 1 second extremely luxurious cinematic glide
+    let start: number | null = null;
+
+    // Apple-tier EaseInOutQuint profile
+    const easeInOutQuint = (t: number) => t < 0.5 ? 16 * t * t * t * t * t : 1 - Math.pow(-2 * t + 2, 5) / 2;
+
+    const step = (timestamp: number) => {
+      if (!start) start = timestamp;
+      const progress = timestamp - start;
+      const percent = Math.min(progress / duration, 1);
+      
+      window.scrollTo(0, startPosition + distance * easeInOutQuint(percent));
+
+      if (progress < duration) {
+        window.requestAnimationFrame(step);
+      } else {
+        // Restore CSS smooth scroll once perfectly landed
+        document.documentElement.style.scrollBehavior = 'smooth';
+      }
+    };
+
+    window.requestAnimationFrame(step);
+  };
+
   return (
     <>
       <motion.div
@@ -154,15 +190,11 @@ export function Navbar({ scrollProgress, activeSection, isScrolled }: NavbarProp
             animate={{ 
               opacity: isScrolled ? 0 : 1, 
               width: isScrolled ? 0 : 'auto',
-              paddingLeft: isScrolled ? 0 : '1.5rem',
-              paddingRight: isScrolled ? 0 : '1.5rem',
-              marginLeft: isScrolled ? 0 : '1.5rem',
-              marginRight: isScrolled ? 0 : '1.5rem',
-              scale: isScrolled ? 0.95 : 1
+              scale: isScrolled ? 0.9 : 1
             }}
             transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-            className="hidden lg:flex items-center bg-black/20 border border-white/5 rounded-full py-2.5 shadow-inner backdrop-blur-sm overflow-hidden whitespace-nowrap"
-            style={{ transform: "translateZ(40px)" }}
+            className={`hidden lg:flex items-center bg-black/20 border border-white/5 rounded-full py-2 shadow-[inset_0_0_20px_rgba(0,0,0,0.5)] backdrop-blur-md overflow-hidden whitespace-nowrap ${isScrolled ? 'mx-0 px-0' : 'mx-6 px-4'}`}
+            style={{ transform: "translateZ(40px)", pointerEvents: isScrolled ? 'none' : 'auto' }}
           >
             {navLinks.map((link, i) => (
               <motion.div 
@@ -173,20 +205,25 @@ export function Navbar({ scrollProgress, activeSection, isScrolled }: NavbarProp
               >
                 <a
                   href={link.href}
-                  onClick={(e) => {
-                    e.preventDefault();
-                    document.querySelector(link.href)?.scrollIntoView({ behavior: 'smooth' });
-                    window.history.pushState(null, '', link.href);
-                  }}
+                  onClick={(e) => premiumScrollTo(e, link.href)}
                   className="relative flex items-center justify-center text-[14px] font-medium tracking-wide px-4 py-2 rounded-full transition-all duration-300 w-full h-full"
                 >
                       {/* Premium Hover Glow Backdrop */}
                       <span className="absolute inset-0 bg-white/5 rounded-full blur-md opacity-0 group-hover/link:opacity-100 transition-all duration-500 pointer-events-none" />
                       <span className="absolute inset-0 bg-gradient-to-b from-white/10 to-transparent opacity-0 group-hover/link:opacity-100 rounded-full transition-all duration-400 border border-white/0 group-hover/link:border-white/10 pointer-events-none" />
                       
-                      <span className={`relative z-10 ${activeSection === link.section ? 'text-primary drop-shadow-[0_0_8px_rgba(114,255,0,0.5)]' : 'text-white/60 group-hover/link:text-white group-hover/link:drop-shadow-[0_0_8px_rgba(255,255,255,0.4)] transition-all duration-300'}`}>
+                      <span className={`relative z-10 transition-all duration-300 ${activeSection === link.section ? 'text-white font-semibold drop-shadow-[0_0_8px_rgba(255,255,255,0.8)]' : 'text-white/60 group-hover/link:text-white group-hover/link:drop-shadow-[0_0_12px_rgba(255,255,255,0.6)]'}`}>
                         {link.label}
                       </span>
+                      
+                      {/* Premium Active Dot Marker */}
+                      {activeSection === link.section && (
+                          <motion.div 
+                             layoutId="activeNavIndicator"
+                             className="absolute bottom-1 left-1/2 -translate-x-1/2 w-1.5 h-1.5 rounded-full bg-primary shadow-[0_0_8px_rgba(200,255,0,0.8)]"
+                             transition={{ type: "spring", stiffness: 400, damping: 30 }}
+                          />
+                      )}
                     </a>
                     {i < navLinks.length - 1 && (
                       <span className="mx-1.5 text-white/10 text-xs shrink-0 font-light">|</span>
@@ -207,26 +244,22 @@ export function Navbar({ scrollProgress, activeSection, isScrolled }: NavbarProp
                   exit={{ opacity: 0, scale: 0.8 }}
                   whileTap={{ scale: 0.95 }}
                   href="#contact"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    document.querySelector('#contact')?.scrollIntoView({ behavior: 'smooth' });
-                  }}
-                  className="hidden md:flex items-center justify-center h-10 md:h-11 px-6 md:px-8 rounded-full bg-[#1a1c18]/80 text-[#fde047] border border-[#fde047]/40 text-sm font-semibold hover:border-[#fde047]/80 hover:shadow-[0_0_25px_rgba(253,224,71,0.25)] transition-all duration-500 overflow-hidden relative group focus:outline-none shadow-[inset_0_0_15px_rgba(253,224,71,0.1)] backdrop-blur-md shrink-0"
+                  onClick={(e) => premiumScrollTo(e, '#contact')}
+                  className="hidden md:flex items-center justify-center h-10 md:h-11 px-6 md:px-8 rounded-full bg-black border border-white/10 text-white/90 text-[13px] font-semibold hover:border-white/30 hover:text-white transition-all duration-500 overflow-hidden relative group focus:outline-none backdrop-blur-xl shrink-0"
                   style={{ fontFamily: "'Space Grotesk', sans-serif" }}
                 >
-                  {/* Subtle noise/texture overlay for premium button feel */}
-                  <div className="absolute inset-0 opacity-40 mix-blend-overlay pointer-events-none" style={{ backgroundImage: "url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0IiBoZWlnaHQ9IjQiPgo8cmVjdCB3aWR0aD0iNCIgaGVpZ2h0PSI0IiBmaWxsPSIjZmZmIiBmaWxsLW9wYWNpdHk9IjAuMSIvPgo8L3N2Zz4=')" }}></div>
+                  {/* Extreme Premium Interaction Lighting */}
+                  <span className="absolute inset-0 bg-gradient-to-b from-white/10 to-transparent opacity-0 group-hover:opacity-100 transition-duration-500 pointer-events-none shadow-[inset_0_1px_1px_rgba(255,255,255,0.25)]" />
                   
-                  {/* Dynamic Hover Light Effect */}
+                  {/* Dynamic Sweeping Sheen */}
                   <motion.div 
-                    initial={{ x: '-150%' }}
-                    whileHover={{ x: '150%' }}
-                    transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
-                    className="absolute top-0 w-[50%] h-full bg-gradient-to-r from-transparent via-[#fde047]/30 to-transparent skew-x-[-20deg] pointer-events-none opacity-0 group-hover:opacity-100" 
+                    initial={{ x: '-100%' }}
+                    whileHover={{ x: '200%' }}
+                    transition={{ duration: 1.2, repeat: Infinity, ease: "easeInOut" }}
+                    className="absolute top-0 w-[40%] h-full bg-gradient-to-r from-transparent via-white/20 to-transparent skew-x-[-20deg] pointer-events-none opacity-0 group-hover:opacity-100" 
                   />
-                  <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-[#fde047]/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"></div>
                   
-                  <span className="whitespace-nowrap relative z-10 tracking-wide drop-shadow-[0_0_4px_rgba(253,224,71,0.2)] group-hover:text-[#fef08a] group-hover:drop-shadow-[0_0_8px_rgba(253,224,71,0.5)] transition-all duration-300">Let's Talk</span>
+                  <span className="whitespace-nowrap relative z-10 tracking-wide transition-all duration-300 group-hover:drop-shadow-[0_0_8px_rgba(255,255,255,0.6)]">Let's Talk</span>
                 </motion.a>
               ) : (
                 <motion.div layout className="relative" 
@@ -258,9 +291,8 @@ export function Navbar({ scrollProgress, activeSection, isScrolled }: NavbarProp
                              key={link.section} 
                              href={link.href} 
                              onClick={(e) => { 
-                               e.preventDefault();
                                setCompactMenuOpen(false); 
-                               document.querySelector(link.href)?.scrollIntoView({ behavior: 'smooth' });
+                               premiumScrollTo(e, link.href);
                              }} 
                              className="px-4 py-2.5 text-sm font-medium text-white/70 hover:text-primary hover:bg-white/5 rounded-xl transition-colors active:scale-95 origin-left"
                            >
@@ -275,9 +307,8 @@ export function Navbar({ scrollProgress, activeSection, isScrolled }: NavbarProp
             </AnimatePresence>
             
             <motion.a layout href="#contact" onClick={(e) => {
-              e.preventDefault();
               setMobileOpen(false);
-              document.querySelector('#contact')?.scrollIntoView({ behavior: 'smooth' });
+              premiumScrollTo(e, '#contact');
             }} className="md:hidden flex items-center justify-center h-8 px-5 rounded-full bg-[#c8ff00] text-black text-[11px] font-bold shadow-[0_0_20px_rgba(200,255,0,0.3)] hover:shadow-[0_0_25px_rgba(200,255,0,0.5)] active:scale-95 transition-all focus:outline-none tracking-wider shrink-0 relative overflow-hidden group">
                 <div className="absolute inset-x-0 top-0 h-1/2 bg-white/20 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none"></div>
                 LET'S TALK
@@ -315,9 +346,8 @@ export function Navbar({ scrollProgress, activeSection, isScrolled }: NavbarProp
                 key={link.section}
                 href={link.href}
                 onClick={(e) => {
-                  e.preventDefault();
                   setMobileOpen(false);
-                  setTimeout(() => document.querySelector(link.href)?.scrollIntoView({ behavior: 'smooth' }), 300);
+                  premiumScrollTo(e, link.href);
                 }}
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -335,9 +365,8 @@ export function Navbar({ scrollProgress, activeSection, isScrolled }: NavbarProp
              <motion.a
                 href="#contact"
                 onClick={(e) => {
-                  e.preventDefault();
                   setMobileOpen(false);
-                  setTimeout(() => document.querySelector('#contact')?.scrollIntoView({ behavior: 'smooth' }), 300);
+                  premiumScrollTo(e, '#contact');
                 }}
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
