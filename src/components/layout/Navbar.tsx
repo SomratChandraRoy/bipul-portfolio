@@ -53,68 +53,6 @@ function MagneticItem({ children, className = "", delay = 0 }: { children: React
   const springMX = useSpring(magnetX, { stiffness: 450, damping: 25, mass: 0.2 })
   const springMY = useSpring(magnetY, { stiffness: 450, damping: 25, mass: 0.2 })
 
-  // Manual drag offset
-  const dragX = useMotionValue(0)
-  const dragY = useMotionValue(0)
-  const springDX = useSpring(dragX, { stiffness: 400, damping: 28, mass: 0.6 })
-  const springDY = useSpring(dragY, { stiffness: 400, damping: 28, mass: 0.6 })
-
-  // Combined final position = magnetic + drag
-  const finalX = useTransform([springMX, springDX], ([mx, dx]: number[]) => mx + dx)
-  const finalY = useTransform([springMY, springDY], ([my, dy]: number[]) => my + dy)
-
-  const [isDragging, setIsDragging] = useState(false)
-  const dragStart = useRef<{ px: number; py: number } | null>(null)
-
-  const handlePointerDown = (e: React.PointerEvent) => {
-    // Only left mouse button
-    if (e.button !== 0) return
-    e.currentTarget.setPointerCapture(e.pointerId)
-    dragStart.current = { px: e.clientX, py: e.clientY }
-    // Zero out magnetic effect during drag
-    magnetX.set(0)
-    magnetY.set(0)
-  }
-
-  const handlePointerMove = (e: React.PointerEvent) => {
-    if (dragStart.current) {
-      const dx = e.clientX - dragStart.current.px
-      const dy = e.clientY - dragStart.current.py
-      // Rubber-band elasticity — limit max drag distance
-      const elastic = 0.4
-      dragX.set(dx * elastic)
-      dragY.set(dy * elastic)
-      if (!isDragging && (Math.abs(dx) > 3 || Math.abs(dy) > 3)) {
-        setIsDragging(true)
-      }
-    } else {
-      // Magnetic hover when not dragging
-      if (!outerRef.current) return
-      const { clientX, clientY } = e
-      const rect = outerRef.current.getBoundingClientRect()
-      const mx = clientX - (rect.left + rect.width / 2)
-      const my = clientY - (rect.top + rect.height / 2)
-      magnetX.set(mx * 0.18)
-      magnetY.set(my * 0.18)
-    }
-  }
-
-  const handlePointerUp = (e: React.PointerEvent) => {
-    e.currentTarget.releasePointerCapture(e.pointerId)
-    dragStart.current = null
-    // Snap back with spring
-    dragX.set(0)
-    dragY.set(0)
-    setIsDragging(false)
-  }
-
-  const handlePointerLeave = () => {
-    if (!dragStart.current) {
-      magnetX.set(0)
-      magnetY.set(0)
-    }
-  }
-
   return (
     <motion.div 
       initial={{ opacity: 0, scale: 0.8 }}
@@ -124,21 +62,26 @@ function MagneticItem({ children, className = "", delay = 0 }: { children: React
     >
       <motion.div 
         ref={outerRef}
-        onPointerDown={handlePointerDown}
-        onPointerMove={handlePointerMove}
-        onPointerUp={handlePointerUp}
-        onPointerLeave={handlePointerLeave}
+        onMouseMove={(e) => {
+          if (!outerRef.current) return
+          const rect = outerRef.current.getBoundingClientRect()
+          const mx = e.clientX - (rect.left + rect.width / 2)
+          const my = e.clientY - (rect.top + rect.height / 2)
+          magnetX.set(mx * 0.18)
+          magnetY.set(my * 0.18)
+        }}
+        onMouseLeave={() => {
+          magnetX.set(0)
+          magnetY.set(0)
+        }}
         style={{ 
-          x: finalX, 
-          y: finalY, 
-          touchAction: 'none',
+          x: springMX, 
+          y: springMY, 
         }}
-        animate={{
-          scale: isDragging ? 1.08 : 1,
-          filter: isDragging ? 'brightness(1.15) drop-shadow(0 8px 20px rgba(75,131,251,0.35))' : 'brightness(1) drop-shadow(0 0 0 rgba(0,0,0,0))',
-        }}
-        transition={{ type: "spring", stiffness: 500, damping: 25, mass: 0.4 }}
-        className={`w-full h-full will-change-transform ${isDragging ? 'cursor-grabbing z-50' : 'cursor-grab'}`}
+        whileHover={{ scale: 1.03 }}
+        whileTap={{ scale: 0.95 }}
+        transition={{ type: "spring", stiffness: 500, damping: 25, mass: 0.3 }}
+        className="w-full h-full will-change-transform"
       >
         {children}
       </motion.div>
@@ -245,7 +188,6 @@ function use3DTilt() {
         className="fixed top-0 left-0 right-0 z-50 flex justify-center pointer-events-none"
       >
         <div className={`transition-all duration-700 pointer-events-auto ${isScrolled ? 'pt-3 md:pt-4' : 'pt-3 md:pt-8'}`} style={{ perspective: 1200 }}>
-          <PremiumDraggable intensity="heavy" className="w-auto">
           <motion.nav 
             layout
             transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
@@ -522,7 +464,6 @@ function use3DTilt() {
             </MagneticItem>
           </div>
           </motion.nav>
-          </PremiumDraggable>
         </div>
       </motion.div>
 
