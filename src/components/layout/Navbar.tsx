@@ -50,8 +50,8 @@ function MagneticItem({ children, className = "", delay = 0 }: { children: React
   // Magnetic hover offset
   const magnetX = useMotionValue(0)
   const magnetY = useMotionValue(0)
-  const springMX = useSpring(magnetX, { stiffness: 450, damping: 25, mass: 0.2 })
-  const springMY = useSpring(magnetY, { stiffness: 450, damping: 25, mass: 0.2 })
+  const springMX = useSpring(magnetX, { stiffness: 350, damping: 22, mass: 0.25 })
+  const springMY = useSpring(magnetY, { stiffness: 350, damping: 22, mass: 0.25 })
 
   return (
     <motion.div 
@@ -67,8 +67,8 @@ function MagneticItem({ children, className = "", delay = 0 }: { children: React
           const rect = outerRef.current.getBoundingClientRect()
           const mx = e.clientX - (rect.left + rect.width / 2)
           const my = e.clientY - (rect.top + rect.height / 2)
-          magnetX.set(mx * 0.18)
-          magnetY.set(my * 0.18)
+          magnetX.set(mx * 0.22)
+          magnetY.set(my * 0.22)
         }}
         onMouseLeave={() => {
           magnetX.set(0)
@@ -76,11 +76,14 @@ function MagneticItem({ children, className = "", delay = 0 }: { children: React
         }}
         style={{ 
           x: springMX, 
-          y: springMY, 
+          y: springMY,
         }}
-        whileHover={{ scale: 1.03 }}
-        whileTap={{ scale: 0.95 }}
-        transition={{ type: "spring", stiffness: 500, damping: 25, mass: 0.3 }}
+        whileHover={{ 
+          scale: 1.06, 
+          filter: 'brightness(1.12) drop-shadow(0 4px 12px rgba(75,131,251,0.2))',
+        }}
+        whileTap={{ scale: 0.93 }}
+        transition={{ type: "spring", stiffness: 400, damping: 22, mass: 0.25 }}
         className="w-full h-full will-change-transform"
       >
         {children}
@@ -132,16 +135,25 @@ function use3DTilt() {
   // ── Navbar bar drag system (threshold-based: clicks still work) ──
   const navDragX = useMotionValue(0)
   const navDragY = useMotionValue(0)
-  const navSpringX = useSpring(navDragX, { stiffness: 300, damping: 24, mass: 0.8 })
-  const navSpringY = useSpring(navDragY, { stiffness: 300, damping: 24, mass: 0.8 })
+  const navDragRotate = useMotionValue(0)
+  const navDragSkewX = useMotionValue(0)
+  const navDragSkewY = useMotionValue(0)
+  // Soft, floaty springs for luxury snap-back
+  const navSpringX = useSpring(navDragX, { stiffness: 220, damping: 20, mass: 0.9 })
+  const navSpringY = useSpring(navDragY, { stiffness: 220, damping: 20, mass: 0.9 })
+  const navSpringRotate = useSpring(navDragRotate, { stiffness: 180, damping: 18, mass: 0.7 })
+  // Jelly springs — lagging for wobbly organic feel
+  const navSpringSkewX = useSpring(navDragSkewX, { stiffness: 120, damping: 12, mass: 0.5 })
+  const navSpringSkewY = useSpring(navDragSkewY, { stiffness: 120, damping: 12, mass: 0.5 })
   const [isNavDragging, setIsNavDragging] = useState(false)
   const navDragOrigin = useRef<{ x: number; y: number } | null>(null)
   const navDragActive = useRef(false)
+  const navPrevPos = useRef<{ x: number; y: number }>({ x: 0, y: 0 })
 
   const onNavMouseDown = (e: React.MouseEvent) => {
-    // Only on left click, and only on the nav bar itself (not inner interactive elements)
     if (e.button !== 0) return
     navDragOrigin.current = { x: e.clientX, y: e.clientY }
+    navPrevPos.current = { x: e.clientX, y: e.clientY }
     navDragActive.current = false
 
     const onMove = (ev: MouseEvent) => {
@@ -149,16 +161,28 @@ function use3DTilt() {
       const dx = ev.clientX - navDragOrigin.current.x
       const dy = ev.clientY - navDragOrigin.current.y
       
-      // Threshold: only start dragging after 8px of movement
+      // 8px dead zone — click-safe threshold
       if (!navDragActive.current && (Math.abs(dx) > 8 || Math.abs(dy) > 8)) {
         navDragActive.current = true
         setIsNavDragging(true)
       }
       
       if (navDragActive.current) {
-        navDragX.set(dx * 0.35)
-        navDragY.set(dy * 0.35)
+        // Rubber-band: decreasing elasticity at distance
+        const maxDist = 120
+        const clampedDx = dx * 0.4 * (1 - Math.min(Math.abs(dx) / maxDist, 0.6) * 0.5)
+        const clampedDy = dy * 0.4 * (1 - Math.min(Math.abs(dy) / maxDist, 0.6) * 0.5)
+        navDragX.set(clampedDx)
+        navDragY.set(clampedDy)
+        navDragRotate.set(clampedDx * 0.04)
+
+        // Jelly: velocity → skew deformation
+        const velX = (ev.clientX - navPrevPos.current.x) * 0.5
+        const velY = (ev.clientY - navPrevPos.current.y) * 0.5
+        navDragSkewX.set(velX * 0.15)
+        navDragSkewY.set(velY * 0.08)
       }
+      navPrevPos.current = { x: ev.clientX, y: ev.clientY }
     }
 
     const onUp = () => {
@@ -167,6 +191,9 @@ function use3DTilt() {
       navDragOrigin.current = null
       navDragX.set(0)
       navDragY.set(0)
+      navDragRotate.set(0)
+      navDragSkewX.set(0)
+      navDragSkewY.set(0)
       navDragActive.current = false
       setIsNavDragging(false)
     }
@@ -244,24 +271,31 @@ function use3DTilt() {
               rotateX, rotateY,
               x: navSpringX,
               y: navSpringY,
+              rotate: navSpringRotate,
+              skewX: navSpringSkewX,
+              skewY: navSpringSkewY,
               transformStyle: "preserve-3d"
             }}
             animate={{
-              scale: isNavDragging ? 1.03 : 1,
+              scale: isNavDragging ? 1.04 : 1,
+              filter: isNavDragging ? 'brightness(1.08)' : 'brightness(1)',
               boxShadow: isNavDragging 
-                ? '0 24px 60px -12px rgba(75,131,251,0.35), 0 0 30px rgba(75,131,251,0.15), inset 0 1px 1px rgba(255,255,255,0.1)' 
+                ? '0 28px 70px -12px rgba(75,131,251,0.4), 0 0 40px rgba(75,131,251,0.18), inset 0 1px 2px rgba(255,255,255,0.12)' 
                 : undefined,
+              borderColor: isNavDragging ? 'rgba(75,131,251,0.3)' : undefined,
             }}
-            className={`relative flex items-center justify-between transition-all duration-700 ${isNavDragging ? 'select-none' : ''} ${isScrolled 
-              ? 'w-[calc(100vw-2rem)] md:w-auto px-3 md:px-4 py-2 md:py-2 bg-[#020617]/85 backdrop-blur-3xl border border-white/[0.08] rounded-2xl md:rounded-full shadow-[0_8px_32px_-8px_rgba(0,0,0,0.6),inset_0_1px_0_rgba(255,255,255,0.04)]' 
+            className={`relative flex items-center justify-between transition-[background,backdrop-filter,border-color,box-shadow,border-width] duration-700 ${isNavDragging ? 'select-none !border-[#4b83fb]/30' : ''} ${isScrolled 
+              ? `w-[calc(100vw-2rem)] md:w-auto px-3 md:px-4 py-2 md:py-2 rounded-2xl md:rounded-full
+                 ${isNavHovered 
+                   ? 'bg-[#020617]/85 backdrop-blur-3xl border border-white/[0.08] shadow-[0_8px_32px_-8px_rgba(0,0,0,0.6),inset_0_1px_0_rgba(255,255,255,0.04)]' 
+                   : 'bg-transparent backdrop-blur-none border-0 shadow-none'}` 
               : `w-[calc(100vw-2rem)] max-w-5xl px-3 md:px-6 py-2.5 md:py-3 rounded-2xl md:rounded-[2rem] 
-                 bg-[#060e1f]/70 md:bg-transparent backdrop-blur-3xl md:backdrop-blur-none 
-                 border border-white/[0.06] md:border-transparent 
-                 shadow-[0_4px_24px_-4px_rgba(0,0,0,0.5),inset_0_1px_0_rgba(255,255,255,0.06)] md:shadow-none
-                 ${isNavHovered ? 'md:bg-[#0f172a]/60 md:backdrop-blur-xl md:border-white/10 md:shadow-[0_20px_50px_-12px_rgba(0,0,0,0.5),inset_0_1px_1px_rgba(255,255,255,0.1)]' : ''}`}`}
+                 ${isNavHovered 
+                   ? 'bg-[#0a1628]/60 backdrop-blur-2xl border border-white/[0.08] shadow-[0_12px_40px_-8px_rgba(0,0,0,0.5),inset_0_1px_0_rgba(255,255,255,0.08)]' 
+                   : 'bg-transparent backdrop-blur-none border-0 shadow-none'}`}`}
           >
-          {/* Mobile subtle gradient top-edge shine */}
-          <div className="md:hidden absolute top-0 left-4 right-4 h-px bg-gradient-to-r from-transparent via-[#4b83fb]/25 to-transparent pointer-events-none" />
+          {/* Subtle gradient top-edge shine (only on hover) */}
+          <div className={`absolute top-0 left-4 right-4 h-px bg-gradient-to-r from-transparent via-[#4b83fb]/25 to-transparent pointer-events-none transition-opacity duration-700 ${isNavHovered ? 'opacity-100' : 'opacity-0'}`} />
           {/* Hardware-Accelerated Dynamic Spotlight Geometry Tracing Layer */}
           <motion.div 
             className={`absolute inset-0 z-0 pointer-events-none rounded-[inherit] transition-opacity duration-700 ${isNavHovered ? 'opacity-100' : 'opacity-0'}`}
