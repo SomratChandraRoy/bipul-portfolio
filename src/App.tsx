@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback } from 'react'
 import { Navbar } from './components/layout/Navbar'
 import { EntropyBackground } from './components/ui/EntropyBackground'
 import { DottedSurface } from './components/ui/DottedSurface'
+import { CustomCursor } from './components/ui/CustomCursor'
 import { useMediaQuery } from 'react-responsive'
 
 import { Hero } from './components/sections/Hero'
@@ -54,6 +55,7 @@ function App() {
 
   return (
     <div className="min-h-screen bg-background text-foreground relative">
+      {isDesktop && <CustomCursor />}
       {isDesktop ? <EntropyBackground /> : <DottedSurface />}
       <Navbar
         scrollProgress={scrollProgress}

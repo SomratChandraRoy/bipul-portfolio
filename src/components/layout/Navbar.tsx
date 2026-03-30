@@ -1,6 +1,6 @@
 import { useState, useRef } from 'react'
 import { motion, AnimatePresence, useMotionValue, useSpring, useTransform } from 'framer-motion'
-import { Menu, X, Layers } from 'lucide-react'
+import { Layers } from 'lucide-react'
 import { PremiumDraggable } from '../ui/PremiumDraggable'
 
 const navLinks = [
@@ -186,49 +186,6 @@ function use3DTilt() {
   // Outer Container Tilt
   const { rotateX, rotateY, handleMouseMove, handleMouseLeave, x, y } = use3DTilt()
   
-  // ── Entire navbar bar drag system ──
-  const navDragX = useMotionValue(0)
-  const navDragY = useMotionValue(0)
-  const navSpringX = useSpring(navDragX, { stiffness: 350, damping: 26, mass: 0.7 })
-  const navSpringY = useSpring(navDragY, { stiffness: 350, damping: 26, mass: 0.7 })
-  const [isNavDragging, setIsNavDragging] = useState(false)
-  const navDragStart = useRef<{ px: number; py: number } | null>(null)
-
-  const handleNavPointerDown = (e: React.PointerEvent) => {
-    if (e.button !== 0) return
-    ;(e.currentTarget as HTMLElement).setPointerCapture(e.pointerId)
-    navDragStart.current = { px: e.clientX, py: e.clientY }
-  }
-  const handleNavPointerMove = (e: React.PointerEvent) => {
-    // Always run tilt + hover
-    handleMouseMove(e as any)
-    setIsNavHovered(true)
-    if (navDragStart.current) {
-      const dx = e.clientX - navDragStart.current.px
-      const dy = e.clientY - navDragStart.current.py
-      navDragX.set(dx * 0.35)
-      navDragY.set(dy * 0.35)
-      if (!isNavDragging && (Math.abs(dx) > 4 || Math.abs(dy) > 4)) {
-        setIsNavDragging(true)
-      }
-    }
-  }
-  const handleNavPointerUp = (e: React.PointerEvent) => {
-    ;(e.currentTarget as HTMLElement).releasePointerCapture(e.pointerId)
-    navDragStart.current = null
-    navDragX.set(0)
-    navDragY.set(0)
-    setIsNavDragging(false)
-  }
-  const handleNavPointerLeave = () => {
-    handleMouseLeave()
-    setIsNavHovered(false)
-    if (!navDragStart.current) {
-      navDragX.set(0)
-      navDragY.set(0)
-    }
-  }
-
   // Calculate intense premium dynamic glow position based on mouse pct
   const backgroundGlow = useTransform(
     [x, y],
@@ -279,51 +236,35 @@ function use3DTilt() {
         style={{ scaleX: scrollProgress }}
       />
       
-      {/* Mobile Status Bar (Pre-scroll) */}
-      <AnimatePresence>
-        {!isScrolled && (
-          <motion.div 
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            className="md:hidden fixed top-0 w-full z-50 flex justify-center pt-2 pointer-events-none"
-          >
-            <div className="flex items-center gap-2 text-[10px] font-mono tracking-widest text-muted-foreground uppercase opacity-80">
-              <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
-              STATUS: AVAILABLE FOR NEW CONTRACTS
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+
 
       <motion.div 
         initial={{ y: -120, opacity: 0, rotateX: -20, scale: 0.95 }}
         animate={{ y: 0, opacity: 1, rotateX: 0, scale: 1 }}
         transition={{ duration: 1.4, ease: [0.16, 1, 0.3, 1], delay: 0.1 }}
-        className={`fixed top-0 left-0 right-0 z-50 flex justify-center transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] ${isScrolled ? 'pt-4' : 'pt-6 md:pt-8'}`} style={{ perspective: 1200 }}
+        className="fixed top-0 left-0 right-0 z-50 flex justify-center pointer-events-none"
       >
-        <motion.nav 
-          layout
-          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-          onPointerDown={handleNavPointerDown}
-          onPointerMove={handleNavPointerMove}
-          onPointerUp={handleNavPointerUp}
-          onPointerLeave={handleNavPointerLeave}
-          style={{ 
-            rotateX, rotateY,
-            x: navSpringX,
-            y: navSpringY,
-            transformStyle: "preserve-3d",
-            touchAction: 'none',
-          }}
-          animate={{
-            scale: isNavDragging ? 1.03 : 1,
-            boxShadow: isNavDragging 
-              ? '0 24px 60px -12px rgba(75,131,251,0.35), 0 0 30px rgba(75,131,251,0.15)' 
-              : '0 10px 40px -10px rgba(0,0,0,0.5)',
-          }}
-          className={`relative flex items-center justify-between transition-all duration-700 ${isNavDragging ? 'cursor-grabbing' : 'cursor-grab'} ${isScrolled ? 'w-[calc(100%-2rem)] md:w-auto px-4 py-2 bg-[#020617]/90 backdrop-blur-3xl border border-white/10 rounded-full shadow-[0_10px_40px_-10px_rgba(0,0,0,0.5)]' : `w-[calc(100%-2rem)] max-w-5xl px-4 md:px-6 py-2 md:py-3 rounded-[2rem] ${isNavHovered ? 'bg-[#0f172a]/60 backdrop-blur-xl border border-white/10 shadow-[0_20px_50px_-12px_rgba(0,0,0,0.5),inset_0_1px_1px_rgba(255,255,255,0.1)]' : 'bg-transparent border-transparent shadow-none backdrop-blur-none'}`}`}
-        >
+        <div className={`transition-all duration-700 pointer-events-auto ${isScrolled ? 'pt-3 md:pt-4' : 'pt-3 md:pt-8'}`} style={{ perspective: 1200 }}>
+          <PremiumDraggable intensity="heavy" className="w-auto">
+          <motion.nav 
+            layout
+            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+            onMouseMove={(e) => { handleMouseMove(e as any); setIsNavHovered(true); }}
+            onMouseLeave={() => { handleMouseLeave(); setIsNavHovered(false); }}
+            style={{ 
+              rotateX, rotateY,
+              transformStyle: "preserve-3d" // Enables 3D stacking inside
+            }}
+            className={`relative flex items-center justify-between transition-all duration-700 ${isScrolled 
+              ? 'w-[calc(100vw-2rem)] md:w-auto px-3 md:px-4 py-2 md:py-2 bg-[#020617]/85 backdrop-blur-3xl border border-white/[0.08] rounded-2xl md:rounded-full shadow-[0_8px_32px_-8px_rgba(0,0,0,0.6),inset_0_1px_0_rgba(255,255,255,0.04)]' 
+              : `w-[calc(100vw-2rem)] max-w-5xl px-3 md:px-6 py-2.5 md:py-3 rounded-2xl md:rounded-[2rem] 
+                 bg-[#060e1f]/70 md:bg-transparent backdrop-blur-3xl md:backdrop-blur-none 
+                 border border-white/[0.06] md:border-transparent 
+                 shadow-[0_4px_24px_-4px_rgba(0,0,0,0.5),inset_0_1px_0_rgba(255,255,255,0.06)] md:shadow-none
+                 ${isNavHovered ? 'md:bg-[#0f172a]/60 md:backdrop-blur-xl md:border-white/10 md:shadow-[0_20px_50px_-12px_rgba(0,0,0,0.5),inset_0_1px_1px_rgba(255,255,255,0.1)]' : ''}`}`}
+          >
+          {/* Mobile subtle gradient top-edge shine */}
+          <div className="md:hidden absolute top-0 left-4 right-4 h-px bg-gradient-to-r from-transparent via-[#4b83fb]/25 to-transparent pointer-events-none" />
           {/* Hardware-Accelerated Dynamic Spotlight Geometry Tracing Layer */}
           <motion.div 
             className={`absolute inset-0 z-0 pointer-events-none rounded-[inherit] transition-opacity duration-700 ${isNavHovered ? 'opacity-100' : 'opacity-0'}`}
@@ -346,17 +287,17 @@ function use3DTilt() {
           />
 
           {/* Left: Logo & Status */}
-          <div className="flex items-center gap-3 relative z-10 shrink-0">
+          <div className="flex items-center gap-2 md:gap-3 relative z-10 shrink-0">
             <MagneticItem>
-            <a href="#hero" className="flex items-center gap-2 group cursor-pointer focus:outline-none pr-2">
+            <a href="#hero" className="flex items-center gap-2 group cursor-pointer focus:outline-none" onClick={(e) => premiumScrollTo(e, '#hero')}>
                
               <div className="flex flex-col justify-center">
                 
                 {/* Typography Logo Engine - Expanding Apple-style Hover Reveal */}
-                <div className="flex items-center text-2xl md:text-[28px] font-bold tracking-tight text-white/90 group-hover:text-white transition-all duration-700" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
+                <div className="flex items-center text-xl md:text-[28px] font-bold tracking-tight text-white/90 group-hover:text-white transition-all duration-700" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
                   
                   {/* Large Floating Hero "B" */}
-                  <div className="relative flex items-center justify-center flex-shrink-0 h-9 md:h-11 lg:h-[48px] z-20">
+                  <div className="relative flex items-center justify-center flex-shrink-0 h-8 md:h-11 lg:h-[48px] z-20">
                     <motion.img 
                       src="/b.png" 
                       alt="Bipul" 
@@ -460,7 +401,7 @@ function use3DTilt() {
           </motion.div>
 
           {/* Right: Actions */}
-          <div className="flex items-center gap-2 md:gap-3 relative z-10 shrink-0">
+          <div className="flex items-center gap-1.5 md:gap-3 relative z-10 shrink-0">
 
             <AnimatePresence mode="popLayout">
               {!isScrolled ? (
@@ -534,91 +475,145 @@ function use3DTilt() {
             </AnimatePresence>
             
             <MagneticItem className="shrink-0 md:hidden">
-            <a href="#contact" onClick={(e) => {
-              e.preventDefault();
-              setMobileOpen(false);
-              premiumScrollTo(e as any, '#contact');
-            }} className="flex items-center justify-center h-8 px-5 rounded-full bg-[#4b83fb] text-white text-[11px] font-bold shadow-[0_0_20px_rgba(75,131,251,0.3)] hover:shadow-[0_0_25px_rgba(75,131,251,0.5)] active:scale-95 transition-all focus:outline-none tracking-wider shrink-0 relative overflow-hidden group">
-                <div className="absolute inset-x-0 top-0 h-1/2 bg-white/20 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none"></div>
-                LET'S TALK
-            </a>
+              <a href="#contact" onClick={(e) => {
+                e.preventDefault();
+                setMobileOpen(false);
+                premiumScrollTo(e as any, '#contact');
+              }} className="relative flex items-center justify-center gap-1.5 h-[34px] px-4 rounded-xl bg-gradient-to-b from-[#3b73eb] to-[#2054c4] border border-[#60a5fa]/20 text-white text-[10px] font-bold shadow-[0_2px_12px_-2px_rgba(75,131,251,0.4),inset_0_1px_0_rgba(255,255,255,0.2)] active:scale-[0.96] transition-all focus:outline-none tracking-[0.12em] overflow-hidden shrink-0" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
+                  <span className="relative flex h-1.5 w-1.5 shrink-0">
+                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-60" />
+                    <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-emerald-400" />
+                  </span>
+                  HIRE ME
+              </a>
             </MagneticItem>
 
-            <MagneticItem className="flex-shrink-0 relative">
-              <div className="w-9 h-9 md:w-11 md:h-11 rounded-full border border-white/10 overflow-hidden sm:ml-2 shadow-[0_0_15px_rgba(75,131,251,0.15)] group cursor-pointer relative">
+            <MagneticItem className="flex-shrink-0 relative hidden md:block">
+              <div className="w-11 h-11 rounded-full border border-white/[0.15] overflow-hidden ml-2 shadow-[0_0_12px_rgba(75,131,251,0.2),0_0_0_1px_rgba(75,131,251,0.1)] group cursor-pointer relative">
                 <img src={`https://api.dicebear.com/7.x/notionists/svg?seed=Bipul&backgroundColor=4b83fb`} alt="Avatar" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
-                <div className="absolute inset-0 ring-1 ring-inset ring-black/10 rounded-full pointer-events-none" />
+                <div className="absolute inset-0 ring-1 ring-inset ring-white/[0.08] rounded-full pointer-events-none" />
               </div>
             </MagneticItem>
 
             <MagneticItem className="lg:hidden flex-shrink-0">
               <button
                 onClick={() => setMobileOpen(!mobileOpen)}
-                className="p-2 rounded-full text-white/70 hover:text-white hover:bg-white/10 transition-all duration-200 focus:outline-none border border-transparent hover:border-white/10 relative overflow-hidden"
+                className="relative flex flex-col items-center justify-center w-[34px] h-[34px] md:w-10 md:h-10 rounded-xl bg-white/[0.04] border border-white/[0.08] text-white/70 hover:bg-white/[0.08] hover:text-white transition-all duration-300 focus:outline-none active:scale-90"
                 aria-label="Toggle menu"
               >
-                {mobileOpen ? <X className="w-5 h-5 relative z-10" /> : <Menu className="w-5 h-5 relative z-10" />}
-                <div className="absolute inset-0 bg-white/10 opacity-0 active:opacity-100 transition-opacity" />
+                <div className="relative w-[13px] h-[9px] flex flex-col justify-between">
+                  <motion.span 
+                    animate={mobileOpen ? { rotate: 45, y: 3.75, width: '100%' } : { rotate: 0, y: 0, width: '100%' }} 
+                    transition={{ type: "spring", stiffness: 300, damping: 22 }}
+                    className="h-[1.5px] bg-current rounded-full origin-center block" 
+                  />
+                  <motion.span 
+                    animate={mobileOpen ? { scaleX: 0, opacity: 0 } : { scaleX: 0.6, opacity: 0.5 }} 
+                    transition={{ type: "spring", stiffness: 300, damping: 22 }}
+                    className="h-[1.5px] bg-current rounded-full origin-right block" 
+                  />
+                  <motion.span 
+                    animate={mobileOpen ? { rotate: -45, y: -3.75, width: '100%' } : { rotate: 0, y: 0, width: '100%' }} 
+                    transition={{ type: "spring", stiffness: 300, damping: 22 }}
+                    className="h-[1.5px] bg-current rounded-full origin-center block" 
+                  />
+                </div>
               </button>
             </MagneticItem>
           </div>
-        </motion.nav>
+          </motion.nav>
+          </PremiumDraggable>
+        </div>
       </motion.div>
 
       {/* Mobile Fullscreen Menu */}
       <AnimatePresence>
         {mobileOpen && (
           <motion.div
-            initial={{ opacity: 0, backdropFilter: "blur(0px)" }}
-            animate={{ opacity: 1, backdropFilter: "blur(32px)" }}
-            exit={{ opacity: 0, backdropFilter: "blur(0px)" }}
-            transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-            className="fixed inset-0 z-[45] bg-black/90 lg:hidden flex flex-col items-center justify-center gap-8"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+            className="fixed inset-0 z-[45] lg:hidden flex flex-col items-center justify-center pointer-events-auto"
           >
-            <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_120%,rgba(75,131,251,0.15),transparent_60%)] pointer-events-none" />
+            {/* Super premium frosted glass backdrop */}
+            <motion.div 
+              initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.6 }}
+              className="absolute inset-0 bg-[#020617]/70 backdrop-blur-3xl saturate-150"
+            />
+            
+            {/* Cinematic background light pools */}
+            <div className="absolute inset-0 overflow-hidden pointer-events-none">
+               <motion.div 
+                 animate={{ scale: [1, 1.2, 1], opacity: [0.3, 0.5, 0.3] }}
+                 transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+                 className="absolute top-[-10%] left-[-10%] w-[60vw] h-[60vw] rounded-full bg-[#4b83fb]/20 blur-[80px]" 
+               />
+               <motion.div 
+                 animate={{ scale: [1, 1.5, 1], opacity: [0.2, 0.4, 0.2] }}
+                 transition={{ duration: 10, repeat: Infinity, ease: "easeInOut", delay: 1 }}
+                 className="absolute bottom-[-10%] right-[-10%] w-[70vw] h-[70vw] rounded-full bg-[#8eb4ff]/10 blur-[100px]" 
+               />
+            </div>
 
-            {navLinks.map((link, i) => (
-              <div key={link.section} className="overflow-hidden">
-                <PremiumDraggable intensity="heavy" className="w-auto">
-                <motion.a
-                  href={link.href}
+            <div className="relative z-10 flex flex-col items-center gap-6 w-full px-6">
+              {navLinks.map((link, i) => (
+                <div key={link.section} className="w-full overflow-hidden flex justify-center">
+                  <PremiumDraggable intensity="heavy" className="w-auto">
+                  <motion.a
+                    href={link.href}
+                    onClick={(e) => {
+                      setMobileOpen(false);
+                      premiumScrollTo(e, link.href);
+                    }}
+                    initial={{ y: "120%", opacity: 0, scale: 0.9, rotate: 4 }}
+                    animate={{ y: 0, opacity: 1, scale: 1, rotate: 0 }}
+                    exit={{ y: "-50%", opacity: 0, scale: 0.95 }}
+                    transition={{ delay: 0.1 + i * 0.08, duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+                    className={`block py-2 text-4xl sm:text-5xl font-black tracking-tighter uppercase relative group ${
+                      activeSection === link.section 
+                        ? 'text-white drop-shadow-[0_0_20px_rgba(75,131,251,0.6)]' 
+                        : 'text-neutral-400 hover:text-white'
+                    }`}
+                    style={{ fontFamily: "'Space Grotesk', sans-serif" }}
+                  >
+                    <span className="relative z-10">{link.label}</span>
+                    <span className="absolute left-0 right-0 top-1/2 h-[2px] bg-[#4b83fb] -translate-y-1/2 scale-x-0 group-hover:scale-x-100 active:scale-x-100 transition-transform duration-500 origin-left ease-[cubic-bezier(0.16,1,0.3,1)] z-0" />
+                  </motion.a>
+                  </PremiumDraggable>
+                </div>
+              ))}
+              
+              <motion.div 
+                initial={{ width: 0, opacity: 0 }}
+                animate={{ width: "80%", opacity: 1 }}
+                exit={{ width: 0, opacity: 0 }}
+                transition={{ delay: 0.5, duration: 0.8, ease: "easeInOut" }}
+                className="h-px bg-gradient-to-r from-transparent via-white/20 to-transparent my-4"
+              />
+
+              <PremiumDraggable intensity="normal" className="w-auto">
+              <motion.a
+                  href="#contact"
                   onClick={(e) => {
                     setMobileOpen(false);
-                    premiumScrollTo(e, link.href);
+                    premiumScrollTo(e, '#contact');
                   }}
-                  initial={{ y: "110%", opacity: 0, rotate: 6 }}
-                  animate={{ y: 0, opacity: 1, rotate: 0 }}
-                  exit={{ y: "-110%", opacity: 0, rotate: -6 }}
-                  transition={{ delay: i * 0.08, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-                  className={`block text-5xl md:text-6xl font-black tracking-tighter uppercase ${
-                    activeSection === link.section ? 'text-primary drop-shadow-[0_0_30px_rgba(75,131,251,0.3)]' : 'text-transparent bg-clip-text bg-gradient-to-b from-white to-white/40 hover:text-white'
-                  }`}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -20 }}
+                  transition={{ delay: 0.6, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+                  className="mt-2 flex items-center gap-3 px-8 py-4 rounded-full bg-white/5 backdrop-blur-md border border-white/10 text-white shadow-[0_8px_32px_rgba(0,0,0,0.3),inset_0_1px_1px_rgba(255,255,255,0.1)] text-sm font-bold tracking-[0.2em] uppercase relative overflow-hidden group"
                   style={{ fontFamily: "'Space Grotesk', sans-serif" }}
                 >
-                  {link.label}
+                  <div className="absolute inset-0 bg-gradient-to-r from-primary/20 to-transparent opacity-0 group-hover:opacity-100 active:opacity-100 transition-opacity duration-500 pointer-events-none" />
+                  <span className="relative z-10 flex items-center gap-2">
+                    Start a Project
+                    <svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1"><path d="M6.1584 3.13508C6.35985 2.94621 6.67627 2.95642 6.86514 3.15788L10.6151 7.15788C10.7444 7.2958 10.8 7.4727 10.7816 7.64716C10.7632 7.82163 10.6698 7.97906 10.5284 8.084L5.27838 11.9791C5.05602 12.1438 4.73977 12.1001 4.57508 11.8778C4.41039 11.6554 4.45408 11.3392 4.67644 11.1745L9.36622 7.69615L6.13486 4.24831C5.94599 4.04685 5.9562 3.73043 6.15766 3.54156C6.1579 3.54133 6.15815 3.5411 6.1584 3.13508Z" fill="currentColor" fillRule="evenodd" clipRule="evenodd"></path></svg>
+                  </span>
                 </motion.a>
                 </PremiumDraggable>
-              </div>
-            ))}
-            
-             <PremiumDraggable intensity="normal" className="w-auto">
-             <motion.a
-                href="#contact"
-                onClick={(e) => {
-                  setMobileOpen(false);
-                  premiumScrollTo(e, '#contact');
-                }}
-                initial={{ opacity: 0, scale: 0.8, filter: "blur(10px)" }}
-                animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
-                exit={{ opacity: 0, scale: 0.8 }}
-                transition={{ delay: 0.5, duration: 1, ease: [0.16, 1, 0.3, 1] }}
-                className="mt-8 px-10 py-4 rounded-full bg-black border border-white/10 text-white shadow-[inset_0_0_20px_rgba(75,131,251,0.1)] text-lg font-bold hover:border-primary/50 transition-all focus:outline-none tracking-widest uppercase relative overflow-hidden group"
-                style={{ fontFamily: "'Space Grotesk', sans-serif" }}
-              >
-                <div className="absolute inset-0 w-[50%] h-[150%] bg-gradient-to-tr from-transparent via-white/20 to-transparent skew-x-[-30deg] pointer-events-none z-20 group-hover:translate-x-[250%] transition-transform duration-1000" />
-                Let's Talk
-              </motion.a>
-              </PremiumDraggable>
+            </div>
           </motion.div>
         )}
       </AnimatePresence>
