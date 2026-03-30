@@ -22,6 +22,7 @@ export function About() {
         >
           {/* Section header */}
           <motion.div variants={fadeUp} className="mb-16">
+            <PremiumDraggable intensity="light">
             <div className="flex items-center gap-3 mb-4">
               <div className="h-px w-8 bg-primary" />
               <span className="text-xs font-semibold uppercase tracking-widest text-primary font-mono">About</span>
@@ -29,6 +30,7 @@ export function About() {
             <h2 className="text-3xl md:text-4xl font-bold text-foreground" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
               The story behind the code
             </h2>
+            </PremiumDraggable>
           </motion.div>
 
           <div className="grid md:grid-cols-2 gap-12 md:gap-16 items-start">
@@ -62,11 +64,13 @@ export function About() {
             {/* Right: story text */}
             <div className="space-y-6">
               <motion.p variants={fadeUp} className="text-muted-foreground leading-relaxed">
+                <PremiumDraggable intensity="light">
                 I&apos;m a senior full-stack developer based in{' '}
                 <span className="text-foreground font-medium">Dinajpur, Bangladesh</span> with{' '}
                 <span className="text-foreground font-medium">8+ years of experience</span> building
                 affordable websites and digital products that scale. My work sits at the intersection of
                 clean engineering, thoughtful design, and real business outcomes.
+                </PremiumDraggable>
               </motion.p>
 
               <motion.p variants={fadeUp} className="text-muted-foreground leading-relaxed">
@@ -86,6 +90,7 @@ export function About() {
               </motion.p>
 
               <motion.div variants={fadeUp} className="pt-4">
+                <PremiumDraggable intensity="light" className="w-auto">
                 <a
                   href="#"
                   className="inline-flex items-center gap-2 rounded-lg border border-border px-5 py-2.5 text-sm font-medium text-foreground transition-all duration-200 hover:border-primary hover:text-primary hover:scale-[1.02] active:scale-[0.98]"
@@ -93,6 +98,7 @@ export function About() {
                   <Download className="h-4 w-4" />
                   Download Resume
                 </a>
+                </PremiumDraggable>
               </motion.div>
             </div>
           </div>

@@ -1,6 +1,7 @@
 import { useState, useRef } from 'react'
 import { motion, AnimatePresence, useMotionValue, useSpring, useTransform } from 'framer-motion'
 import { Menu, X, Layers } from 'lucide-react'
+import { PremiumDraggable } from '../ui/PremiumDraggable'
 
 const navLinks = [
   { label: 'About', href: '#about', section: 'about' },
@@ -214,8 +215,9 @@ function use3DTilt() {
 
           {/* Left: Logo & Status */}
           <motion.div layout className="flex items-center gap-3 relative z-10 shrink-0" style={{ transform: "translateZ(30px)" }}>
+            <PremiumDraggable intensity="light" className="w-auto">
             <a href="#hero" className="flex items-center gap-2 group cursor-pointer focus:outline-none pr-2">
-              
+               
               <div className="flex flex-col justify-center">
                 
                 {/* Typography Logo Engine - Expanding Apple-style Hover Reveal */}
@@ -260,6 +262,7 @@ function use3DTilt() {
 
               </div>
             </a>
+            </PremiumDraggable>
           </motion.div>
 
           {/* Center: Links (Desktop) */}
@@ -330,6 +333,7 @@ function use3DTilt() {
             <AnimatePresence mode="popLayout">
               {!isScrolled ? (
                 <MagneticItem>
+                <PremiumDraggable intensity="light" className="w-auto">
                 <motion.a
                   layout
                   initial={{ opacity: 0, scale: 0.8 }}
@@ -353,6 +357,7 @@ function use3DTilt() {
                   
                   <span className="whitespace-nowrap relative z-10 tracking-wide transition-all duration-300 group-hover:drop-shadow-[0_0_8px_rgba(255,255,255,0.6)]">Let's Talk</span>
                 </motion.a>
+                </PremiumDraggable>
                 </MagneticItem>
               ) : (
                 <motion.div layout className="relative" 
@@ -408,10 +413,12 @@ function use3DTilt() {
             </motion.a>
 
             <MagneticItem className="flex-shrink-0 relative">
+              <PremiumDraggable intensity="light" className="w-auto">
               <motion.div layout className="w-9 h-9 md:w-11 md:h-11 rounded-full border border-white/10 overflow-hidden sm:ml-2 shadow-[0_0_15px_rgba(75,131,251,0.15)] group cursor-pointer relative">
                 <img src={`https://api.dicebear.com/7.x/notionists/svg?seed=Bipul&backgroundColor=4b83fb`} alt="Avatar" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
                 <div className="absolute inset-0 ring-1 ring-inset ring-black/10 rounded-full pointer-events-none" />
               </motion.div>
+              </PremiumDraggable>
             </MagneticItem>
 
             <MagneticItem className="lg:hidden flex-shrink-0">

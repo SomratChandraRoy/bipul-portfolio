@@ -186,6 +186,7 @@ export function Projects() {
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6, ease: [0.4, 0, 0.2, 1] }}
         >
+          <PremiumDraggable intensity="light">
           <div className="flex items-center gap-3 mb-4">
             <div className="h-px w-8 bg-primary" />
             <span className="text-xs font-mono uppercase tracking-widest text-primary">
@@ -203,6 +204,7 @@ export function Projects() {
             Each project represents a unique challenge solved with thoughtful architecture
             and attention to detail.
           </p>
+          </PremiumDraggable>
         </motion.div>
 
         {/* Filter tabs */}

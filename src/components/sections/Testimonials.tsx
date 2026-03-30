@@ -23,6 +23,7 @@ export function Testimonials() {
         >
           {/* Header */}
           <motion.div variants={fadeUp} className="mb-16">
+            <PremiumDraggable intensity="light">
             <div className="flex items-center gap-3 mb-4">
               <div className="h-px w-8 bg-primary" />
               <span className="text-xs font-semibold uppercase tracking-widest text-primary font-mono">Testimonials</span>
@@ -30,6 +31,7 @@ export function Testimonials() {
             <h2 className="text-3xl md:text-4xl font-bold text-foreground" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
               What people say
             </h2>
+            </PremiumDraggable>
           </motion.div>
 
           {/* Cards */}

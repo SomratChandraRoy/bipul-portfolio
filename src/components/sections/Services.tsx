@@ -27,6 +27,7 @@ export function Services() {
         >
           {/* Header */}
           <motion.div variants={fadeUp} className="mb-16">
+            <PremiumDraggable intensity="light">
             <div className="flex items-center gap-3 mb-4">
               <div className="h-px w-8 bg-primary" />
               <span className="text-xs font-semibold uppercase tracking-widest text-primary font-mono">Services</span>
@@ -37,6 +38,7 @@ export function Services() {
             <p className="mt-4 max-w-2xl text-muted-foreground leading-relaxed">
               From MVPs to enterprise platforms, I design and build software that delivers real business value.
             </p>
+            </PremiumDraggable>
           </motion.div>
 
           {/* Grid */}

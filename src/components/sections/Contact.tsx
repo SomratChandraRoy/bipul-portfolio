@@ -30,6 +30,7 @@ export function Contact() {
         >
           {/* Header */}
           <motion.div variants={fadeUp} className="mb-16">
+            <PremiumDraggable intensity="light">
             <div className="flex items-center gap-3 mb-4">
               <div className="h-px w-8 bg-primary" />
               <span className="text-xs font-semibold uppercase tracking-widest text-primary font-mono">Contact</span>
@@ -40,6 +41,7 @@ export function Contact() {
             <p className="mt-4 max-w-2xl text-muted-foreground leading-relaxed">
               Have a project in mind? I&apos;d love to hear about it. Let&apos;s discuss how we can build something great.
             </p>
+            </PremiumDraggable>
           </motion.div>
 
           <div className="grid md:grid-cols-2 gap-12 items-start">
