@@ -186,6 +186,49 @@ function use3DTilt() {
   // Outer Container Tilt
   const { rotateX, rotateY, handleMouseMove, handleMouseLeave, x, y } = use3DTilt()
   
+  // ── Entire navbar bar drag system ──
+  const navDragX = useMotionValue(0)
+  const navDragY = useMotionValue(0)
+  const navSpringX = useSpring(navDragX, { stiffness: 350, damping: 26, mass: 0.7 })
+  const navSpringY = useSpring(navDragY, { stiffness: 350, damping: 26, mass: 0.7 })
+  const [isNavDragging, setIsNavDragging] = useState(false)
+  const navDragStart = useRef<{ px: number; py: number } | null>(null)
+
+  const handleNavPointerDown = (e: React.PointerEvent) => {
+    if (e.button !== 0) return
+    ;(e.currentTarget as HTMLElement).setPointerCapture(e.pointerId)
+    navDragStart.current = { px: e.clientX, py: e.clientY }
+  }
+  const handleNavPointerMove = (e: React.PointerEvent) => {
+    // Always run tilt + hover
+    handleMouseMove(e as any)
+    setIsNavHovered(true)
+    if (navDragStart.current) {
+      const dx = e.clientX - navDragStart.current.px
+      const dy = e.clientY - navDragStart.current.py
+      navDragX.set(dx * 0.35)
+      navDragY.set(dy * 0.35)
+      if (!isNavDragging && (Math.abs(dx) > 4 || Math.abs(dy) > 4)) {
+        setIsNavDragging(true)
+      }
+    }
+  }
+  const handleNavPointerUp = (e: React.PointerEvent) => {
+    ;(e.currentTarget as HTMLElement).releasePointerCapture(e.pointerId)
+    navDragStart.current = null
+    navDragX.set(0)
+    navDragY.set(0)
+    setIsNavDragging(false)
+  }
+  const handleNavPointerLeave = () => {
+    handleMouseLeave()
+    setIsNavHovered(false)
+    if (!navDragStart.current) {
+      navDragX.set(0)
+      navDragY.set(0)
+    }
+  }
+
   // Calculate intense premium dynamic glow position based on mouse pct
   const backgroundGlow = useTransform(
     [x, y],
@@ -262,13 +305,24 @@ function use3DTilt() {
         <motion.nav 
           layout
           transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-          onMouseMove={(e) => { handleMouseMove(e); setIsNavHovered(true); }}
-          onMouseLeave={() => { handleMouseLeave(); setIsNavHovered(false); }}
+          onPointerDown={handleNavPointerDown}
+          onPointerMove={handleNavPointerMove}
+          onPointerUp={handleNavPointerUp}
+          onPointerLeave={handleNavPointerLeave}
           style={{ 
             rotateX, rotateY,
-            transformStyle: "preserve-3d" // Enables 3D stacking inside
+            x: navSpringX,
+            y: navSpringY,
+            transformStyle: "preserve-3d",
+            touchAction: 'none',
           }}
-          className={`relative flex items-center justify-between transition-all duration-700 ${isScrolled ? 'w-[calc(100%-2rem)] md:w-auto px-4 py-2 bg-[#020617]/90 backdrop-blur-3xl border border-white/10 rounded-full shadow-[0_10px_40px_-10px_rgba(0,0,0,0.5)]' : `w-[calc(100%-2rem)] max-w-5xl px-4 md:px-6 py-2 md:py-3 rounded-[2rem] ${isNavHovered ? 'bg-[#0f172a]/60 backdrop-blur-xl border border-white/10 shadow-[0_20px_50px_-12px_rgba(0,0,0,0.5),inset_0_1px_1px_rgba(255,255,255,0.1)]' : 'bg-transparent border-transparent shadow-none backdrop-blur-none'}`}`}
+          animate={{
+            scale: isNavDragging ? 1.03 : 1,
+            boxShadow: isNavDragging 
+              ? '0 24px 60px -12px rgba(75,131,251,0.35), 0 0 30px rgba(75,131,251,0.15)' 
+              : '0 10px 40px -10px rgba(0,0,0,0.5)',
+          }}
+          className={`relative flex items-center justify-between transition-all duration-700 ${isNavDragging ? 'cursor-grabbing' : 'cursor-grab'} ${isScrolled ? 'w-[calc(100%-2rem)] md:w-auto px-4 py-2 bg-[#020617]/90 backdrop-blur-3xl border border-white/10 rounded-full shadow-[0_10px_40px_-10px_rgba(0,0,0,0.5)]' : `w-[calc(100%-2rem)] max-w-5xl px-4 md:px-6 py-2 md:py-3 rounded-[2rem] ${isNavHovered ? 'bg-[#0f172a]/60 backdrop-blur-xl border border-white/10 shadow-[0_20px_50px_-12px_rgba(0,0,0,0.5),inset_0_1px_1px_rgba(255,255,255,0.1)]' : 'bg-transparent border-transparent shadow-none backdrop-blur-none'}`}`}
         >
           {/* Hardware-Accelerated Dynamic Spotlight Geometry Tracing Layer */}
           <motion.div 

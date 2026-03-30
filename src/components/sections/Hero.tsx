@@ -215,26 +215,28 @@ export function Hero() {
           <PremiumDraggable className="w-auto">
             <motion.h1 
             variants={itemUp}
-            className="text-[40px] sm:text-6xl md:text-[80px] font-bold tracking-tight text-white mb-2 leading-[1.05]"
+            className="text-[32px] sm:text-5xl md:text-[68px] font-bold tracking-tight text-white mb-2 leading-[1.08]"
             style={{ fontFamily: "'Space Grotesk', sans-serif" }}
           >
-            Building scalable <br className="hidden sm:block" />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#4b83fb] to-[#9cbfff] drop-shadow-[0_0_40px_rgba(75,131,251,0.4)]">
-              digital products
+            From Idea to{' '}
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#4b83fb] via-[#60a5fa] to-[#9cbfff] drop-shadow-[0_0_40px_rgba(75,131,251,0.4)]">
+              Earning Machine
             </span>
+            <span className="text-[#4b83fb]">:</span>
             <br className="hidden sm:block" />
-            <span className="text-slate-200">with clean architecture<span className="text-[#4b83fb]">.</span></span>
+            <span className="text-slate-200">Web Systems Built for Scale<span className="text-[#4b83fb]">.</span></span>
             </motion.h1>
           </PremiumDraggable>
 
           {/* Subtitle Description */}
           <PremiumDraggable className="w-auto">
-            <motion.p
+            <motion.h2
             variants={itemUp}
             className="mt-6 max-w-3xl text-sm sm:text-lg md:text-[19px] leading-relaxed text-slate-400 font-medium tracking-wide mx-auto px-4"
+            style={{ fontFamily: "'DM Sans', sans-serif" }}
           >
-            Senior full-stack developer in Dinajpur, Bangladesh, specializing in React, Django, and cloud-native infrastructure. I build affordable websites and high performance products for growing businesses.
-            </motion.p>
+            I don't just write code. As a full-stack engineer, I build seamless digital ecosystems designed to <span className="text-slate-300 font-semibold">automate your growth</span>, <span className="text-slate-300 font-semibold">capture leads</span>, and <span className="text-slate-300 font-semibold">multiply your revenue</span>.
+            </motion.h2>
           </PremiumDraggable>
 
           {/* CTA Primary Action Row */}
@@ -243,7 +245,7 @@ export function Hero() {
             variants={itemUp}
             className="mt-12 flex flex-col sm:flex-row items-center justify-center gap-5"
           >
-            {/* View My Work - Immersive Crystalline Pill */}
+            {/* View My Proven Systems - Immersive Crystalline Pill */}
             <a
               href="#projects"
               className="group relative inline-flex items-center gap-2.5 px-9 py-4 rounded-full overflow-hidden text-sm sm:text-[15px] font-bold text-white transition-all duration-300 hover:scale-[1.03] active:scale-[0.97] shadow-[0_0_40px_rgba(75,131,251,0.35),inset_0_1px_2px_rgba(255,255,255,0.5),inset_0_-4px_12px_rgba(0,0,0,0.6)] bg-gradient-to-b from-[#2a68df] to-[#102a63] border border-[#60a5fa]/40"
@@ -251,11 +253,11 @@ export function Hero() {
             >
               {/* Dynamic Sweeping Internal Glass Edge Sheen */}
               <div className="absolute inset-0 w-[150%] h-[150%] bg-gradient-to-tr from-transparent via-white/20 to-transparent skew-x-[-20deg] group-hover:translate-x-[150%] transition-transform duration-700 ease-in-out pointer-events-none" />
-              View My Work
+              View My Proven Systems
               <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
             </a>
 
-            {/* Get In Touch - Optical Subsurface Glass Button */}
+            {/* Book a Strategy Call - Optical Subsurface Glass Button */}
             <a
               href="#contact"
               data-tally-open={tallyFormId}
@@ -264,7 +266,8 @@ export function Hero() {
               className="group relative inline-flex items-center gap-2 rounded-full border border-slate-600/60 bg-[#061026]/40 backdrop-blur-2xl px-9 py-4 text-sm sm:text-[15px] font-bold text-slate-300 transition-all duration-300 hover:text-white hover:border-slate-400/80 hover:bg-[#0f1b38]/60 hover:scale-[1.03] active:scale-[0.97] shadow-[0_0_20px_rgba(0,0,0,0.5),inset_0_1px_1px_rgba(255,255,255,0.08)]"
               style={{ fontFamily: "'Space Grotesk', sans-serif" }}
             >
-              Get In Touch
+              <Star className="h-4 w-4 transition-transform duration-300 group-hover:rotate-[20deg]" />
+              Book a Strategy Call
             </a>
             </motion.div>
           </PremiumDraggable>
