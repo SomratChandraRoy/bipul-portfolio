@@ -66,7 +66,7 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
           rotateX: tilt.x,
           rotateY: tilt.y,
         }}
-        whileHover={{ y: -4, boxShadow: '0 16px 48px -8px hsl(72 100% 50% / 0.12)' }}
+        whileHover={{ y: -4, boxShadow: '0 16px 48px -8px hsl(221 96% 64% / 0.12)' }}
         transition={{ type: 'spring', stiffness: 300, damping: 25 }}
         style={{ transformStyle: 'preserve-3d' }}
       >

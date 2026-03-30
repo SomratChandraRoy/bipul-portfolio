@@ -37,7 +37,7 @@ export function EntropyBackground() {
 
     // Using our premium Dark Mode color palette
     const baseColor = '255, 255, 255'      // Soft white for Ordered structural web
-    const chaosColor = '200, 255, 0'       // Electric lime (#c8ff00) for chaotic energy
+    const chaosColor = '75, 131, 251'       // Deep Blue (#4b83fb) for chaotic energy
 
     class Particle {
       x: number
@@ -254,7 +254,7 @@ export function EntropyBackground() {
            // Instantly premium visual fade preventing hard edges or footer bleeding
            maskImage: 'linear-gradient(to bottom, black 50%, transparent 95%)',
            WebkitMaskImage: 'linear-gradient(to bottom, black 50%, transparent 95%)',
-           background: 'radial-gradient(circle at 50% 50%, rgba(200, 255, 0, 0.02), transparent 70%)'
+           background: 'radial-gradient(circle at 50% 50%, rgba(75, 131, 251, 0.02), transparent 70%)'
       }}
     >
       <canvas

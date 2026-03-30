@@ -61,7 +61,7 @@ export function DottedSurface({ className, ...props }: DottedSurfaceProps) {
 
 		// Base colors representing deep space vs electric lime peaks
 		const colorVoid = new THREE.Color(0x1a1c18); // Deep muted green-black
-		const colorPeak = new THREE.Color(0xc8ff00); // Electric Lime
+		const colorPeak = new THREE.Color(0x4b83fb); // Deep Blue
 
 		for (let ix = 0; ix < AMOUNTX; ix++) {
 			for (let iy = 0; iy < AMOUNTY; iy++) {
