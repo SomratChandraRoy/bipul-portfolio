@@ -215,8 +215,8 @@ export function Projects() {
           transition={{ duration: 0.5, delay: 0.2, ease: [0.4, 0, 0.2, 1] }}
         >
           {filters.map((filter) => (
+            <PremiumDraggable key={filter} intensity="feather" className="w-auto">
             <button
-              key={filter}
               onClick={() => setActiveFilter(filter)}
               className={`rounded-full px-4 py-1.5 text-sm font-medium transition-all duration-200 ${
                 activeFilter === filter
@@ -226,6 +226,7 @@ export function Projects() {
             >
               {filter}
             </button>
+            </PremiumDraggable>
           ))}
         </motion.div>
 

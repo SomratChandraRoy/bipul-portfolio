@@ -37,13 +37,14 @@ export function Footer() {
           {/* Quick links */}
           <nav className="flex flex-wrap items-center gap-6">
             {quickLinks.map((link) => (
+              <PremiumDraggable key={link.label} intensity="feather" className="w-auto">
               <a
-                key={link.label}
                 href={link.href}
                 className="text-sm text-muted-foreground hover:text-primary transition-colors duration-200"
               >
                 {link.label}
               </a>
+              </PremiumDraggable>
             ))}
           </nav>
 
@@ -71,13 +72,17 @@ export function Footer() {
 
         {/* Bottom row */}
         <div className="mt-8 pt-8 border-t border-border/50 flex flex-col sm:flex-row justify-between items-center gap-4">
+          <PremiumDraggable intensity="feather" className="w-auto">
           <p className="text-xs text-muted-foreground">
             &copy; 2026 Bipul. All rights reserved.
           </p>
+          </PremiumDraggable>
+          <PremiumDraggable intensity="feather" className="w-auto">
           <p className="text-xs text-muted-foreground flex items-center gap-1">
             Built with React, Tailwind, and{' '}
             <Heart className="w-3 h-3 text-primary inline" /> attention to detail.
           </p>
+          </PremiumDraggable>
         </div>
       </div>
     </footer>

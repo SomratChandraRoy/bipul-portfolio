@@ -19,6 +19,7 @@ export function CaseStudies() {
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6, ease: [0.4, 0, 0.2, 1] }}
         >
+          <PremiumDraggable intensity="light">
           <div className="flex items-center gap-3 mb-4">
             <div className="h-px w-8 bg-primary" />
             <span className="text-xs font-mono uppercase tracking-widest text-primary">
@@ -32,6 +33,7 @@ export function CaseStudies() {
             Case studies in{' '}
             <span className="text-gradient-accent">architecture</span>
           </h2>
+          </PremiumDraggable>
         </motion.div>
 
         {/* Cards grid */}

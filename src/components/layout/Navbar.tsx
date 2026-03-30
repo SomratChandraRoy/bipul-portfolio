@@ -404,6 +404,7 @@ function use3DTilt() {
               )}
             </AnimatePresence>
             
+            <PremiumDraggable intensity="feather" className="w-auto shrink-0">
             <motion.a layout href="#contact" onClick={(e) => {
               setMobileOpen(false);
               premiumScrollTo(e, '#contact');
@@ -411,6 +412,7 @@ function use3DTilt() {
                 <div className="absolute inset-x-0 top-0 h-1/2 bg-white/20 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none"></div>
                 LET'S TALK
             </motion.a>
+            </PremiumDraggable>
 
             <MagneticItem className="flex-shrink-0 relative">
               <PremiumDraggable intensity="light" className="w-auto">
@@ -422,6 +424,7 @@ function use3DTilt() {
             </MagneticItem>
 
             <MagneticItem className="lg:hidden flex-shrink-0">
+              <PremiumDraggable intensity="feather" className="w-auto">
               <motion.button
                 layout
                 onClick={() => setMobileOpen(!mobileOpen)}
@@ -431,6 +434,7 @@ function use3DTilt() {
                 {mobileOpen ? <X className="w-5 h-5 relative z-10" /> : <Menu className="w-5 h-5 relative z-10" />}
                 <div className="absolute inset-0 bg-white/10 opacity-0 active:opacity-100 transition-opacity" />
               </motion.button>
+              </PremiumDraggable>
             </MagneticItem>
           </motion.div>
         </motion.nav>
@@ -450,6 +454,7 @@ function use3DTilt() {
 
             {navLinks.map((link, i) => (
               <div key={link.section} className="overflow-hidden">
+                <PremiumDraggable intensity="heavy" className="w-auto">
                 <motion.a
                   href={link.href}
                   onClick={(e) => {
@@ -467,9 +472,11 @@ function use3DTilt() {
                 >
                   {link.label}
                 </motion.a>
+                </PremiumDraggable>
               </div>
             ))}
             
+             <PremiumDraggable intensity="normal" className="w-auto">
              <motion.a
                 href="#contact"
                 onClick={(e) => {
@@ -486,6 +493,7 @@ function use3DTilt() {
                 <div className="absolute inset-0 w-[50%] h-[150%] bg-gradient-to-tr from-transparent via-white/20 to-transparent skew-x-[-30deg] pointer-events-none z-20 group-hover:translate-x-[250%] transition-transform duration-1000" />
                 Let's Talk
               </motion.a>
+              </PremiumDraggable>
           </motion.div>
         )}
       </AnimatePresence>

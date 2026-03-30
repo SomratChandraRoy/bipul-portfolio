@@ -76,7 +76,9 @@ export function Stats() {
           animate={isInView ? { opacity: 1 } : {}}
           transition={{ delay: 0.8, duration: 0.6 }}
         >
+          <PremiumDraggable intensity="feather">
           Trusted by teams at companies across 4 continents
+          </PremiumDraggable>
         </motion.p>
       </div>
     </section>
