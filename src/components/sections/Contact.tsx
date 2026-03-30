@@ -3,6 +3,7 @@ import { motion, useInView } from 'framer-motion'
 import { Mail, MapPin, Send } from 'lucide-react'
 import { GitHubIcon, LinkedInIcon, XIcon } from '../ui/SocialIcons'
 import { socialLinks, tallyFormId } from '../../data/portfolio'
+import { PremiumDraggable } from '../ui/PremiumDraggable'
 
 const fadeUp = {
   hidden: { opacity: 0, y: 30 },
@@ -44,7 +45,7 @@ export function Contact() {
           <div className="grid md:grid-cols-2 gap-12 items-start">
             {/* Left: info */}
             <motion.div variants={fadeUp} className="space-y-6">
-              <div className="glass-panel rounded-xl p-6 flex items-start gap-4">
+              <PremiumDraggable><div className="glass-panel rounded-xl p-6 flex items-start gap-4">
                 <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0">
                   <Mail className="w-5 h-5 text-primary" />
                 </div>
@@ -57,9 +58,9 @@ export function Contact() {
                   </a>
                   <p className="text-xs text-muted-foreground mt-1">Drop me a line anytime</p>
                 </div>
-              </div>
+              </div></PremiumDraggable>
 
-              <div className="glass-panel rounded-xl p-6 flex items-start gap-4">
+              <PremiumDraggable><div className="glass-panel rounded-xl p-6 flex items-start gap-4">
                 <div className="w-10 h-10 rounded-lg bg-accent/10 flex items-center justify-center flex-shrink-0">
                   <MapPin className="w-5 h-5 text-accent" />
                 </div>
@@ -67,7 +68,7 @@ export function Contact() {
                   <p className="text-sm font-semibold text-foreground">Available Worldwide</p>
                   <p className="text-xs text-muted-foreground mt-1">Remote-first, flexible timezone</p>
                 </div>
-              </div>
+              </div></PremiumDraggable>
 
               <div className="flex items-center gap-3 pt-4">
                 {socialProfiles.map((social) => {
@@ -89,7 +90,7 @@ export function Contact() {
 
             {/* Right: Tally contact form */}
             <motion.div variants={fadeUp}>
-              <div className="glass-panel rounded-xl p-8 md:p-10 text-center space-y-6">
+              <PremiumDraggable><div className="glass-panel rounded-xl p-8 md:p-10 text-center space-y-6">
                 <div className="w-16 h-16 rounded-2xl bg-primary/10 flex items-center justify-center mx-auto">
                   <Send className="w-7 h-7 text-primary" />
                 </div>
@@ -112,7 +113,7 @@ export function Contact() {
                     Open contact form
                   </button>
                 </div>
-              </div>
+              </div></PremiumDraggable>
             </motion.div>
           </div>
         </motion.div>

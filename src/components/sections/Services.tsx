@@ -2,6 +2,7 @@ import { useRef } from 'react'
 import { motion, useInView } from 'framer-motion'
 import { Globe, Layers, Zap, LayoutDashboard, Shield, Container } from 'lucide-react'
 import { services } from '../../data/portfolio'
+import { PremiumDraggable } from '../ui/PremiumDraggable'
 
 const iconMap: Record<string, React.ElementType> = {
   Globe, Layers, Zap, LayoutDashboard, Shield, Container,
@@ -43,10 +44,9 @@ export function Services() {
             {services.map((service) => {
               const Icon = iconMap[service.icon] || Globe
               return (
-                <motion.div
-                  key={service.title}
-                  variants={fadeUp}
-                  className="service-card-glow group relative overflow-hidden glass-panel rounded-xl p-6 transition-all duration-300 hover:-translate-y-1 hover:border-primary/20"
+                <motion.div key={service.title} variants={fadeUp} className="h-full">
+                <PremiumDraggable
+                  className="service-card-glow group relative overflow-hidden glass-panel rounded-xl p-6 transition-all duration-300 hover:-translate-y-1 hover:border-primary/20 h-full"
                 >
                   <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center mb-4 transition-colors duration-300 group-hover:bg-primary/20">
                     <Icon className="w-6 h-6 text-primary" />
@@ -57,6 +57,7 @@ export function Services() {
                   <p className="mt-2 text-sm text-muted-foreground leading-relaxed">
                     {service.description}
                   </p>
+                </PremiumDraggable>
                 </motion.div>
               )
             })}

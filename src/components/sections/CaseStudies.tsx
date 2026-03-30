@@ -1,6 +1,7 @@
 import { motion, useInView } from 'framer-motion'
 import { useRef } from 'react'
 import { caseStudies } from '../../data/portfolio'
+import { PremiumDraggable } from '../ui/PremiumDraggable'
 
 /* ── Case Studies Section ────────────────────────────────────────────────── */
 
@@ -38,42 +39,42 @@ export function CaseStudies() {
           {caseStudies.map((study, i) => (
             <motion.div
               key={study.id}
-              className="glass-panel rounded-xl p-6 border border-border/60 transition-colors duration-300 hover:border-primary/30 group"
               initial={{ opacity: 0, y: 40 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: '-60px' }}
               transition={{ duration: 0.5, delay: i * 0.12, ease: [0.4, 0, 0.2, 1] }}
-              whileHover={{ y: -4 }}
             >
-              <span className="text-xs font-mono text-primary uppercase tracking-wider">
-                {study.client}
-              </span>
-              <h3 className="text-lg font-semibold text-foreground mt-2">{study.title}</h3>
-              <p className="text-sm text-muted-foreground mt-3 leading-relaxed">
-                {study.description}
-              </p>
+              <PremiumDraggable className="glass-panel rounded-xl p-6 border border-border/60 transition-colors duration-300 hover:border-primary/30 group">
+                <span className="text-xs font-mono text-primary uppercase tracking-wider">
+                  {study.client}
+                </span>
+                <h3 className="text-lg font-semibold text-foreground mt-2">{study.title}</h3>
+                <p className="text-sm text-muted-foreground mt-3 leading-relaxed">
+                  {study.description}
+                </p>
 
-              {/* Metrics */}
-              <div className="flex gap-4 mt-4">
-                {study.metrics.map((metric) => (
-                  <div key={metric.label}>
-                    <span className="text-xl font-bold text-foreground">{metric.value}</span>
-                    <p className="text-xs text-muted-foreground">{metric.label}</p>
-                  </div>
-                ))}
-              </div>
+                {/* Metrics */}
+                <div className="flex gap-4 mt-4">
+                  {study.metrics.map((metric) => (
+                    <div key={metric.label}>
+                      <span className="text-xl font-bold text-foreground">{metric.value}</span>
+                      <p className="text-xs text-muted-foreground">{metric.label}</p>
+                    </div>
+                  ))}
+                </div>
 
-              {/* Stack chips */}
-              <div className="flex flex-wrap gap-1.5 mt-4">
-                {study.stack.map((tech) => (
-                  <span
-                    key={tech}
-                    className="bg-secondary rounded px-2 py-0.5 text-xs text-muted-foreground font-mono"
-                  >
-                    {tech}
-                  </span>
-                ))}
-              </div>
+                {/* Stack chips */}
+                <div className="flex flex-wrap gap-1.5 mt-4">
+                  {study.stack.map((tech) => (
+                    <span
+                      key={tech}
+                      className="bg-secondary rounded px-2 py-0.5 text-xs text-muted-foreground font-mono"
+                    >
+                      {tech}
+                    </span>
+                  ))}
+                </div>
+              </PremiumDraggable>
             </motion.div>
           ))}
         </div>

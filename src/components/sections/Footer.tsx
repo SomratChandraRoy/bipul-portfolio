@@ -1,6 +1,7 @@
 import { Heart } from 'lucide-react'
 import { GitHubIcon, LinkedInIcon, XIcon } from '../ui/SocialIcons'
 import { socialLinks } from '../../data/portfolio'
+import { PremiumDraggable } from '../ui/PremiumDraggable'
 
 const quickLinks = [
   { label: 'About', href: '#about' },
@@ -22,6 +23,7 @@ export function Footer() {
         {/* Top row */}
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-8">
           {/* Logo + tagline */}
+          <PremiumDraggable className="w-auto">
           <div>
             <a href="#hero" className="text-xl font-bold text-foreground" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
               Bipul<span className="text-primary">.</span>
@@ -30,6 +32,7 @@ export function Footer() {
               Building the future, one commit at a time.
             </p>
           </div>
+          </PremiumDraggable>
 
           {/* Quick links */}
           <nav className="flex flex-wrap items-center gap-6">
@@ -45,6 +48,7 @@ export function Footer() {
           </nav>
 
           {/* Social icons */}
+          <PremiumDraggable className="w-auto">
           <div className="flex items-center gap-3">
             {socialProfiles.map((social) => {
               const Icon = social.icon
@@ -62,6 +66,7 @@ export function Footer() {
               )
             })}
           </div>
+          </PremiumDraggable>
         </div>
 
         {/* Bottom row */}

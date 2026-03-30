@@ -1,6 +1,7 @@
 import { useRef } from 'react'
 import { motion, useInView } from 'framer-motion'
 import { Download } from 'lucide-react'
+import { PremiumDraggable } from '../ui/PremiumDraggable'
 
 const fadeUp = {
   hidden: { opacity: 0, y: 30 },
@@ -33,6 +34,7 @@ export function About() {
           <div className="grid md:grid-cols-2 gap-12 md:gap-16 items-start">
             {/* Left: abstract profile visual */}
             <motion.div variants={fadeUp} className="relative">
+              <PremiumDraggable>
               <div className="aspect-square rounded-2xl glass-panel p-8 flex items-center justify-center overflow-hidden relative">
                 {/* Decorative background elements */}
                 <div className="absolute top-6 right-6 w-20 h-20 rounded-full border border-primary/20" />
@@ -54,6 +56,7 @@ export function About() {
                   <p className="mt-4 text-sm text-muted-foreground font-mono">full-stack developer</p>
                 </div>
               </div>
+              </PremiumDraggable>
             </motion.div>
 
             {/* Right: story text */}

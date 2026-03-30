@@ -2,6 +2,7 @@ import { useRef } from 'react'
 import { motion, useInView } from 'framer-motion'
 import { CheckCircle2 } from 'lucide-react'
 import { experiences } from '../../data/portfolio'
+import { PremiumDraggable } from '../ui/PremiumDraggable'
 
 const fadeLeft = {
   hidden: { opacity: 0, x: -30 },
@@ -48,7 +49,7 @@ export function Experience() {
                   <div className="absolute left-[3px] top-[7px] w-[9px] h-[9px] rounded-full bg-primary" />
 
                   {/* Content card */}
-                  <div className="glass-panel rounded-xl p-6">
+                  <PremiumDraggable className="w-full"><div className="glass-panel rounded-xl p-6">
                     <span className="inline-block text-xs font-mono text-primary bg-primary/10 rounded-full px-3 py-1 mb-3">
                       {exp.year}
                     </span>
@@ -67,7 +68,7 @@ export function Experience() {
                         </div>
                       ))}
                     </div>
-                  </div>
+                  </div></PremiumDraggable>
                 </motion.div>
               ))}
             </div>

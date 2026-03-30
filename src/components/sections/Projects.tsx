@@ -2,6 +2,7 @@ import { motion, useInView } from 'framer-motion'
 import { useRef, useState } from 'react'
 import { ExternalLink, FileText } from 'lucide-react'
 import { GitHubIcon } from '../ui/SocialIcons'
+import { PremiumDraggable } from '../ui/PremiumDraggable'
 import { projects, type Project } from '../../data/portfolio'
 
 /* ── Filter Tabs ─────────────────────────────────────────────────────────── */
@@ -57,7 +58,7 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
         perspective: 800,
       }}
     >
-      <motion.div
+      <PremiumDraggable
         className="glass-panel rounded-xl overflow-hidden cursor-pointer group"
         onMouseMove={handleMouseMove}
         onMouseLeave={handleMouseLeave}
@@ -157,7 +158,7 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
             )}
           </div>
         </div>
-      </motion.div>
+      </PremiumDraggable>
     </motion.div>
   )
 }

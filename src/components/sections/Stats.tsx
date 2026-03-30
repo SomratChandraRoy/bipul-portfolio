@@ -1,6 +1,7 @@
 import { useRef, useState, useEffect } from 'react'
 import { motion, useInView } from 'framer-motion'
 import { stats } from '../../data/portfolio'
+import { PremiumDraggable } from '../ui/PremiumDraggable'
 
 function AnimatedCounter({ value, suffix }: { value: string; suffix?: string }) {
   const [count, setCount] = useState(0)
@@ -59,10 +60,12 @@ export function Stats() {
                 visible: { opacity: 1, y: 0, transition: { type: 'spring' as const, stiffness: 80, damping: 18 } },
               }}
             >
-              <div className="text-4xl md:text-5xl font-bold text-foreground" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
-                <AnimatedCounter value={stat.value} suffix={stat.suffix} />
-              </div>
-              <p className="mt-2 text-sm text-muted-foreground">{stat.label}</p>
+              <PremiumDraggable>
+                <div className="text-4xl md:text-5xl font-bold text-foreground" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
+                  <AnimatedCounter value={stat.value} suffix={stat.suffix} />
+                </div>
+                <p className="mt-2 text-sm text-muted-foreground">{stat.label}</p>
+              </PremiumDraggable>
             </motion.div>
           ))}
         </motion.div>

@@ -2,6 +2,7 @@ import { useRef } from 'react'
 import { motion, useInView } from 'framer-motion'
 import { Star } from 'lucide-react'
 import { testimonials } from '../../data/portfolio'
+import { PremiumDraggable } from '../ui/PremiumDraggable'
 
 const fadeUp = {
   hidden: { opacity: 0, y: 30 },
@@ -37,8 +38,8 @@ export function Testimonials() {
               <motion.div
                 key={t.name}
                 variants={fadeUp}
-                className="glass-panel rounded-xl p-6 transition-all duration-300 hover:-translate-y-1 hover:border-primary/20"
               >
+              <PremiumDraggable className="glass-panel rounded-xl p-6 transition-all duration-300 hover:-translate-y-1 hover:border-primary/20">
                 <div className="flex items-center justify-between mb-3">
                   <span className="block text-5xl text-primary/15 leading-none select-none" style={{ fontFamily: 'Georgia, serif' }}>
                     &ldquo;
@@ -61,6 +62,7 @@ export function Testimonials() {
                     <p className="text-xs text-muted-foreground">{t.role}, {t.company}</p>
                   </div>
                 </div>
+              </PremiumDraggable>
               </motion.div>
             ))}
           </div>

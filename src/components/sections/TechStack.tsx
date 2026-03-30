@@ -1,6 +1,7 @@
 import { useRef } from 'react'
 import { motion, useInView } from 'framer-motion'
 import { techStack } from '../../data/portfolio'
+import { PremiumDraggable } from '../ui/PremiumDraggable'
 
 const fadeUp = {
   hidden: { opacity: 0, y: 30 },
@@ -50,12 +51,13 @@ export function TechStack() {
                 </h3>
                 <div className="flex flex-wrap gap-2">
                   {cat.items.map((tech) => (
+                    <PremiumDraggable key={tech} className="w-auto">
                     <span
-                      key={tech}
-                      className="bg-secondary rounded-full px-4 py-2 text-sm font-mono text-muted-foreground border border-transparent transition-all duration-200 hover:bg-primary/10 hover:text-primary hover:border-primary/30 cursor-default"
+                      className="inline-block bg-secondary rounded-full px-4 py-2 text-sm font-mono text-muted-foreground border border-transparent transition-all duration-200 hover:bg-primary/10 hover:text-primary hover:border-primary/30 cursor-default"
                     >
                       {tech}
                     </span>
+                    </PremiumDraggable>
                   ))}
                 </div>
               </motion.div>

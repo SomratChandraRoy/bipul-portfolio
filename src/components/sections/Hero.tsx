@@ -2,6 +2,8 @@ import { useEffect, useRef } from 'react'
 import { motion } from 'framer-motion'
 import { ChevronDown, ArrowRight, Star } from 'lucide-react'
 import { tallyFormId } from '../../data/portfolio'
+import { PremiumDraggable } from '../ui/PremiumDraggable'
+
 
 /* ── Animation Orchestration ─────────────────────────────────────────────── */
 
@@ -194,7 +196,8 @@ export function Hero() {
         <motion.div variants={container} initial="hidden" animate="visible" className="flex flex-col items-center">
           
           {/* Eyebrow Pill */}
-          <motion.div
+          <PremiumDraggable className="w-auto">
+            <motion.div
             variants={itemUp}
             className="mb-8 inline-flex items-center gap-2.5 rounded-full border border-[#4b83fb]/20 bg-[#061026]/80 backdrop-blur-xl px-5 py-2 shadow-[0_0_30px_rgba(75,131,251,0.15),inset_0_1px_1px_rgba(255,255,255,0.05)]"
           >
@@ -205,10 +208,12 @@ export function Hero() {
             <span className="text-xs sm:text-sm font-semibold tracking-wide text-slate-300">
               Available for new projects
             </span>
-          </motion.div>
+            </motion.div>
+          </PremiumDraggable>
 
           {/* Majestic Typography Header */}
-          <motion.h1 
+          <PremiumDraggable className="w-auto">
+            <motion.h1 
             variants={itemUp}
             className="text-[40px] sm:text-6xl md:text-[80px] font-bold tracking-tight text-white mb-2 leading-[1.05]"
             style={{ fontFamily: "'Space Grotesk', sans-serif" }}
@@ -219,18 +224,22 @@ export function Hero() {
             </span>
             <br className="hidden sm:block" />
             <span className="text-slate-200">with clean architecture<span className="text-[#4b83fb]">.</span></span>
-          </motion.h1>
+            </motion.h1>
+          </PremiumDraggable>
 
           {/* Subtitle Description */}
-          <motion.p
+          <PremiumDraggable className="w-auto">
+            <motion.p
             variants={itemUp}
             className="mt-6 max-w-3xl text-sm sm:text-lg md:text-[19px] leading-relaxed text-slate-400 font-medium tracking-wide mx-auto px-4"
           >
             Senior full-stack developer in Dinajpur, Bangladesh, specializing in React, Django, and cloud-native infrastructure. I build affordable websites and high performance products for growing businesses.
-          </motion.p>
+            </motion.p>
+          </PremiumDraggable>
 
           {/* CTA Primary Action Row */}
-          <motion.div
+          <PremiumDraggable className="w-auto z-50">
+            <motion.div
             variants={itemUp}
             className="mt-12 flex flex-col sm:flex-row items-center justify-center gap-5"
           >
@@ -257,10 +266,12 @@ export function Hero() {
             >
               Get In Touch
             </a>
-          </motion.div>
+            </motion.div>
+          </PremiumDraggable>
 
           {/* Technology Hierarchy Layer Pills */}
-          <motion.div
+          <PremiumDraggable className="w-auto">
+            <motion.div
             variants={itemUp}
             className="mt-12 flex flex-wrap items-center justify-center gap-3 sm:gap-4"
           >
@@ -273,7 +284,8 @@ export function Hero() {
                 {badge}
               </div>
             ))}
-          </motion.div>
+            </motion.div>
+          </PremiumDraggable>
 
         </motion.div>
       </div>
