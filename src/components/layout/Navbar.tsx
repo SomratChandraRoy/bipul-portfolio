@@ -32,7 +32,7 @@ function useMagneticInteraction() {
     const { height, width, left, top } = ref.current.getBoundingClientRect()
     const middleX = clientX - (left + width / 2)
     const middleY = clientY - (top + height / 2)
-    x.set(middleX * 0.18) // Apply exact gravitational inertia
+    x.set(middleX * 0.18)
     y.set(middleY * 0.18)
   }
 
@@ -45,7 +45,76 @@ function useMagneticInteraction() {
 }
 
 function MagneticItem({ children, className = "", delay = 0 }: { children: React.ReactNode, className?: string, delay?: number }) {
-  const { ref, x, y, handleMouse, handleLeave } = useMagneticInteraction()
+  const outerRef = useRef<HTMLDivElement>(null)
+  
+  // Magnetic hover offset
+  const magnetX = useMotionValue(0)
+  const magnetY = useMotionValue(0)
+  const springMX = useSpring(magnetX, { stiffness: 450, damping: 25, mass: 0.2 })
+  const springMY = useSpring(magnetY, { stiffness: 450, damping: 25, mass: 0.2 })
+
+  // Manual drag offset
+  const dragX = useMotionValue(0)
+  const dragY = useMotionValue(0)
+  const springDX = useSpring(dragX, { stiffness: 400, damping: 28, mass: 0.6 })
+  const springDY = useSpring(dragY, { stiffness: 400, damping: 28, mass: 0.6 })
+
+  // Combined final position = magnetic + drag
+  const finalX = useTransform([springMX, springDX], ([mx, dx]: number[]) => mx + dx)
+  const finalY = useTransform([springMY, springDY], ([my, dy]: number[]) => my + dy)
+
+  const [isDragging, setIsDragging] = useState(false)
+  const dragStart = useRef<{ px: number; py: number } | null>(null)
+
+  const handlePointerDown = (e: React.PointerEvent) => {
+    // Only left mouse button
+    if (e.button !== 0) return
+    e.currentTarget.setPointerCapture(e.pointerId)
+    dragStart.current = { px: e.clientX, py: e.clientY }
+    // Zero out magnetic effect during drag
+    magnetX.set(0)
+    magnetY.set(0)
+  }
+
+  const handlePointerMove = (e: React.PointerEvent) => {
+    if (dragStart.current) {
+      const dx = e.clientX - dragStart.current.px
+      const dy = e.clientY - dragStart.current.py
+      // Rubber-band elasticity — limit max drag distance
+      const elastic = 0.4
+      dragX.set(dx * elastic)
+      dragY.set(dy * elastic)
+      if (!isDragging && (Math.abs(dx) > 3 || Math.abs(dy) > 3)) {
+        setIsDragging(true)
+      }
+    } else {
+      // Magnetic hover when not dragging
+      if (!outerRef.current) return
+      const { clientX, clientY } = e
+      const rect = outerRef.current.getBoundingClientRect()
+      const mx = clientX - (rect.left + rect.width / 2)
+      const my = clientY - (rect.top + rect.height / 2)
+      magnetX.set(mx * 0.18)
+      magnetY.set(my * 0.18)
+    }
+  }
+
+  const handlePointerUp = (e: React.PointerEvent) => {
+    e.currentTarget.releasePointerCapture(e.pointerId)
+    dragStart.current = null
+    // Snap back with spring
+    dragX.set(0)
+    dragY.set(0)
+    setIsDragging(false)
+  }
+
+  const handlePointerLeave = () => {
+    if (!dragStart.current) {
+      magnetX.set(0)
+      magnetY.set(0)
+    }
+  }
+
   return (
     <motion.div 
       initial={{ opacity: 0, scale: 0.8 }}
@@ -54,13 +123,22 @@ function MagneticItem({ children, className = "", delay = 0 }: { children: React
       className={className}  
     >
       <motion.div 
-        ref={ref} 
-        onMouseMove={handleMouse} 
-        onMouseLeave={handleLeave} 
-        style={{ x, y }}
-        className="w-full h-full"
-        whileTap={{ scale: 0.90 }}
-        transition={{ type: "spring", stiffness: 400, damping: 17 }}
+        ref={outerRef}
+        onPointerDown={handlePointerDown}
+        onPointerMove={handlePointerMove}
+        onPointerUp={handlePointerUp}
+        onPointerLeave={handlePointerLeave}
+        style={{ 
+          x: finalX, 
+          y: finalY, 
+          touchAction: 'none',
+        }}
+        animate={{
+          scale: isDragging ? 1.08 : 1,
+          filter: isDragging ? 'brightness(1.15) drop-shadow(0 8px 20px rgba(75,131,251,0.35))' : 'brightness(1) drop-shadow(0 0 0 rgba(0,0,0,0))',
+        }}
+        transition={{ type: "spring", stiffness: 500, damping: 25, mass: 0.4 }}
+        className={`w-full h-full will-change-transform ${isDragging ? 'cursor-grabbing z-50' : 'cursor-grab'}`}
       >
         {children}
       </motion.div>
@@ -214,8 +292,8 @@ function use3DTilt() {
           />
 
           {/* Left: Logo & Status */}
-          <motion.div layout className="flex items-center gap-3 relative z-10 shrink-0" style={{ transform: "translateZ(30px)" }}>
-            <PremiumDraggable intensity="light" className="w-auto">
+          <div className="flex items-center gap-3 relative z-10 shrink-0">
+            <MagneticItem>
             <a href="#hero" className="flex items-center gap-2 group cursor-pointer focus:outline-none pr-2">
                
               <div className="flex flex-col justify-center">
@@ -262,8 +340,8 @@ function use3DTilt() {
 
               </div>
             </a>
-            </PremiumDraggable>
-          </motion.div>
+            </MagneticItem>
+          </div>
 
           {/* Center: Links (Desktop) */}
           <motion.div 
@@ -328,14 +406,12 @@ function use3DTilt() {
           </motion.div>
 
           {/* Right: Actions */}
-          <motion.div layout className="flex items-center gap-2 md:gap-3 relative z-10 shrink-0" style={{ transform: "translateZ(30px)" }}>
+          <div className="flex items-center gap-2 md:gap-3 relative z-10 shrink-0">
 
             <AnimatePresence mode="popLayout">
               {!isScrolled ? (
                 <MagneticItem>
-                <PremiumDraggable intensity="light" className="w-auto">
                 <motion.a
-                  layout
                   initial={{ opacity: 0, scale: 0.8 }}
                   animate={{ opacity: 1, scale: 1 }}
                   exit={{ opacity: 0, scale: 0.8 }}
@@ -357,7 +433,6 @@ function use3DTilt() {
                   
                   <span className="whitespace-nowrap relative z-10 tracking-wide transition-all duration-300 group-hover:drop-shadow-[0_0_8px_rgba(255,255,255,0.6)]">Let's Talk</span>
                 </motion.a>
-                </PremiumDraggable>
                 </MagneticItem>
               ) : (
                 <motion.div layout className="relative" 
@@ -404,39 +479,35 @@ function use3DTilt() {
               )}
             </AnimatePresence>
             
-            <PremiumDraggable intensity="feather" className="w-auto shrink-0">
-            <motion.a layout href="#contact" onClick={(e) => {
+            <MagneticItem className="shrink-0 md:hidden">
+            <a href="#contact" onClick={(e) => {
+              e.preventDefault();
               setMobileOpen(false);
-              premiumScrollTo(e, '#contact');
-            }} className="md:hidden flex items-center justify-center h-8 px-5 rounded-full bg-[#4b83fb] text-white text-[11px] font-bold shadow-[0_0_20px_rgba(75,131,251,0.3)] hover:shadow-[0_0_25px_rgba(75,131,251,0.5)] active:scale-95 transition-all focus:outline-none tracking-wider shrink-0 relative overflow-hidden group">
+              premiumScrollTo(e as any, '#contact');
+            }} className="flex items-center justify-center h-8 px-5 rounded-full bg-[#4b83fb] text-white text-[11px] font-bold shadow-[0_0_20px_rgba(75,131,251,0.3)] hover:shadow-[0_0_25px_rgba(75,131,251,0.5)] active:scale-95 transition-all focus:outline-none tracking-wider shrink-0 relative overflow-hidden group">
                 <div className="absolute inset-x-0 top-0 h-1/2 bg-white/20 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none"></div>
                 LET'S TALK
-            </motion.a>
-            </PremiumDraggable>
+            </a>
+            </MagneticItem>
 
             <MagneticItem className="flex-shrink-0 relative">
-              <PremiumDraggable intensity="light" className="w-auto">
-              <motion.div layout className="w-9 h-9 md:w-11 md:h-11 rounded-full border border-white/10 overflow-hidden sm:ml-2 shadow-[0_0_15px_rgba(75,131,251,0.15)] group cursor-pointer relative">
+              <div className="w-9 h-9 md:w-11 md:h-11 rounded-full border border-white/10 overflow-hidden sm:ml-2 shadow-[0_0_15px_rgba(75,131,251,0.15)] group cursor-pointer relative">
                 <img src={`https://api.dicebear.com/7.x/notionists/svg?seed=Bipul&backgroundColor=4b83fb`} alt="Avatar" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
                 <div className="absolute inset-0 ring-1 ring-inset ring-black/10 rounded-full pointer-events-none" />
-              </motion.div>
-              </PremiumDraggable>
+              </div>
             </MagneticItem>
 
             <MagneticItem className="lg:hidden flex-shrink-0">
-              <PremiumDraggable intensity="feather" className="w-auto">
-              <motion.button
-                layout
+              <button
                 onClick={() => setMobileOpen(!mobileOpen)}
                 className="p-2 rounded-full text-white/70 hover:text-white hover:bg-white/10 transition-all duration-200 focus:outline-none border border-transparent hover:border-white/10 relative overflow-hidden"
                 aria-label="Toggle menu"
               >
                 {mobileOpen ? <X className="w-5 h-5 relative z-10" /> : <Menu className="w-5 h-5 relative z-10" />}
                 <div className="absolute inset-0 bg-white/10 opacity-0 active:opacity-100 transition-opacity" />
-              </motion.button>
-              </PremiumDraggable>
+              </button>
             </MagneticItem>
-          </motion.div>
+          </div>
         </motion.nav>
       </motion.div>
 
