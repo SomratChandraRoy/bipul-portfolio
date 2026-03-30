@@ -129,6 +129,52 @@ function use3DTilt() {
   // Outer Container Tilt
   const { rotateX, rotateY, handleMouseMove, handleMouseLeave, x, y } = use3DTilt()
   
+  // ── Navbar bar drag system (threshold-based: clicks still work) ──
+  const navDragX = useMotionValue(0)
+  const navDragY = useMotionValue(0)
+  const navSpringX = useSpring(navDragX, { stiffness: 300, damping: 24, mass: 0.8 })
+  const navSpringY = useSpring(navDragY, { stiffness: 300, damping: 24, mass: 0.8 })
+  const [isNavDragging, setIsNavDragging] = useState(false)
+  const navDragOrigin = useRef<{ x: number; y: number } | null>(null)
+  const navDragActive = useRef(false)
+
+  const onNavMouseDown = (e: React.MouseEvent) => {
+    // Only on left click, and only on the nav bar itself (not inner interactive elements)
+    if (e.button !== 0) return
+    navDragOrigin.current = { x: e.clientX, y: e.clientY }
+    navDragActive.current = false
+
+    const onMove = (ev: MouseEvent) => {
+      if (!navDragOrigin.current) return
+      const dx = ev.clientX - navDragOrigin.current.x
+      const dy = ev.clientY - navDragOrigin.current.y
+      
+      // Threshold: only start dragging after 8px of movement
+      if (!navDragActive.current && (Math.abs(dx) > 8 || Math.abs(dy) > 8)) {
+        navDragActive.current = true
+        setIsNavDragging(true)
+      }
+      
+      if (navDragActive.current) {
+        navDragX.set(dx * 0.35)
+        navDragY.set(dy * 0.35)
+      }
+    }
+
+    const onUp = () => {
+      document.removeEventListener('mousemove', onMove)
+      document.removeEventListener('mouseup', onUp)
+      navDragOrigin.current = null
+      navDragX.set(0)
+      navDragY.set(0)
+      navDragActive.current = false
+      setIsNavDragging(false)
+    }
+
+    document.addEventListener('mousemove', onMove, { passive: true })
+    document.addEventListener('mouseup', onUp)
+  }
+
   // Calculate intense premium dynamic glow position based on mouse pct
   const backgroundGlow = useTransform(
     [x, y],
@@ -191,13 +237,22 @@ function use3DTilt() {
           <motion.nav 
             layout
             transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+            onMouseDown={onNavMouseDown}
             onMouseMove={(e) => { handleMouseMove(e as any); setIsNavHovered(true); }}
             onMouseLeave={() => { handleMouseLeave(); setIsNavHovered(false); }}
             style={{ 
               rotateX, rotateY,
-              transformStyle: "preserve-3d" // Enables 3D stacking inside
+              x: navSpringX,
+              y: navSpringY,
+              transformStyle: "preserve-3d"
             }}
-            className={`relative flex items-center justify-between transition-all duration-700 ${isScrolled 
+            animate={{
+              scale: isNavDragging ? 1.03 : 1,
+              boxShadow: isNavDragging 
+                ? '0 24px 60px -12px rgba(75,131,251,0.35), 0 0 30px rgba(75,131,251,0.15), inset 0 1px 1px rgba(255,255,255,0.1)' 
+                : undefined,
+            }}
+            className={`relative flex items-center justify-between transition-all duration-700 ${isNavDragging ? 'select-none' : ''} ${isScrolled 
               ? 'w-[calc(100vw-2rem)] md:w-auto px-3 md:px-4 py-2 md:py-2 bg-[#020617]/85 backdrop-blur-3xl border border-white/[0.08] rounded-2xl md:rounded-full shadow-[0_8px_32px_-8px_rgba(0,0,0,0.6),inset_0_1px_0_rgba(255,255,255,0.04)]' 
               : `w-[calc(100vw-2rem)] max-w-5xl px-3 md:px-6 py-2.5 md:py-3 rounded-2xl md:rounded-[2rem] 
                  bg-[#060e1f]/70 md:bg-transparent backdrop-blur-3xl md:backdrop-blur-none 
