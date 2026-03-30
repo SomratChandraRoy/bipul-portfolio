@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react'
 import { motion } from 'framer-motion'
-import { ChevronDown, ArrowRight, MessageCircle, Star } from 'lucide-react'
+import { ChevronDown, ArrowRight, Star } from 'lucide-react'
 import { tallyFormId } from '../../data/portfolio'
 
 /* ── Animation Orchestration ─────────────────────────────────────────────── */
@@ -311,12 +311,6 @@ export function Hero() {
         </div>
       </motion.div>
 
-      {/* Deep Blue Circular Icon Bubble (Bottom Right Offset) */}
-      <motion.button 
-        className="absolute bottom-6 right-6 sm:bottom-10 sm:right-10 w-12 h-12 rounded-full bg-gradient-to-tr from-[#1a44a3] to-[#4b83fb] flex items-center justify-center text-white shadow-[0_4px_20px_rgba(0,0,0,0.5),inset_0_2px_4px_rgba(255,255,255,0.4)] hover:scale-110 active:scale-95 transition-all outline-none border border-[#8eb4ff]/50 z-50 group hover:shadow-[0_0_30px_rgba(75,131,251,0.6)]"
-      >
-        <MessageCircle className="w-5 h-5 fill-current opacity-90 group-hover:opacity-100 transition-opacity" />
-      </motion.button>
     </section>
   )
 }

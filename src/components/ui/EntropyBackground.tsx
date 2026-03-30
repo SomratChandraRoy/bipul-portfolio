@@ -98,10 +98,10 @@ export function EntropyBackground() {
           this.x += this.velocity.x
           this.y += this.velocity.y
 
-          // Boundary checks for chaotic cluster (keeps them on the right)
-          if (this.x < width / 2 || this.x > width) this.velocity.x *= -1
+          // Boundary checks for full screen active cluster
+          if (this.x < 0 || this.x > width) this.velocity.x *= -1
           if (this.y < 0 || this.y > height) this.velocity.y *= -1
-          this.x = Math.max(width / 2, Math.min(width, this.x))
+          this.x = Math.max(0, Math.min(width, this.x))
           this.y = Math.max(0, Math.min(height, this.y))
         }
 
@@ -168,8 +168,8 @@ export function EntropyBackground() {
         for (let j = 0; j < rows; j++) {
           const x = spacing * i + spacing / 2 + (Math.random() * 10 - 5)
           const y = spacing * j + spacing / 2 + (Math.random() * 10 - 5)
-          // Splitting logic strictly divided by screen center
-          const order = x < width / 2
+          // Full screen active animation
+          const order = false
           particles.push(new Particle(x, y, order))
         }
       }
@@ -224,13 +224,7 @@ export function EntropyBackground() {
         })
       })
 
-      // Vertical Split Division Line (Subtle)
-      ctx.strokeStyle = `rgba(${baseColor}, 0.03)`
-      ctx.lineWidth = 1
-      ctx.beginPath()
-      ctx.moveTo(width / 2, 0)
-      ctx.lineTo(width / 2, height)
-      ctx.stroke()
+
 
       time++
       animationId = requestAnimationFrame(animate)
