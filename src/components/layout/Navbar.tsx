@@ -142,9 +142,9 @@ function use3DTilt() {
   const navSpringX = useSpring(navDragX, { stiffness: 220, damping: 20, mass: 0.9 })
   const navSpringY = useSpring(navDragY, { stiffness: 220, damping: 20, mass: 0.9 })
   const navSpringRotate = useSpring(navDragRotate, { stiffness: 180, damping: 18, mass: 0.7 })
-  // Jelly springs — lagging for wobbly organic feel
-  const navSpringSkewX = useSpring(navDragSkewX, { stiffness: 120, damping: 12, mass: 0.5 })
-  const navSpringSkewY = useSpring(navDragSkewY, { stiffness: 120, damping: 12, mass: 0.5 })
+  // Jelly springs — very soft for dramatic wobbly organic feel
+  const navSpringSkewX = useSpring(navDragSkewX, { stiffness: 70, damping: 7, mass: 0.5 })
+  const navSpringSkewY = useSpring(navDragSkewY, { stiffness: 70, damping: 7, mass: 0.5 })
   const [isNavDragging, setIsNavDragging] = useState(false)
   const navDragOrigin = useRef<{ x: number; y: number } | null>(null)
   const navDragActive = useRef(false)
@@ -176,11 +176,11 @@ function use3DTilt() {
         navDragY.set(clampedDy)
         navDragRotate.set(clampedDx * 0.04)
 
-        // Jelly: velocity → skew deformation
+        // Jelly: velocity → skew deformation (amplified)
         const velX = (ev.clientX - navPrevPos.current.x) * 0.5
         const velY = (ev.clientY - navPrevPos.current.y) * 0.5
-        navDragSkewX.set(velX * 0.15)
-        navDragSkewY.set(velY * 0.08)
+        navDragSkewX.set(velX * 0.45)
+        navDragSkewY.set(velY * 0.25)
       }
       navPrevPos.current = { x: ev.clientX, y: ev.clientY }
     }

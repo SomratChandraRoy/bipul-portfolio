@@ -29,52 +29,52 @@ interface PremiumDraggableProps extends HTMLMotionProps<'div'> {
 
 const presets = {
   feather: {
-    elastic: 0.2,
+    elastic: 0.22,
     stiffness: 500,
     damping: 24,
     mass: 0.4,
-    scaleUp: 1.02,
-    tiltDeg: 1.5,
-    jellyStretch: 0.015,
-    jellySkew: 0.08,
+    scaleUp: 1.025,
+    tiltDeg: 2,
+    jellyStretch: 0.04,
+    jellySkew: 0.2,
     brighten: 1.04,
     glowDrag: '0 6px 24px -2px rgba(75,131,251,0.18), 0 0 8px rgba(75,131,251,0.10)',
   },
   light: {
-    elastic: 0.25,
-    stiffness: 420,
-    damping: 22,
-    mass: 0.5,
-    scaleUp: 1.03,
-    tiltDeg: 2.5,
-    jellyStretch: 0.025,
-    jellySkew: 0.12,
+    elastic: 0.3,
+    stiffness: 380,
+    damping: 18,
+    mass: 0.55,
+    scaleUp: 1.04,
+    tiltDeg: 3,
+    jellyStretch: 0.06,
+    jellySkew: 0.3,
     brighten: 1.06,
     glowDrag: '0 10px 36px -4px rgba(75,131,251,0.22), 0 0 14px rgba(75,131,251,0.12)',
   },
   normal: {
-    elastic: 0.35,
-    stiffness: 320,
-    damping: 18,
-    mass: 0.7,
-    scaleUp: 1.045,
-    tiltDeg: 3.5,
-    jellyStretch: 0.035,
-    jellySkew: 0.18,
+    elastic: 0.4,
+    stiffness: 280,
+    damping: 14,
+    mass: 0.8,
+    scaleUp: 1.055,
+    tiltDeg: 4.5,
+    jellyStretch: 0.08,
+    jellySkew: 0.45,
     brighten: 1.08,
     glowDrag: '0 16px 48px -6px rgba(75,131,251,0.28), 0 0 20px rgba(75,131,251,0.15)',
   },
   heavy: {
-    elastic: 0.48,
-    stiffness: 220,
-    damping: 15,
-    mass: 1.0,
-    scaleUp: 1.06,
-    tiltDeg: 5,
-    jellyStretch: 0.045,
-    jellySkew: 0.25,
+    elastic: 0.55,
+    stiffness: 180,
+    damping: 11,
+    mass: 1.1,
+    scaleUp: 1.07,
+    tiltDeg: 6,
+    jellyStretch: 0.1,
+    jellySkew: 0.6,
     brighten: 1.10,
-    glowDrag: '0 22px 64px -8px rgba(75,131,251,0.32), 0 0 28px rgba(75,131,251,0.18)',
+    glowDrag: '0 22px 64px -8px rgba(75,131,251,0.35), 0 0 32px rgba(75,131,251,0.2)',
   },
 }
 
@@ -105,10 +105,10 @@ export function PremiumDraggable({
   const velY = useVelocity(dragY)
 
   /* ── Jelly: velocity → skew (lagging squish) ── */
-  const smoothVelX = useSpring(velX, { stiffness: 150, damping: 15, mass: 0.3 })
-  const smoothVelY = useSpring(velY, { stiffness: 150, damping: 15, mass: 0.3 })
-  const skewX = useTransform(smoothVelY, [-800, 800], [cfg.jellySkew * 12, -cfg.jellySkew * 12])
-  const skewY = useTransform(smoothVelX, [-800, 800], [-cfg.jellySkew * 12, cfg.jellySkew * 12])
+  const smoothVelX = useSpring(velX, { stiffness: 80, damping: 8, mass: 0.4 })
+  const smoothVelY = useSpring(velY, { stiffness: 80, damping: 8, mass: 0.4 })
+  const skewX = useTransform(smoothVelY, [-600, 600], [cfg.jellySkew * 16, -cfg.jellySkew * 16])
+  const skewY = useTransform(smoothVelX, [-600, 600], [-cfg.jellySkew * 16, cfg.jellySkew * 16])
 
   /* ── Jelly: velocity → directional stretch ── */
   const speed = useTransform(
@@ -117,17 +117,23 @@ export function PremiumDraggable({
   )
   const jellyScaleX = useTransform(
     [smoothVelX, speed],
-    ([vx, spd]: number[]) => 1 + Math.abs(vx) / (spd || 1) * Math.min(spd, 600) * cfg.jellyStretch * 0.001
+    ([vx, spd]: number[]) => {
+      const s = Math.min(spd, 500)
+      return 1 + (Math.abs(vx) / (spd || 1)) * s * cfg.jellyStretch * 0.002
+    }
   )
   const jellyScaleY = useTransform(
     [smoothVelY, speed],
-    ([vy, spd]: number[]) => 1 + Math.abs(vy) / (spd || 1) * Math.min(spd, 600) * cfg.jellyStretch * 0.001
+    ([vy, spd]: number[]) => {
+      const s = Math.min(spd, 500)
+      return 1 + (Math.abs(vy) / (spd || 1)) * s * cfg.jellyStretch * 0.002
+    }
   )
 
   /* ── 3D tilt follows drag direction ── */
-  const smoothX = useSpring(dragX, { stiffness: 200, damping: 20, mass: 0.4 })
-  const smoothY = useSpring(dragY, { stiffness: 200, damping: 20, mass: 0.4 })
-  const rotateY = useTransform(smoothX, [-300, 300], [-cfg.tiltDeg, cfg.tiltDeg])
+  const smoothX = useSpring(dragX, { stiffness: 160, damping: 16, mass: 0.5 })
+  const smoothY = useSpring(dragY, { stiffness: 160, damping: 16, mass: 0.5 })
+  const rotateY = useTransform(smoothX, [-250, 250], [-cfg.tiltDeg, cfg.tiltDeg])
   const rotateX = useTransform(smoothY, [-300, 300], [cfg.tiltDeg, -cfg.tiltDeg])
 
   /* ── Glow aura reacts to drag distance ── */
@@ -151,13 +157,15 @@ export function PremiumDraggable({
       dragX.set(0)
       dragY.set(0)
 
-      // Premium jelly wobble on release  
+      // Premium jelly wobble on release — dramatic oscillation
       controls.start({
-        rotate: [0, -2, 1.5, -0.8, 0.3, 0],
-        scaleX: [1.02, 0.97, 1.01, 0.99, 1],
-        scaleY: [0.98, 1.03, 0.99, 1.01, 1],
+        rotate: [0, -3, 2.5, -1.5, 0.8, -0.3, 0],
+        scaleX: [1.06, 0.94, 1.04, 0.97, 1.015, 1],
+        scaleY: [0.94, 1.06, 0.96, 1.03, 0.985, 1],
+        skewX: [0, -1.5, 1, -0.5, 0],
+        skewY: [0, 1, -0.8, 0.3, 0],
         transition: {
-          duration: 0.7,
+          duration: 0.9,
           ease: [0.22, 1, 0.36, 1],
         },
       })
