@@ -375,133 +375,121 @@ export function Hero() {
             </motion.div>
           </PremiumDraggable>
 
-          {/* Main Headline with Premium Text Animations */}
-          <PremiumDraggable className="w-auto" intensity="heavy">
-            <motion.div
-              variants={itemUp}
-              className="min-h-[80px] sm:min-h-[120px] md:min-h-[160px] flex items-center justify-center"
-              key={`headline-${currentHeadlineIndex}`}
-            >
-              <motion.h1 
-                className="text-[34px] sm:text-5xl md:text-[72px] font-extrabold tracking-[-0.03em] text-white mb-2 leading-[1.06]"
-                style={{ fontFamily: "'Space Grotesk', sans-serif" }}
-                animate={{ opacity: isTransitioning ? 0 : 1 }}
-                transition={{ duration: 0.3 }}
-              >
-                <TextAnimate
-                  animation="blurInUp"
-                  by="word"
-                  duration={2}
-                  staggerDelay={0.08}
-                  className="inline"
-                >
-                  {currentHeadline.mainHeadline.split(':')[0]}
-                </TextAnimate>
-                <span className="mx-1">
-                  <GradientText animateGradient={true} duration={5} className="font-black">
-                    {currentHeadline.mainHeadline.split(':')[1]?.trim().split('.')[0] || 'Web Systems'}
-                  </GradientText>
-                </span>
-                <TextAnimate
-                  animation="blurInUp"
-                  by="word"
-                  duration={2}
-                  delay={0.3}
-                  staggerDelay={0.08}
-                  className="inline"
-                >
-                  {'.'}
-                </TextAnimate>
-                <br className="hidden sm:block" />
-                <TextAnimate
-                  animation="blurInUp"
-                  by="word"
-                  duration={2.2}
-                  delay={0.4}
-                  staggerDelay={0.08}
-                  className="inline text-slate-100/90"
-                >
-                  Built for Scale.
-                </TextAnimate>
-              </motion.h1>
-            </motion.div>
-          </PremiumDraggable>
+           {/* Main Headline with Premium Text Animations */}
+           <PremiumDraggable className="w-auto" intensity="heavy">
+             <motion.div
+               variants={itemUp}
+               className="min-h-[80px] sm:min-h-[120px] md:min-h-[160px] flex items-center justify-center"
+               key={`headline-${currentHeadlineIndex}`}
+             >
+               <motion.h1 
+                 className="text-[34px] sm:text-5xl md:text-[72px] font-extrabold tracking-[-0.015em] text-white mb-0 leading-[1.1]"
+                 style={{ fontFamily: "'Space Grotesk', sans-serif", letterSpacing: "-0.015em" }}
+                 animate={{ opacity: isTransitioning ? 0 : 1 }}
+                 transition={{ duration: 0.4 }}
+               >
+                 {/* Clean, simple single animation for entire headline */}
+                 <TextAnimate
+                   animation="blurInUp"
+                   by="word"
+                   duration={2.4}
+                   staggerDelay={0.1}
+                   className="inline"
+                 >
+                   {currentHeadline.mainHeadline}
+                 </TextAnimate>
+               </motion.h1>
+             </motion.div>
+           </PremiumDraggable>
 
-          {/* Subtitle with Enhanced Effects */}
-          <PremiumDraggable className="w-auto" intensity="normal">
-            <motion.h2
-              variants={itemUp}
-              className="mt-7 max-w-3xl text-[15px] sm:text-lg md:text-[19px] leading-[1.8] text-slate-400/90 font-medium tracking-wide mx-auto px-4 min-h-[80px] sm:min-h-[100px]"
-              style={{ fontFamily: "'DM Sans', sans-serif" }}
-              animate={{ opacity: isTransitioning ? 0 : 1 }}
-              transition={{ duration: 0.3 }}
-              key={`subtitle-${currentHeadlineIndex}`}
-            >
-              I don't just write code. As a full-stack engineer, I build seamless digital ecosystems designed to{' '}
-              <GlowingText color="blue" intensity="medium" animateGlow>
-                automate your growth
-              </GlowingText>
-              , capture leads, and{' '}
-              <GlowingText color="cyan" intensity="medium" animateGlow>
-                multiply your revenue
-              </GlowingText>
-              .
-            </motion.h2>
-          </PremiumDraggable>
+           {/* Subtitle with Enhanced Effects */}
+           <PremiumDraggable className="w-auto" intensity="normal">
+             <motion.h2
+               variants={itemUp}
+               className="mt-8 max-w-3xl text-[15px] sm:text-lg md:text-[18px] leading-[1.7] text-slate-300/85 font-medium mx-auto px-4 min-h-[80px] sm:min-h-[100px]"
+               style={{ fontFamily: "'DM Sans', sans-serif", letterSpacing: "0.005em" }}
+               animate={{ opacity: isTransitioning ? 0 : 1 }}
+               transition={{ duration: 0.4 }}
+               key={`subtitle-${currentHeadlineIndex}`}
+             >
+               <TextAnimate
+                 animation="blurInUp"
+                 by="word"
+                 duration={2.6}
+                 delay={0.6}
+                 staggerDelay={0.06}
+                 className="inline"
+               >
+                 {currentHeadline.subHeadline}
+               </TextAnimate>
+             </motion.h2>
+           </PremiumDraggable>
 
-          {/* CTA Buttons */}
-          <PremiumDraggable className="w-auto z-50" intensity="normal">
-            <motion.div
-              variants={itemUp}
-              className="mt-14 flex flex-col sm:flex-row items-center justify-center gap-5"
-            >
-              {/* Primary CTA */}
-              <a
-                href="#projects"
-                className="group relative inline-flex items-center gap-3 px-10 py-4.5 rounded-full overflow-hidden text-[14px] sm:text-[15px] font-bold text-white transition-all duration-400 hover:scale-[1.04] active:scale-[0.96] shadow-[0_0_50px_rgba(75,131,251,0.3),0_8px_32px_-8px_rgba(75,131,251,0.4),inset_0_1px_2px_rgba(255,255,255,0.4),inset_0_-4px_16px_rgba(0,0,0,0.5)] bg-gradient-to-b from-[#3575e8] to-[#152f6b] border border-[#60a5fa]/30"
-                style={{ fontFamily: "'Space Grotesk', sans-serif" }}
-              >
-                <div className="absolute inset-0 w-[200%] h-[200%] bg-gradient-to-tr from-transparent via-white/15 to-transparent skew-x-[-25deg] -translate-x-[200%] group-hover:translate-x-[100%] transition-transform duration-1000 ease-out pointer-events-none" />
-                <span className="relative z-10">View My Proven Systems</span>
-                <ArrowRight className="h-4 w-4 relative z-10 transition-transform duration-400 group-hover:translate-x-1.5" />
-              </a>
+           {/* CTA Buttons */}
+           <PremiumDraggable className="w-auto z-50" intensity="normal">
+             <motion.div
+               variants={itemUp}
+               className="mt-16 flex flex-col sm:flex-row items-center justify-center gap-5"
+               style={{ animationDelay: '1.2s' }}
+             >
+               {/* Primary CTA */}
+               <motion.a
+                 href="#projects"
+                 initial={{ opacity: 0, y: 20, filter: 'blur(10px)' }}
+                 whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+                 viewport={{ once: true }}
+                 transition={{ delay: 1.4, duration: 1, type: 'spring', stiffness: 70, damping: 18 }}
+                 className="group relative inline-flex items-center gap-3 px-10 py-4 rounded-full overflow-hidden text-[14px] sm:text-[15px] font-bold text-white transition-all duration-400 hover:scale-[1.05] active:scale-[0.95] shadow-[0_0_60px_rgba(75,131,251,0.25),0_12px_40px_-8px_rgba(75,131,251,0.3),inset_0_1px_2px_rgba(255,255,255,0.3)] bg-gradient-to-br from-[#4b83fb] via-[#3a6fdb] to-[#2555b5] border border-[#60a5fa]/40"
+                 style={{ fontFamily: "'Space Grotesk', sans-serif" }}
+               >
+                 <div className="absolute inset-0 w-[200%] h-[200%] bg-gradient-to-tr from-transparent via-white/20 to-transparent skew-x-[-25deg] -translate-x-[200%] group-hover:translate-x-[100%] transition-transform duration-1200 ease-out pointer-events-none" />
+                 <span className="relative z-10">View My Proven Systems</span>
+                 <ArrowRight className="h-4 w-4 relative z-10 transition-transform duration-400 group-hover:translate-x-2" />
+               </motion.a>
 
-              {/* Secondary CTA */}
-              <a
-                href="#contact"
-                data-tally-open={tallyFormId}
-                data-tally-layout="modal"
-                data-tally-width="600"
-                className="group relative inline-flex items-center gap-2.5 rounded-full border border-white/[0.08] bg-white/[0.03] backdrop-blur-2xl px-10 py-4.5 text-[14px] sm:text-[15px] font-bold text-slate-300 transition-all duration-400 hover:text-white hover:border-white/20 hover:bg-white/[0.06] hover:scale-[1.04] active:scale-[0.96] shadow-[0_4px_24px_rgba(0,0,0,0.4),inset_0_1px_1px_rgba(255,255,255,0.06)]"
-                style={{ fontFamily: "'Space Grotesk', sans-serif" }}
-              >
-                <Star className="h-4 w-4 transition-all duration-400 group-hover:rotate-[20deg] group-hover:text-[#60a5fa]" />
-                <span className="relative z-10">Book a Strategy Call</span>
-              </a>
-            </motion.div>
-          </PremiumDraggable>
+               {/* Secondary CTA */}
+               <motion.a
+                 href="#contact"
+                 data-tally-open={tallyFormId}
+                 data-tally-layout="modal"
+                 data-tally-width="600"
+                 initial={{ opacity: 0, y: 20, filter: 'blur(10px)' }}
+                 whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+                 viewport={{ once: true }}
+                 transition={{ delay: 1.6, duration: 1, type: 'spring', stiffness: 70, damping: 18 }}
+                 className="group relative inline-flex items-center gap-2.5 rounded-full border border-white/[0.12] bg-white/[0.04] backdrop-blur-2xl px-10 py-4 text-[14px] sm:text-[15px] font-bold text-slate-200 transition-all duration-400 hover:text-white hover:border-white/25 hover:bg-white/[0.08] hover:scale-[1.05] active:scale-[0.95] shadow-[0_4px_24px_rgba(0,0,0,0.3),inset_0_1px_1px_rgba(255,255,255,0.08)]"
+                 style={{ fontFamily: "'Space Grotesk', sans-serif" }}
+               >
+                 <Star className="h-4 w-4 transition-all duration-400 group-hover:rotate-[25deg] group-hover:scale-110 group-hover:text-[#60a5fa]" />
+                 <span className="relative z-10">Book a Strategy Call</span>
+               </motion.a>
+             </motion.div>
+           </PremiumDraggable>
 
-          {/* Tech badges with enhanced animations */}
-          <PremiumDraggable className="w-auto" intensity="light">
-            <motion.div
-              variants={itemUp}
-              className="mt-14 flex flex-wrap items-center justify-center gap-3"
-            >
-              {['React', 'Django', 'TypeScript', 'AWS'].map((badge, i) => (
-                <FloatingElement key={badge} duration={4 + i * 0.5} distance={8} delay={i * 0.2}>
-                  <motion.div
-                    initial={{ opacity: 0, scale: 0.6, y: 20 }}
-                    animate={{ opacity: 1, scale: 1, y: 0 }}
-                    transition={{ delay: 1.4 + i * 0.1, type: 'spring', stiffness: 100, damping: 15 }}
-                    className="px-6 py-2.5 rounded-full text-[11px] sm:text-[12px] font-black tracking-[0.2em] text-[#8eb4ff]/90 bg-white/[0.03] border border-white/[0.06] backdrop-blur-xl shadow-[0_4px_20px_rgba(0,0,0,0.4),inset_0_1px_1px_rgba(255,255,255,0.06)] hover:border-[#4b83fb]/30 hover:bg-[#4b83fb]/[0.06] hover:text-white transition-all duration-500 cursor-default uppercase"
-                    style={{ fontFamily: "'Space Grotesk', sans-serif" }}
-                  >
-                    {badge}
-                  </motion.div>
-                </FloatingElement>
-              ))}
-            </motion.div>
-          </PremiumDraggable>
+           {/* Tech badges with enhanced animations */}
+           <PremiumDraggable className="w-auto" intensity="light">
+             <motion.div
+               variants={itemUp}
+               className="mt-16 flex flex-wrap items-center justify-center gap-3"
+             >
+               {['React', 'Django', 'TypeScript', 'AWS'].map((badge, i) => (
+                 <motion.div
+                   key={badge}
+                   initial={{ opacity: 0, y: 20, filter: 'blur(10px)' }}
+                   whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+                   viewport={{ once: true }}
+                   transition={{ delay: 1.8 + i * 0.12, duration: 0.8, type: 'spring', stiffness: 100, damping: 15 }}
+                 >
+                   <div
+                     className="px-6 py-2.5 rounded-full text-[11px] sm:text-[12px] font-bold tracking-[0.15em] text-slate-300/80 bg-white/[0.04] border border-white/[0.08] backdrop-blur-xl shadow-[0_4px_24px_rgba(0,0,0,0.25),inset_0_1px_1px_rgba(255,255,255,0.08)] hover:border-[#4b83fb]/40 hover:bg-[#4b83fb]/[0.08] hover:text-white transition-all duration-500 cursor-default uppercase"
+                     style={{ fontFamily: "'Space Grotesk', sans-serif" }}
+                   >
+                     {badge}
+                   </div>
+                 </motion.div>
+               ))}
+             </motion.div>
+           </PremiumDraggable>
 
         </motion.div>
       </div>
