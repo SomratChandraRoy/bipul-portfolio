@@ -1,8 +1,14 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { motion } from 'framer-motion'
 import { ChevronDown, ArrowRight, Star } from 'lucide-react'
 import { tallyFormId } from '../../data/portfolio'
 import { PremiumDraggable } from '../ui/PremiumDraggable'
+import { TextAnimate } from '../ui/TextAnimate'
+import { PremiumTyping } from '../ui/PremiumTyping'
+import { GradientText } from '../ui/GradientText'
+import { SplitText } from '../ui/SplitText'
+import { GlowingText } from '../ui/GlowingText'
+import { FloatingElement } from '../ui/FloatingElement'
 
 
 /* ── Animation Orchestration ─────────────────────────────────────────────── */
@@ -34,6 +40,37 @@ const itemScale = {
     transition: { type: 'spring' as const, stiffness: 60, damping: 16, mass: 1 },
   },
 }
+
+/* ── Multiple Hero Headlines ─────────────────────────────────────────────── */
+
+interface HeadlineVariant {
+  mainHeadline: string
+  subHeadline: string
+  highlightWords?: string[]
+}
+
+const headlineVariants: HeadlineVariant[] = [
+  {
+    mainHeadline: 'From Idea to Earning Machine: Web Systems Built for Scale.',
+    subHeadline: 'I don\'t just write code. As a full-stack engineer, I build seamless digital ecosystems designed to automate your growth, capture leads, and multiply your revenue.',
+    highlightWords: ['automate your growth', 'capture leads', 'multiply your revenue'],
+  },
+  {
+    mainHeadline: 'Stop Buying "Websites." Invest in a Digital Business Asset.',
+    subHeadline: 'Turn your bottlenecked business into a smooth, high-converting earning system. I deliver end-to-end full-stack web solutions that look beautiful and perform ruthlessly.',
+    highlightWords: ['high-converting earning system', 'beautiful', 'perform ruthlessly'],
+  },
+  {
+    mainHeadline: 'Code That Converts. Systems That Scale Your Business Smoothly.',
+    subHeadline: 'Transform your vision into a profitable reality. I architect custom, full-stack web applications that eliminate technical friction and accelerate your earning potential.',
+    highlightWords: ['profitable reality', 'eliminate technical friction', 'earning potential'],
+  },
+  {
+    mainHeadline: 'Your Idea. A Proven Earning System. Seamless Business Growth.',
+    subHeadline: 'Leverage 20+ years of digital business expertise. I engineer custom full-stack web platforms that bridge the gap between your concept and your cash flow.',
+    highlightWords: ['20+ years', 'bridge the gap', 'cash flow'],
+  },
+]
 
 /* ── High-Performance Constellation Canvas ─────────────────────────────── */
 
@@ -212,39 +249,92 @@ function ConstellationNetwork() {
 /* ── Hero Section ───────────────────────────────────────────────────────── */
 
 export function Hero() {
+  const [currentHeadlineIndex, setCurrentHeadlineIndex] = useState(0)
+  const [isTransitioning, setIsTransitioning] = useState(false)
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setIsTransitioning(true)
+      setTimeout(() => {
+        setCurrentHeadlineIndex((prev) => (prev + 1) % headlineVariants.length)
+        setIsTransitioning(false)
+      }, 500)
+    }, 12000) // Change headline every 12 seconds
+
+    return () => clearInterval(interval)
+  }, [])
+
+  const currentHeadline = headlineVariants[currentHeadlineIndex]
+
   return (
     <section id="hero" className="relative min-h-screen flex items-center justify-center pt-24 pb-16 overflow-hidden bg-[#020617]">
       
       {/* Constellation Canvas */}
       <ConstellationNetwork />
 
-      {/* Massive Orbital Rings */}
+      {/* Floating particles effect - Premium layer */}
+      <motion.div className="absolute inset-0 z-[0.5] pointer-events-none">
+        <div className="absolute top-1/4 left-1/4 w-32 h-32 bg-[#4b83fb]/20 rounded-full blur-3xl animate-pulse" />
+        <div className="absolute bottom-1/3 right-1/4 w-40 h-40 bg-[#60a5fa]/15 rounded-full blur-3xl animate-pulse delay-1000" />
+      </motion.div>
+
+      {/* Massive Orbital Rings with Premium Effects */}
       <div className="absolute inset-0 z-[1] flex items-center justify-center pointer-events-none mix-blend-screen">
+        {/* Outer ring with glow */}
         <motion.div 
           className="absolute w-[130vw] h-[130vw] max-w-[1500px] max-h-[1500px] rounded-full border border-[#4b83fb]/8"
           style={{ boxShadow: '0 0 180px rgba(75, 131, 251, 0.08), inset 0 0 180px rgba(75, 131, 251, 0.08)' }}
           animate={{ rotate: 360 }}
           transition={{ duration: 80, repeat: Infinity, ease: "linear" }}
         />
+        
+        {/* Middle ring */}
         <motion.div 
           className="absolute w-[90vw] h-[90vw] max-w-[1100px] max-h-[1100px] rounded-full border border-[#4b83fb]/12 blur-[2px]"
           animate={{ rotate: -360 }}
           transition={{ duration: 55, repeat: Infinity, ease: "linear" }}
         />
+        
+        {/* Inner ring */}
         <motion.div 
           className="absolute w-[50vw] h-[50vw] max-w-[650px] max-h-[650px] rounded-full border border-[#4b83fb]/15 blur-[1px]"
           animate={{ rotate: 360 }}
           transition={{ duration: 35, repeat: Infinity, ease: "linear" }}
         />
         
-        {/* Central aurora bloom */}
-        <div className="absolute w-[70vw] h-[70vw] max-w-[700px] max-h-[700px] bg-[radial-gradient(ellipse_at_center,rgba(15,40,120,0.4)_0%,rgba(10,25,80,0.2)_30%,transparent_70%)] rounded-full blur-3xl" />
+        {/* Premium particles in rings */}
+        <motion.div
+          className="absolute w-3 h-3 rounded-full bg-[#4b83fb] shadow-[0_0_20px_rgba(75,131,251,0.8)]"
+          style={{
+            top: '50%',
+            left: '50%',
+            translateX: '-50%',
+            translateY: '-50%',
+          }}
+          animate={{
+            top: ['50%', '30%', '50%'],
+            left: ['50%', '60%', '50%'],
+            opacity: [0.8, 0.3, 0.8],
+          }}
+          transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut' }}
+        />
         
-        {/* Top-right accent glow */}
-        <div className="absolute -top-[20%] -right-[10%] w-[60vw] h-[60vw] max-w-[600px] max-h-[600px] bg-[radial-gradient(ellipse_at_center,rgba(75,131,251,0.06)_0%,transparent_60%)] rounded-full blur-3xl" />
+        {/* Central aurora bloom with enhanced glow */}
+        <div className="absolute w-[70vw] h-[70vw] max-w-[700px] max-h-[700px] bg-[radial-gradient(ellipse_at_center,rgba(15,40,120,0.6)_0%,rgba(10,25,80,0.3)_30%,transparent_70%)] rounded-full blur-3xl" />
         
-        {/* Bottom-left accent glow */}
-        <div className="absolute -bottom-[20%] -left-[10%] w-[50vw] h-[50vw] max-w-[500px] max-h-[500px] bg-[radial-gradient(ellipse_at_center,rgba(100,160,255,0.05)_0%,transparent_60%)] rounded-full blur-3xl" />
+        {/* Top-right accent glow - Enhanced */}
+        <motion.div 
+          className="absolute -top-[20%] -right-[10%] w-[60vw] h-[60vw] max-w-[600px] max-h-[600px] bg-[radial-gradient(ellipse_at_center,rgba(75,131,251,0.12)_0%,transparent_60%)] rounded-full blur-3xl"
+          animate={{ scale: [1, 1.1, 1], opacity: [0.6, 0.8, 0.6] }}
+          transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut' }}
+        />
+        
+        {/* Bottom-left accent glow - Enhanced */}
+        <motion.div 
+          className="absolute -bottom-[20%] -left-[10%] w-[50vw] h-[50vw] max-w-[500px] max-h-[500px] bg-[radial-gradient(ellipse_at_center,rgba(100,160,255,0.1)_0%,transparent_60%)] rounded-full blur-3xl"
+          animate={{ scale: [1, 1.15, 1], opacity: [0.5, 0.7, 0.5] }}
+          transition={{ duration: 7, repeat: Infinity, ease: 'easeInOut' }}
+        />
       </div>
 
       {/* Side accent lines */}
@@ -272,52 +362,77 @@ export function Hero() {
             </motion.div>
           </PremiumDraggable>
 
-          {/* Main Headline */}
+          {/* Main Headline with Premium Text Animations */}
           <PremiumDraggable className="w-auto" intensity="heavy">
-            <motion.h1 
+            <motion.div
               variants={itemUp}
-              className="text-[34px] sm:text-5xl md:text-[72px] font-extrabold tracking-[-0.03em] text-white mb-2 leading-[1.06]"
-              style={{ fontFamily: "'Space Grotesk', sans-serif" }}
+              className="min-h-[80px] sm:min-h-[120px] md:min-h-[160px] flex items-center justify-center"
+              key={`headline-${currentHeadlineIndex}`}
             >
-              <span className="inline-block">From Idea to </span>
-              <span className="inline-block relative">
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#4b83fb] via-[#60a5fa] to-[#a8caff]">
-                  Earning Machine
+              <motion.h1 
+                className="text-[34px] sm:text-5xl md:text-[72px] font-extrabold tracking-[-0.03em] text-white mb-2 leading-[1.06]"
+                style={{ fontFamily: "'Space Grotesk', sans-serif" }}
+                animate={{ opacity: isTransitioning ? 0 : 1 }}
+                transition={{ duration: 0.3 }}
+              >
+                <TextAnimate
+                  animation="blurInUp"
+                  by="word"
+                  duration={2}
+                  staggerDelay={0.08}
+                  className="inline"
+                >
+                  {currentHeadline.mainHeadline.split(':')[0]}
+                </TextAnimate>
+                <span className="mx-1">
+                  <GradientText animateGradient={true} duration={5} className="font-black">
+                    {currentHeadline.mainHeadline.split(':')[1]?.trim().split('.')[0] || 'Web Systems'}
+                  </GradientText>
                 </span>
-                {/* Animated underline accent */}
-                <motion.span 
-                  className="absolute -bottom-2 left-0 right-0 h-[3px] rounded-full bg-gradient-to-r from-[#4b83fb] via-[#60a5fa] to-transparent"
-                  initial={{ scaleX: 0, originX: 0 }}
-                  animate={{ scaleX: 1 }}
-                  transition={{ delay: 1.2, duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
-                />
-              </span>
-              <span className="text-[#4b83fb]">:</span>
-              <br className="hidden sm:block" />
-              <span className="text-slate-100/90">Web Systems Built for Scale<span className="text-[#4b83fb]">.</span></span>
-            </motion.h1>
+                <TextAnimate
+                  animation="blurInUp"
+                  by="word"
+                  duration={2}
+                  delay={0.3}
+                  staggerDelay={0.08}
+                  className="inline"
+                >
+                  {'.'}
+                </TextAnimate>
+                <br className="hidden sm:block" />
+                <TextAnimate
+                  animation="blurInUp"
+                  by="word"
+                  duration={2.2}
+                  delay={0.4}
+                  staggerDelay={0.08}
+                  className="inline text-slate-100/90"
+                >
+                  Built for Scale.
+                </TextAnimate>
+              </motion.h1>
+            </motion.div>
           </PremiumDraggable>
 
-          {/* Subtitle */}
+          {/* Subtitle with Enhanced Effects */}
           <PremiumDraggable className="w-auto" intensity="normal">
             <motion.h2
               variants={itemUp}
-              className="mt-7 max-w-3xl text-[15px] sm:text-lg md:text-[19px] leading-[1.8] text-slate-400/90 font-medium tracking-wide mx-auto px-4"
+              className="mt-7 max-w-3xl text-[15px] sm:text-lg md:text-[19px] leading-[1.8] text-slate-400/90 font-medium tracking-wide mx-auto px-4 min-h-[80px] sm:min-h-[100px]"
               style={{ fontFamily: "'DM Sans', sans-serif" }}
+              animate={{ opacity: isTransitioning ? 0 : 1 }}
+              transition={{ duration: 0.3 }}
+              key={`subtitle-${currentHeadlineIndex}`}
             >
               I don't just write code. As a full-stack engineer, I build seamless digital ecosystems designed to{' '}
-              <span className="text-slate-200 font-semibold relative">
+              <GlowingText color="blue" intensity="medium" animateGlow>
                 automate your growth
-                <span className="absolute -bottom-0.5 left-0 right-0 h-px bg-gradient-to-r from-[#4b83fb]/40 to-transparent" />
-              </span>,{' '}
-              <span className="text-slate-200 font-semibold relative">
-                capture leads
-                <span className="absolute -bottom-0.5 left-0 right-0 h-px bg-gradient-to-r from-[#4b83fb]/40 to-transparent" />
-              </span>, and{' '}
-              <span className="text-slate-200 font-semibold relative">
+              </GlowingText>
+              , capture leads, and{' '}
+              <GlowingText color="cyan" intensity="medium" animateGlow>
                 multiply your revenue
-                <span className="absolute -bottom-0.5 left-0 right-0 h-px bg-gradient-to-r from-[#4b83fb]/40 to-transparent" />
-              </span>.
+              </GlowingText>
+              .
             </motion.h2>
           </PremiumDraggable>
 
@@ -353,23 +468,24 @@ export function Hero() {
             </motion.div>
           </PremiumDraggable>
 
-          {/* Tech badges */}
+          {/* Tech badges with enhanced animations */}
           <PremiumDraggable className="w-auto" intensity="light">
             <motion.div
               variants={itemUp}
               className="mt-14 flex flex-wrap items-center justify-center gap-3"
             >
               {['React', 'Django', 'TypeScript', 'AWS'].map((badge, i) => (
-                <motion.div
-                  key={badge}
-                  initial={{ opacity: 0, scale: 0.6, y: 20 }}
-                  animate={{ opacity: 1, scale: 1, y: 0 }}
-                  transition={{ delay: 1.4 + i * 0.1, type: 'spring', stiffness: 100, damping: 15 }}
-                  className="px-6 py-2.5 rounded-full text-[11px] sm:text-[12px] font-black tracking-[0.2em] text-[#8eb4ff]/90 bg-white/[0.03] border border-white/[0.06] backdrop-blur-xl shadow-[0_4px_20px_rgba(0,0,0,0.4),inset_0_1px_1px_rgba(255,255,255,0.06)] hover:border-[#4b83fb]/30 hover:bg-[#4b83fb]/[0.06] hover:text-white transition-all duration-500 cursor-default uppercase"
-                  style={{ fontFamily: "'Space Grotesk', sans-serif" }}
-                >
-                  {badge}
-                </motion.div>
+                <FloatingElement key={badge} duration={4 + i * 0.5} distance={8} delay={i * 0.2}>
+                  <motion.div
+                    initial={{ opacity: 0, scale: 0.6, y: 20 }}
+                    animate={{ opacity: 1, scale: 1, y: 0 }}
+                    transition={{ delay: 1.4 + i * 0.1, type: 'spring', stiffness: 100, damping: 15 }}
+                    className="px-6 py-2.5 rounded-full text-[11px] sm:text-[12px] font-black tracking-[0.2em] text-[#8eb4ff]/90 bg-white/[0.03] border border-white/[0.06] backdrop-blur-xl shadow-[0_4px_20px_rgba(0,0,0,0.4),inset_0_1px_1px_rgba(255,255,255,0.06)] hover:border-[#4b83fb]/30 hover:bg-[#4b83fb]/[0.06] hover:text-white transition-all duration-500 cursor-default uppercase"
+                    style={{ fontFamily: "'Space Grotesk', sans-serif" }}
+                  >
+                    {badge}
+                  </motion.div>
+                </FloatingElement>
               ))}
             </motion.div>
           </PremiumDraggable>
@@ -397,17 +513,18 @@ export function Hero() {
         </motion.div>
       </motion.div>
 
-      {/* Corner Ornaments */}
-      <motion.div 
-        className="absolute bottom-16 right-16 text-slate-500/15 z-10 pointer-events-none hidden lg:block"
-        animate={{ rotate: 360 }}
-        transition={{ duration: 40, repeat: Infinity, ease: "linear" }}
-      >
-        <div className="relative w-14 h-14 flex items-center justify-center">
-          <div className="w-0.5 h-full bg-gradient-to-b from-transparent via-slate-400/40 to-transparent absolute rounded-full"></div>
-          <div className="w-full h-0.5 bg-gradient-to-r from-transparent via-slate-400/40 to-transparent absolute rounded-full"></div>
-        </div>
-      </motion.div>
+      {/* Corner Ornaments with Premium Animation */}
+      <FloatingElement duration={8} distance={12} className="absolute bottom-16 right-16 text-slate-500/15 z-10 pointer-events-none hidden lg:block">
+        <motion.div 
+          animate={{ rotate: 360 }}
+          transition={{ duration: 40, repeat: Infinity, ease: "linear" }}
+        >
+          <div className="relative w-14 h-14 flex items-center justify-center">
+            <div className="w-0.5 h-full bg-gradient-to-b from-transparent via-slate-400/40 to-transparent absolute rounded-full"></div>
+            <div className="w-full h-0.5 bg-gradient-to-r from-transparent via-slate-400/40 to-transparent absolute rounded-full"></div>
+          </div>
+        </motion.div>
+      </FloatingElement>
 
       {/* Top-left floating badge */}
       <motion.div
