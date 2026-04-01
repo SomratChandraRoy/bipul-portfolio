@@ -2,6 +2,7 @@ import { useRef, useState, useEffect } from 'react'
 import { motion, useInView } from 'framer-motion'
 import { stats } from '../../data/portfolio'
 import { PremiumDraggable } from '../ui/PremiumDraggable'
+import { TextAnimate } from '../ui/TextAnimate'
 
 function AnimatedCounter({ value, suffix }: { value: string; suffix?: string }) {
   const [count, setCount] = useState(0)
@@ -64,22 +65,28 @@ export function Stats() {
                 <div className="text-4xl md:text-5xl font-bold text-foreground" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
                   <AnimatedCounter value={stat.value} suffix={stat.suffix} />
                 </div>
-                <p className="mt-2 text-sm text-muted-foreground">{stat.label}</p>
+                <p className="mt-2 text-sm text-muted-foreground">
+                 <TextAnimate animation="blurInUp" by="word" duration={0.8} staggerDelay={0.05}>
+                   {stat.label}
+                 </TextAnimate>
+               </p>
               </PremiumDraggable>
             </motion.div>
           ))}
         </motion.div>
 
-        <motion.p
-          className="mt-12 text-center text-sm text-muted-foreground"
-          initial={{ opacity: 0 }}
-          animate={isInView ? { opacity: 1 } : {}}
-          transition={{ delay: 0.8, duration: 0.6 }}
-        >
-          <PremiumDraggable intensity="feather">
-          Trusted by teams at companies across 4 continents
-          </PremiumDraggable>
-        </motion.p>
+         <motion.p
+           className="mt-12 text-center text-sm text-muted-foreground"
+           initial={{ opacity: 0 }}
+           animate={isInView ? { opacity: 1 } : {}}
+           transition={{ delay: 0.8, duration: 0.6 }}
+         >
+           <PremiumDraggable intensity="feather">
+           <TextAnimate animation="blurInUp" by="word" duration={1.2} staggerDelay={0.06}>
+             Trusted by teams at companies across 4 continents
+           </TextAnimate>
+           </PremiumDraggable>
+         </motion.p>
       </div>
     </section>
   )

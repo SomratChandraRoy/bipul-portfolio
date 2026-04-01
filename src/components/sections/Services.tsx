@@ -3,6 +3,7 @@ import { motion, useInView } from 'framer-motion'
 import { Globe, Layers, Zap, LayoutDashboard, Shield, Container } from 'lucide-react'
 import { services } from '../../data/portfolio'
 import { PremiumDraggable } from '../ui/PremiumDraggable'
+import { TextAnimate } from '../ui/TextAnimate'
 
 const iconMap: Record<string, React.ElementType> = {
   Globe, Layers, Zap, LayoutDashboard, Shield, Container,
@@ -25,21 +26,29 @@ export function Services() {
           animate={isInView ? 'visible' : 'hidden'}
           variants={{ hidden: {}, visible: { transition: { staggerChildren: 0.08 } } }}
         >
-          {/* Header */}
-          <motion.div variants={fadeUp} className="mb-16">
-            <PremiumDraggable intensity="light">
-            <div className="flex items-center gap-3 mb-4">
-              <div className="h-px w-8 bg-primary" />
-              <span className="text-xs font-semibold uppercase tracking-widest text-primary font-mono">Services</span>
-            </div>
-            <h2 className="text-3xl md:text-4xl font-bold text-foreground" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
-              What I build
-            </h2>
-            <p className="mt-4 max-w-2xl text-muted-foreground leading-relaxed">
-              From MVPs to enterprise platforms, I design and build software that delivers real business value.
-            </p>
-            </PremiumDraggable>
-          </motion.div>
+           {/* Header */}
+           <motion.div variants={fadeUp} className="mb-16">
+             <PremiumDraggable intensity="light">
+             <div className="flex items-center gap-3 mb-4">
+               <div className="h-px w-8 bg-primary" />
+               <span className="text-xs font-semibold uppercase tracking-widest text-primary font-mono">
+                 <TextAnimate animation="blurInUp" by="word" duration={0.8} staggerDelay={0.06}>
+                   Services
+                 </TextAnimate>
+               </span>
+             </div>
+             <h2 className="text-3xl md:text-4xl font-bold text-foreground leading-[1.2]" style={{ fontFamily: "'Space Grotesk', sans-serif", letterSpacing: "0.02em" }}>
+               <TextAnimate animation="blurInUp" by="word" duration={1} staggerDelay={0.08}>
+                 What I build
+               </TextAnimate>
+             </h2>
+             <p className="mt-4 max-w-2xl text-muted-foreground leading-relaxed">
+               <TextAnimate animation="blurInUp" by="word" duration={1.2} delay={0.2} staggerDelay={0.04}>
+                 From MVPs to enterprise platforms, I design and build software that delivers real business value.
+               </TextAnimate>
+             </p>
+             </PremiumDraggable>
+           </motion.div>
 
           {/* Grid */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -53,12 +62,16 @@ export function Services() {
                   <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center mb-4 transition-colors duration-300 group-hover:bg-primary/20">
                     <Icon className="w-6 h-6 text-primary" />
                   </div>
-                  <h3 className="text-lg font-semibold text-foreground" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
-                    {service.title}
-                  </h3>
-                  <p className="mt-2 text-sm text-muted-foreground leading-relaxed">
-                    {service.description}
-                  </p>
+                   <h3 className="text-lg font-semibold text-foreground" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
+                     <TextAnimate animation="blurInUp" by="word" duration={0.8} staggerDelay={0.06}>
+                       {service.title}
+                     </TextAnimate>
+                   </h3>
+                   <p className="mt-2 text-sm text-muted-foreground leading-relaxed">
+                     <TextAnimate animation="blurInUp" by="word" duration={1} delay={0.1} staggerDelay={0.04}>
+                       {service.description}
+                     </TextAnimate>
+                   </p>
                 </PremiumDraggable>
                 </motion.div>
               )

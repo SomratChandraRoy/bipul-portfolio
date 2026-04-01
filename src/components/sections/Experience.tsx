@@ -3,6 +3,7 @@ import { motion, useInView } from 'framer-motion'
 import { CheckCircle2 } from 'lucide-react'
 import { experiences } from '../../data/portfolio'
 import { PremiumDraggable } from '../ui/PremiumDraggable'
+import { TextAnimate } from '../ui/TextAnimate'
 
 const fadeLeft = {
   hidden: { opacity: 0, x: -30 },
@@ -21,18 +22,24 @@ export function Experience() {
           animate={isInView ? 'visible' : 'hidden'}
           variants={{ hidden: {}, visible: { transition: { staggerChildren: 0.12 } } }}
         >
-          {/* Header */}
-          <motion.div variants={fadeLeft} className="mb-16">
-            <PremiumDraggable intensity="light">
-            <div className="flex items-center gap-3 mb-4">
-              <div className="h-px w-8 bg-primary" />
-              <span className="text-xs font-semibold uppercase tracking-widest text-primary font-mono">Journey</span>
-            </div>
-            <h2 className="text-3xl md:text-4xl font-bold text-foreground" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
-              Experience & growth
-            </h2>
-            </PremiumDraggable>
-          </motion.div>
+           {/* Header */}
+           <motion.div variants={fadeLeft} className="mb-16">
+             <PremiumDraggable intensity="light">
+             <div className="flex items-center gap-3 mb-4">
+               <div className="h-px w-8 bg-primary" />
+               <span className="text-xs font-semibold uppercase tracking-widest text-primary font-mono">
+                 <TextAnimate animation="blurInUp" by="word" duration={0.8} staggerDelay={0.06}>
+                   Journey
+                 </TextAnimate>
+               </span>
+             </div>
+             <h2 className="text-3xl md:text-4xl font-bold text-foreground leading-[1.2]" style={{ fontFamily: "'Space Grotesk', sans-serif", letterSpacing: "0.02em" }}>
+               <TextAnimate animation="blurInUp" by="word" duration={1.2} staggerDelay={0.08}>
+                 Experience & growth
+               </TextAnimate>
+             </h2>
+             </PremiumDraggable>
+           </motion.div>
 
           {/* Timeline */}
           <div className="relative">
@@ -50,27 +57,43 @@ export function Experience() {
                   <div className="absolute left-0 top-2 w-[15px] h-[15px] rounded-full border-2 border-primary bg-background z-10" />
                   <div className="absolute left-[3px] top-[7px] w-[9px] h-[9px] rounded-full bg-primary" />
 
-                  {/* Content card */}
-                  <PremiumDraggable className="w-full"><div className="glass-panel rounded-xl p-6">
-                    <span className="inline-block text-xs font-mono text-primary bg-primary/10 rounded-full px-3 py-1 mb-3">
-                      {exp.year}
-                    </span>
-                    <h3 className="text-lg font-semibold text-foreground" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
-                      {exp.title}
-                    </h3>
-                    <p className="text-sm text-muted-foreground">{exp.company}</p>
-                    <p className="text-sm text-muted-foreground mt-3 leading-relaxed">{exp.description}</p>
+                   {/* Content card */}
+                   <PremiumDraggable className="w-full"><div className="glass-panel rounded-xl p-6">
+                     <span className="inline-block text-xs font-mono text-primary bg-primary/10 rounded-full px-3 py-1 mb-3">
+                       <TextAnimate animation="blurInUp" by="word" duration={0.6} staggerDelay={0.05}>
+                         {exp.year}
+                       </TextAnimate>
+                     </span>
+                     <h3 className="text-lg font-semibold text-foreground" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
+                       <TextAnimate animation="blurInUp" by="word" duration={0.8} staggerDelay={0.06}>
+                         {exp.title}
+                       </TextAnimate>
+                     </h3>
+                     <p className="text-sm text-muted-foreground">
+                       <TextAnimate animation="blurInUp" by="word" duration={0.8} delay={0.1} staggerDelay={0.04}>
+                         {exp.company}
+                       </TextAnimate>
+                     </p>
+                     <p className="text-sm text-muted-foreground mt-3 leading-relaxed">
+                       <TextAnimate animation="blurInUp" by="word" duration={1} delay={0.15} staggerDelay={0.04}>
+                         {exp.description}
+                       </TextAnimate>
+                     </p>
 
-                    {/* Highlights */}
-                    <div className="mt-4 space-y-2">
-                      {exp.highlights.map((h) => (
-                        <div key={h} className="flex items-start gap-2">
-                          <CheckCircle2 className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" />
-                          <span className="text-sm text-muted-foreground">{h}</span>
-                        </div>
-                      ))}
-                    </div>
-                  </div></PremiumDraggable>
+                     {/* Highlights */}
+                     <div className="mt-4 space-y-2">
+                       {exp.highlights.map((h, idx) => (
+                         <div key={h} className="flex items-start gap-2">
+                           <CheckCircle2 className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" />
+                           <span className="text-sm text-muted-foreground">
+                             <TextAnimate animation="blurInUp" by="word" duration={0.8} delay={0.2 + idx * 0.05} staggerDelay={0.04}>
+                               {h}
+                             </TextAnimate>
+                           </span>
+                         </div>
+                       ))}
+                     </div>
+                   </div></PremiumDraggable>
                 </motion.div>
               ))}
             </div>

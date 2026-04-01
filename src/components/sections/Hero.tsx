@@ -267,15 +267,28 @@ export function Hero() {
   const currentHeadline = headlineVariants[currentHeadlineIndex]
 
   return (
-    <section id="hero" className="relative min-h-screen flex items-center justify-center pt-24 pb-16 overflow-hidden bg-[#020617]">
+    <section id="hero" className="relative min-h-screen flex items-center justify-center pt-32 pb-20 overflow-hidden bg-[#020617]">
       
       {/* Constellation Canvas */}
       <ConstellationNetwork />
 
-      {/* Floating particles effect - Premium layer */}
+      {/* Enhanced Floating particles effect - Premium layer with multiple orbs */}
       <motion.div className="absolute inset-0 z-[0.5] pointer-events-none">
-        <div className="absolute top-1/4 left-1/4 w-32 h-32 bg-[#4b83fb]/20 rounded-full blur-3xl animate-pulse" />
-        <div className="absolute bottom-1/3 right-1/4 w-40 h-40 bg-[#60a5fa]/15 rounded-full blur-3xl animate-pulse delay-1000" />
+        <motion.div 
+          className="absolute top-1/4 left-1/4 w-40 h-40 bg-[#4b83fb]/25 rounded-full blur-3xl"
+          animate={{ scale: [1, 1.2, 1], opacity: [0.4, 0.6, 0.4] }}
+          transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+        />
+        <motion.div 
+          className="absolute bottom-1/3 right-1/4 w-48 h-48 bg-[#60a5fa]/20 rounded-full blur-3xl"
+          animate={{ scale: [1, 1.15, 1], opacity: [0.3, 0.5, 0.3] }}
+          transition={{ duration: 10, repeat: Infinity, ease: "easeInOut", delay: 1 }}
+        />
+        <motion.div 
+          className="absolute top-2/3 left-1/3 w-32 h-32 bg-[#a8caff]/15 rounded-full blur-3xl"
+          animate={{ scale: [1, 1.25, 1], opacity: [0.2, 0.4, 0.2] }}
+          transition={{ duration: 12, repeat: Infinity, ease: "easeInOut", delay: 2 }}
+        />
       </motion.div>
 
       {/* Massive Orbital Rings with Premium Effects */}

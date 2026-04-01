@@ -3,6 +3,7 @@ import { motion, useInView } from 'framer-motion'
 import { Star } from 'lucide-react'
 import { testimonials } from '../../data/portfolio'
 import { PremiumDraggable } from '../ui/PremiumDraggable'
+import { TextAnimate } from '../ui/TextAnimate'
 
 const fadeUp = {
   hidden: { opacity: 0, y: 30 },
@@ -21,18 +22,24 @@ export function Testimonials() {
           animate={isInView ? 'visible' : 'hidden'}
           variants={{ hidden: {}, visible: { transition: { staggerChildren: 0.1 } } }}
         >
-          {/* Header */}
-          <motion.div variants={fadeUp} className="mb-16">
-            <PremiumDraggable intensity="light">
-            <div className="flex items-center gap-3 mb-4">
-              <div className="h-px w-8 bg-primary" />
-              <span className="text-xs font-semibold uppercase tracking-widest text-primary font-mono">Testimonials</span>
-            </div>
-            <h2 className="text-3xl md:text-4xl font-bold text-foreground" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
-              What people say
-            </h2>
-            </PremiumDraggable>
-          </motion.div>
+           {/* Header */}
+           <motion.div variants={fadeUp} className="mb-16">
+             <PremiumDraggable intensity="light">
+             <div className="flex items-center gap-3 mb-4">
+               <div className="h-px w-8 bg-primary" />
+               <span className="text-xs font-semibold uppercase tracking-widest text-primary font-mono">
+                 <TextAnimate animation="blurInUp" by="word" duration={0.8} staggerDelay={0.06}>
+                   Testimonials
+                 </TextAnimate>
+               </span>
+             </div>
+             <h2 className="text-3xl md:text-4xl font-bold text-foreground leading-[1.2]" style={{ fontFamily: "'Space Grotesk', sans-serif", letterSpacing: "0.02em" }}>
+               <TextAnimate animation="blurInUp" by="word" duration={1} staggerDelay={0.08}>
+                 What people say
+               </TextAnimate>
+             </h2>
+             </PremiumDraggable>
+           </motion.div>
 
           {/* Cards */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -52,18 +59,28 @@ export function Testimonials() {
                     ))}
                   </div>
                 </div>
-                <p className="text-sm text-muted-foreground leading-relaxed italic">
-                  {t.text}
-                </p>
-                <div className="mt-6 flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-xs font-bold text-primary">
-                    {t.avatar}
-                  </div>
-                  <div>
-                    <p className="text-sm font-semibold text-foreground">{t.name}</p>
-                    <p className="text-xs text-muted-foreground">{t.role}, {t.company}</p>
-                  </div>
-                </div>
+                 <p className="text-sm text-muted-foreground leading-relaxed italic">
+                   <TextAnimate animation="blurInUp" by="word" duration={1} delay={0.1} staggerDelay={0.04}>
+                     {t.text}
+                   </TextAnimate>
+                 </p>
+                 <div className="mt-6 flex items-center gap-3">
+                   <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-xs font-bold text-primary">
+                     {t.avatar}
+                   </div>
+                   <div>
+                     <p className="text-sm font-semibold text-foreground">
+                       <TextAnimate animation="blurInUp" by="word" duration={0.6} delay={0.15} staggerDelay={0.05}>
+                         {t.name}
+                       </TextAnimate>
+                     </p>
+                      <p className="text-xs text-muted-foreground">
+                        <TextAnimate animation="blurInUp" by="word" duration={0.8} delay={0.2} staggerDelay={0.04}>
+                          {`${t.role}, ${t.company}`}
+                        </TextAnimate>
+                      </p>
+                   </div>
+                 </div>
               </PremiumDraggable>
               </motion.div>
             ))}

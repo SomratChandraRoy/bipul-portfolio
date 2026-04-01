@@ -3,6 +3,8 @@ import { useRef, useState } from 'react'
 import { ExternalLink, FileText } from 'lucide-react'
 import { GitHubIcon } from '../ui/SocialIcons'
 import { PremiumDraggable } from '../ui/PremiumDraggable'
+import { TextAnimate } from '../ui/TextAnimate'
+import { GlowingText } from '../ui/GlowingText'
 import { projects, type Project } from '../../data/portfolio'
 
 /* ── Filter Tabs ─────────────────────────────────────────────────────────── */
@@ -83,11 +85,27 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
         {/* Body */}
         <div className="p-6 space-y-3">
           <span className="text-xs font-mono text-primary bg-primary/10 rounded-full px-2 py-0.5">
-            {categoryLabel[project.category]}
+            <TextAnimate animation="blurInUp" by="word" duration={0.6} staggerDelay={0.05}>
+              {categoryLabel[project.category]}
+            </TextAnimate>
           </span>
-          <h3 className="text-xl font-semibold text-foreground">{project.title}</h3>
-          <p className="text-sm text-primary font-medium">{project.impact}</p>
-          <p className="text-sm text-muted-foreground line-clamp-2">{project.description}</p>
+          <h3 className="text-xl font-semibold text-foreground">
+            <TextAnimate animation="blurInUp" by="word" duration={0.8} staggerDelay={0.06}>
+              {project.title}
+            </TextAnimate>
+          </h3>
+          <p className="text-sm text-primary font-medium">
+            <GlowingText color="blue" intensity="medium" animateGlow>
+              <TextAnimate animation="blurInUp" by="word" duration={0.8} delay={0.1} staggerDelay={0.05}>
+                {project.impact}
+              </TextAnimate>
+            </GlowingText>
+          </p>
+          <p className="text-sm text-muted-foreground line-clamp-2">
+            <TextAnimate animation="blurInUp" by="word" duration={0.8} delay={0.15} staggerDelay={0.04}>
+              {project.description}
+            </TextAnimate>
+          </p>
 
           {/* Stack chips */}
           <div className="flex flex-wrap gap-1.5">
@@ -101,28 +119,40 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
             ))}
           </div>
 
-          {/* Problem & Result — revealed on expand */}
-          <motion.div
-            initial={false}
-            animate={{ height: expanded ? 'auto' : 0, opacity: expanded ? 1 : 0 }}
-            transition={{ duration: 0.3, ease: [0.4, 0, 0.2, 1] }}
-            className="overflow-hidden"
-          >
-            <div className="pt-3 space-y-3 border-t border-border">
-              <div>
-                <span className="text-xs uppercase text-muted-foreground font-mono tracking-wider">
-                  Problem:
-                </span>
-                <p className="text-sm text-foreground mt-1">{project.problem}</p>
-              </div>
-              <div>
-                <span className="text-xs uppercase text-primary font-mono tracking-wider">
-                  Result:
-                </span>
-                <p className="text-sm text-foreground mt-1">{project.result}</p>
-              </div>
-            </div>
-          </motion.div>
+           {/* Problem & Result — revealed on expand */}
+           <motion.div
+             initial={false}
+             animate={{ height: expanded ? 'auto' : 0, opacity: expanded ? 1 : 0 }}
+             transition={{ duration: 0.3, ease: [0.4, 0, 0.2, 1] }}
+             className="overflow-hidden"
+           >
+             <div className="pt-3 space-y-3 border-t border-border">
+               <div>
+                 <span className="text-xs uppercase text-muted-foreground font-mono tracking-wider">
+                   <TextAnimate animation="blurInUp" by="word" duration={0.5} staggerDelay={0.05}>
+                     Problem:
+                   </TextAnimate>
+                 </span>
+                 <p className="text-sm text-foreground mt-1">
+                   <TextAnimate animation="blurInUp" by="word" duration={0.8} delay={0.05} staggerDelay={0.04}>
+                     {project.problem}
+                   </TextAnimate>
+                 </p>
+               </div>
+               <div>
+                 <span className="text-xs uppercase text-primary font-mono tracking-wider">
+                   <TextAnimate animation="blurInUp" by="word" duration={0.5} staggerDelay={0.05}>
+                     Result:
+                   </TextAnimate>
+                 </span>
+                 <p className="text-sm text-foreground mt-1">
+                   <TextAnimate animation="blurInUp" by="word" duration={0.8} delay={0.05} staggerDelay={0.04}>
+                     {project.result}
+                   </TextAnimate>
+                 </p>
+               </div>
+             </div>
+           </motion.div>
 
           {/* Link buttons */}
           <div className="flex items-center gap-4 pt-2">
@@ -179,33 +209,42 @@ export function Projects() {
   return (
     <section id="projects" className="relative py-24 md:py-32">
       <div className="mx-auto max-w-6xl px-6" ref={ref}>
-        {/* Section header */}
-        <motion.div
-          className="max-w-2xl"
-          initial={{ opacity: 0, y: 30 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.6, ease: [0.4, 0, 0.2, 1] }}
-        >
-          <PremiumDraggable intensity="light">
-          <div className="flex items-center gap-3 mb-4">
-            <div className="h-px w-8 bg-primary" />
-            <span className="text-xs font-mono uppercase tracking-widest text-primary">
-              Featured Work
-            </span>
-          </div>
-          <h2
-            className="text-3xl sm:text-4xl md:text-5xl font-bold text-foreground tracking-tight"
-            style={{ fontFamily: "'Space Grotesk', sans-serif" }}
-          >
-            Projects that make an{' '}
-            <span className="text-gradient-primary">impact</span>
-          </h2>
-          <p className="mt-4 text-base text-muted-foreground leading-relaxed max-w-xl">
-            Each project represents a unique challenge solved with thoughtful architecture
-            and attention to detail.
-          </p>
-          </PremiumDraggable>
-        </motion.div>
+         {/* Section header */}
+         <motion.div
+           className="max-w-2xl"
+           initial={{ opacity: 0, y: 30 }}
+           animate={isInView ? { opacity: 1, y: 0 } : {}}
+           transition={{ duration: 0.6, ease: [0.4, 0, 0.2, 1] }}
+         >
+           <PremiumDraggable intensity="light">
+           <div className="flex items-center gap-3 mb-4">
+             <div className="h-px w-8 bg-primary" />
+             <span className="text-xs font-mono uppercase tracking-widest text-primary">
+               <TextAnimate animation="blurInUp" by="word" duration={0.8} staggerDelay={0.06}>
+                 Featured Work
+               </TextAnimate>
+             </span>
+           </div>
+           <h2
+             className="text-3xl sm:text-4xl md:text-5xl font-bold text-foreground tracking-tight leading-[1.2]"
+             style={{ fontFamily: "'Space Grotesk', sans-serif", letterSpacing: "0.02em" }}
+           >
+             <TextAnimate animation="blurInUp" by="word" duration={1.2} staggerDelay={0.08}>
+               Projects that make an
+             </TextAnimate>
+             {' '}<span className="text-transparent bg-clip-text bg-gradient-to-r from-[#4b83fb] via-[#60a5fa] to-[#a8caff]">
+               <TextAnimate animation="blurInUp" by="word" duration={1.2} delay={0.1} staggerDelay={0.08}>
+                 impact
+               </TextAnimate>
+             </span>
+           </h2>
+           <p className="mt-4 text-base text-muted-foreground leading-relaxed max-w-xl">
+             <TextAnimate animation="blurInUp" by="word" duration={1.2} delay={0.2} staggerDelay={0.04}>
+               Each project represents a unique challenge solved with thoughtful architecture and attention to detail.
+             </TextAnimate>
+           </p>
+           </PremiumDraggable>
+         </motion.div>
 
         {/* Filter tabs */}
         <motion.div
@@ -214,20 +253,22 @@ export function Projects() {
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.5, delay: 0.2, ease: [0.4, 0, 0.2, 1] }}
         >
-          {filters.map((filter) => (
-            <PremiumDraggable key={filter} intensity="feather" className="w-auto">
-            <button
-              onClick={() => setActiveFilter(filter)}
-              className={`rounded-full px-4 py-1.5 text-sm font-medium transition-all duration-200 ${
-                activeFilter === filter
-                  ? 'bg-primary text-primary-foreground'
-                  : 'bg-secondary text-muted-foreground hover:text-foreground'
-              }`}
-            >
-              {filter}
-            </button>
-            </PremiumDraggable>
-          ))}
+           {filters.map((filter) => (
+             <PremiumDraggable key={filter} intensity="feather" className="w-auto">
+             <button
+               onClick={() => setActiveFilter(filter)}
+               className={`rounded-full px-4 py-1.5 text-sm font-medium transition-all duration-200 ${
+                 activeFilter === filter
+                   ? 'bg-primary text-primary-foreground'
+                   : 'bg-secondary text-muted-foreground hover:text-foreground'
+               }`}
+             >
+               <TextAnimate animation="blurInUp" by="word" duration={0.6} staggerDelay={0.05}>
+                 {filter}
+               </TextAnimate>
+             </button>
+             </PremiumDraggable>
+           ))}
         </motion.div>
 
         {/* Project grid */}
