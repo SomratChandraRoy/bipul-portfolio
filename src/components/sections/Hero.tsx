@@ -383,17 +383,17 @@ export function Hero() {
                key={`headline-${currentHeadlineIndex}`}
              >
                <motion.h1 
-                 className="text-[34px] sm:text-5xl md:text-[72px] font-extrabold tracking-[-0.015em] text-white mb-0 leading-[1.1]"
-                 style={{ fontFamily: "'Space Grotesk', sans-serif", letterSpacing: "-0.015em" }}
+                 className="text-[32px] sm:text-[48px] md:text-[80px] font-black tracking-[-0.02em] text-white mb-0 leading-[1.08]"
+                 style={{ fontFamily: "'Space Grotesk', sans-serif", letterSpacing: "-0.02em" }}
                  animate={{ opacity: isTransitioning ? 0 : 1 }}
                  transition={{ duration: 0.4 }}
                >
-                 {/* Clean, simple single animation for entire headline */}
+                 {/* Clean, simple single animation for entire headline with premium emotional feel */}
                  <TextAnimate
                    animation="blurInUp"
                    by="word"
-                   duration={2.4}
-                   staggerDelay={0.1}
+                   duration={2.8}
+                   staggerDelay={0.12}
                    className="inline"
                  >
                    {currentHeadline.mainHeadline}
@@ -406,8 +406,8 @@ export function Hero() {
            <PremiumDraggable className="w-auto" intensity="normal">
              <motion.h2
                variants={itemUp}
-               className="mt-8 max-w-3xl text-[15px] sm:text-lg md:text-[18px] leading-[1.7] text-slate-300/85 font-medium mx-auto px-4 min-h-[80px] sm:min-h-[100px]"
-               style={{ fontFamily: "'DM Sans', sans-serif", letterSpacing: "0.005em" }}
+               className="mt-10 max-w-4xl text-[14px] sm:text-[16px] md:text-[19px] leading-[1.75] text-slate-300/80 font-medium mx-auto px-4 min-h-[80px] sm:min-h-[100px]"
+               style={{ fontFamily: "'DM Sans', sans-serif", letterSpacing: "0.01em" }}
                animate={{ opacity: isTransitioning ? 0 : 1 }}
                transition={{ duration: 0.4 }}
                key={`subtitle-${currentHeadlineIndex}`}
@@ -415,9 +415,9 @@ export function Hero() {
                <TextAnimate
                  animation="blurInUp"
                  by="word"
-                 duration={2.6}
-                 delay={0.6}
-                 staggerDelay={0.06}
+                 duration={3}
+                 delay={0.8}
+                 staggerDelay={0.05}
                  className="inline"
                >
                  {currentHeadline.subHeadline}
@@ -425,42 +425,42 @@ export function Hero() {
              </motion.h2>
            </PremiumDraggable>
 
-           {/* CTA Buttons */}
+           {/* CTA Buttons - Mobile: full-width stacked, Desktop: side-by-side */}
            <PremiumDraggable className="w-auto z-50" intensity="normal">
              <motion.div
                variants={itemUp}
-               className="mt-16 flex flex-col sm:flex-row items-center justify-center gap-5"
+               className="mt-20 flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6 px-4 sm:px-0 w-full sm:w-auto"
                style={{ animationDelay: '1.2s' }}
              >
-               {/* Primary CTA */}
+               {/* Primary CTA - Full width on mobile, auto on desktop */}
                <motion.a
                  href="#projects"
-                 initial={{ opacity: 0, y: 20, filter: 'blur(10px)' }}
+                 initial={{ opacity: 0, y: 30, filter: 'blur(12px)' }}
                  whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
                  viewport={{ once: true }}
-                 transition={{ delay: 1.4, duration: 1, type: 'spring', stiffness: 70, damping: 18 }}
-                 className="group relative inline-flex items-center gap-3 px-10 py-4 rounded-full overflow-hidden text-[14px] sm:text-[15px] font-bold text-white transition-all duration-400 hover:scale-[1.05] active:scale-[0.95] shadow-[0_0_60px_rgba(75,131,251,0.25),0_12px_40px_-8px_rgba(75,131,251,0.3),inset_0_1px_2px_rgba(255,255,255,0.3)] bg-gradient-to-br from-[#4b83fb] via-[#3a6fdb] to-[#2555b5] border border-[#60a5fa]/40"
+                 transition={{ delay: 1.5, duration: 1.1, type: 'spring', stiffness: 60, damping: 20 }}
+                 className="group relative w-full sm:w-auto inline-flex items-center justify-center sm:justify-start gap-2.5 px-8 sm:px-12 py-4 sm:py-4.5 rounded-xl sm:rounded-full overflow-hidden text-[14px] sm:text-[15px] font-bold text-white transition-all duration-500 hover:scale-[1.02] sm:hover:scale-[1.06] active:scale-[0.95] sm:active:scale-[0.98] shadow-[0_0_80px_rgba(75,131,251,0.2),0_20px_60px_-10px_rgba(75,131,251,0.25),inset_0_1px_2px_rgba(255,255,255,0.2)] bg-gradient-to-br from-[#5a94ff] via-[#4b83fb] to-[#2a5ce8] border border-[#60a5fa]/50 hover:border-[#8cb5ff]/70"
                  style={{ fontFamily: "'Space Grotesk', sans-serif" }}
                >
-                 <div className="absolute inset-0 w-[200%] h-[200%] bg-gradient-to-tr from-transparent via-white/20 to-transparent skew-x-[-25deg] -translate-x-[200%] group-hover:translate-x-[100%] transition-transform duration-1200 ease-out pointer-events-none" />
+                 <div className="absolute inset-0 w-[200%] h-[200%] bg-gradient-to-tr from-transparent via-white/25 to-transparent skew-x-[-25deg] -translate-x-[200%] group-hover:translate-x-[100%] transition-transform duration-1500 ease-out pointer-events-none" />
                  <span className="relative z-10">View My Proven Systems</span>
-                 <ArrowRight className="h-4 w-4 relative z-10 transition-transform duration-400 group-hover:translate-x-2" />
+                 <ArrowRight className="h-4 w-4 relative z-10 transition-all duration-500 group-hover:translate-x-2 group-hover:scale-110" />
                </motion.a>
 
-               {/* Secondary CTA */}
+               {/* Secondary CTA - Full width on mobile, auto on desktop */}
                <motion.a
                  href="#contact"
                  data-tally-open={tallyFormId}
                  data-tally-layout="modal"
                  data-tally-width="600"
-                 initial={{ opacity: 0, y: 20, filter: 'blur(10px)' }}
+                 initial={{ opacity: 0, y: 30, filter: 'blur(12px)' }}
                  whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
                  viewport={{ once: true }}
-                 transition={{ delay: 1.6, duration: 1, type: 'spring', stiffness: 70, damping: 18 }}
-                 className="group relative inline-flex items-center gap-2.5 rounded-full border border-white/[0.12] bg-white/[0.04] backdrop-blur-2xl px-10 py-4 text-[14px] sm:text-[15px] font-bold text-slate-200 transition-all duration-400 hover:text-white hover:border-white/25 hover:bg-white/[0.08] hover:scale-[1.05] active:scale-[0.95] shadow-[0_4px_24px_rgba(0,0,0,0.3),inset_0_1px_1px_rgba(255,255,255,0.08)]"
+                 transition={{ delay: 1.75, duration: 1.1, type: 'spring', stiffness: 60, damping: 20 }}
+                 className="group relative w-full sm:w-auto inline-flex items-center justify-center sm:justify-start gap-2.5 px-8 sm:px-12 py-4 sm:py-4.5 rounded-xl sm:rounded-full border border-white/[0.15] bg-white/[0.06] hover:bg-white/[0.1] backdrop-blur-3xl text-[14px] sm:text-[15px] font-bold text-slate-100 hover:text-white transition-all duration-500 hover:scale-[1.02] sm:hover:scale-[1.06] active:scale-[0.95] sm:active:scale-[0.98] shadow-[0_8px_32px_rgba(0,0,0,0.2),inset_0_1px_2px_rgba(255,255,255,0.1)]"
                  style={{ fontFamily: "'Space Grotesk', sans-serif" }}
                >
-                 <Star className="h-4 w-4 transition-all duration-400 group-hover:rotate-[25deg] group-hover:scale-110 group-hover:text-[#60a5fa]" />
+                 <Star className="h-4 w-4 transition-all duration-500 group-hover:rotate-[30deg] group-hover:scale-125 group-hover:text-[#60a5fa]" />
                  <span className="relative z-10">Book a Strategy Call</span>
                </motion.a>
              </motion.div>
@@ -470,18 +470,18 @@ export function Hero() {
            <PremiumDraggable className="w-auto" intensity="light">
              <motion.div
                variants={itemUp}
-               className="mt-16 flex flex-wrap items-center justify-center gap-3"
+               className="mt-20 flex flex-wrap items-center justify-center gap-3"
              >
                {['React', 'Django', 'TypeScript', 'AWS'].map((badge, i) => (
                  <motion.div
                    key={badge}
-                   initial={{ opacity: 0, y: 20, filter: 'blur(10px)' }}
+                   initial={{ opacity: 0, y: 25, filter: 'blur(12px)' }}
                    whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
                    viewport={{ once: true }}
-                   transition={{ delay: 1.8 + i * 0.12, duration: 0.8, type: 'spring', stiffness: 100, damping: 15 }}
+                   transition={{ delay: 2.1 + i * 0.15, duration: 0.9, type: 'spring', stiffness: 90, damping: 16 }}
                  >
                    <div
-                     className="px-6 py-2.5 rounded-full text-[11px] sm:text-[12px] font-bold tracking-[0.15em] text-slate-300/80 bg-white/[0.04] border border-white/[0.08] backdrop-blur-xl shadow-[0_4px_24px_rgba(0,0,0,0.25),inset_0_1px_1px_rgba(255,255,255,0.08)] hover:border-[#4b83fb]/40 hover:bg-[#4b83fb]/[0.08] hover:text-white transition-all duration-500 cursor-default uppercase"
+                     className="px-5 sm:px-6 py-2.5 rounded-full text-[10px] sm:text-[11px] font-bold tracking-[0.12em] text-slate-300/70 bg-white/[0.05] border border-white/[0.1] backdrop-blur-xl shadow-[0_4px_24px_rgba(0,0,0,0.2),inset_0_1px_1px_rgba(255,255,255,0.08)] hover:border-[#60a5fa]/50 hover:bg-[#4b83fb]/[0.1] hover:text-slate-100 transition-all duration-500 cursor-default uppercase"
                      style={{ fontFamily: "'Space Grotesk', sans-serif" }}
                    >
                      {badge}
