@@ -1,17 +1,17 @@
 import { useRef } from 'react'
-import { motion, useInView } from 'framer-motion'
+import { motion, useInView, useScroll, useTransform } from 'framer-motion'
 import { CheckCircle2 } from 'lucide-react'
 import { experiences } from '../../data/portfolio'
 import { PremiumDraggable } from '../ui/PremiumDraggable'
-
-const fadeLeft = {
-  hidden: { opacity: 0, x: -30 },
-  visible: { opacity: 1, x: 0, transition: { type: 'spring' as const, stiffness: 80, damping: 18 } },
-}
+import { scrollAnimations } from '../../hooks/useScrollAnimations'
 
 export function Experience() {
   const ref = useRef(null)
   const isInView = useInView(ref, { once: true, margin: '-100px' })
+  const { scrollY } = useScroll()
+
+  // Parallax effect for timeline
+  const timelineX = useTransform(scrollY, [2000, 2600], [-40, 20])
 
   return (
     <section id="experience" className="relative py-24 md:py-32" ref={ref}>
@@ -19,10 +19,10 @@ export function Experience() {
         <motion.div
           initial="hidden"
           animate={isInView ? 'visible' : 'hidden'}
-          variants={{ hidden: {}, visible: { transition: { staggerChildren: 0.12 } } }}
+          variants={{ hidden: {}, visible: { transition: { staggerChildren: 0.12, delayChildren: 0.15 } } }}
         >
           {/* Header */}
-          <motion.div variants={fadeLeft} className="mb-16">
+          <motion.div variants={scrollAnimations.slideInLeft} className="mb-16">
             <PremiumDraggable intensity="light">
             <div className="flex items-center gap-3 mb-4">
               <div className="h-px w-8 bg-primary" />
@@ -35,15 +35,22 @@ export function Experience() {
           </motion.div>
 
           {/* Timeline */}
-          <div className="relative">
+          <motion.div className="relative" style={{ x: timelineX }}>
             {/* Vertical line */}
-            <div className="absolute left-[7px] top-0 bottom-0 w-px bg-border" />
+            <motion.div
+              className="absolute left-[7px] top-0 bottom-0 w-px bg-border"
+              initial={{ scaleY: 0 }}
+              whileInView={{ scaleY: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8, ease: 'easeOut' }}
+              style={{ originY: 0 }}
+            />
 
             <div className="space-y-10">
-              {experiences.map((exp) => (
+              {experiences.map((exp, index) => (
                 <motion.div
                   key={exp.year}
-                  variants={fadeLeft}
+                  variants={scrollAnimations.slideInLeft}
                   className="relative pl-10"
                 >
                   {/* Timeline dot */}
@@ -74,7 +81,7 @@ export function Experience() {
                 </motion.div>
               ))}
             </div>
-          </div>
+          </motion.div>
         </motion.div>
       </div>
     </section>

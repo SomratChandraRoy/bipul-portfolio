@@ -1,7 +1,10 @@
+import { useRef } from 'react'
+import { motion, useInView } from 'framer-motion'
 import { Heart } from 'lucide-react'
 import { GitHubIcon, LinkedInIcon, XIcon } from '../ui/SocialIcons'
 import { socialLinks } from '../../data/portfolio'
 import { PremiumDraggable } from '../ui/PremiumDraggable'
+import { scrollAnimations } from '../../hooks/useScrollAnimations'
 
 const quickLinks = [
   { label: 'About', href: '#about' },
@@ -17,11 +20,22 @@ const socialProfiles = [
 ]
 
 export function Footer() {
+  const ref = useRef(null)
+  const isInView = useInView(ref, { once: true, margin: '-50px' })
+
   return (
-    <footer className="border-t border-border">
+    <footer className="border-t border-border" ref={ref}>
       <div className="mx-auto max-w-6xl px-6 py-12">
         {/* Top row */}
-        <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-8">
+        <motion.div
+          className="flex flex-col md:flex-row justify-between items-start md:items-center gap-8"
+          initial="hidden"
+          animate={isInView ? 'visible' : 'hidden'}
+          variants={{
+            hidden: {},
+            visible: { transition: { staggerChildren: 0.12, delayChildren: 0.1 } }
+          }}
+        >
           {/* Logo + tagline */}
           <PremiumDraggable className="w-auto">
           <div>
@@ -68,7 +82,7 @@ export function Footer() {
             })}
           </div>
           </PremiumDraggable>
-        </div>
+        </motion.div>
 
         {/* Bottom row */}
         <div className="mt-8 pt-8 border-t border-border/50 flex flex-col sm:flex-row justify-between items-center gap-4">

@@ -1,17 +1,17 @@
 import { useRef } from 'react'
-import { motion, useInView } from 'framer-motion'
+import { motion, useInView, useScroll, useTransform } from 'framer-motion'
 import { Star } from 'lucide-react'
 import { testimonials } from '../../data/portfolio'
 import { PremiumDraggable } from '../ui/PremiumDraggable'
-
-const fadeUp = {
-  hidden: { opacity: 0, y: 30 },
-  visible: { opacity: 1, y: 0, transition: { type: 'spring' as const, stiffness: 80, damping: 18 } },
-}
+import { scrollAnimations } from '../../hooks/useScrollAnimations'
 
 export function Testimonials() {
   const ref = useRef(null)
   const isInView = useInView(ref, { once: true, margin: '-100px' })
+  const { scrollY } = useScroll()
+
+  // Parallax effect for testimonials
+  const testimonialsY = useTransform(scrollY, [3600, 4200], [80, -40])
 
   return (
     <section id="testimonials" className="relative py-24 md:py-32" ref={ref}>
@@ -19,10 +19,10 @@ export function Testimonials() {
         <motion.div
           initial="hidden"
           animate={isInView ? 'visible' : 'hidden'}
-          variants={{ hidden: {}, visible: { transition: { staggerChildren: 0.1 } } }}
+          variants={{ hidden: {}, visible: { transition: { staggerChildren: 0.12, delayChildren: 0.15 } } }}
         >
           {/* Header */}
-          <motion.div variants={fadeUp} className="mb-16">
+          <motion.div variants={scrollAnimations.fadeInUp} className="mb-16">
             <PremiumDraggable intensity="light">
             <div className="flex items-center gap-3 mb-4">
               <div className="h-px w-8 bg-primary" />
@@ -35,11 +35,11 @@ export function Testimonials() {
           </motion.div>
 
           {/* Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <motion.div className="grid grid-cols-1 md:grid-cols-3 gap-6" style={{ y: testimonialsY }}>
             {testimonials.map((t) => (
               <motion.div
                 key={t.name}
-                variants={fadeUp}
+                variants={scrollAnimations.scaleInUp}
               >
               <PremiumDraggable className="glass-panel rounded-xl p-6 transition-all duration-300 hover:-translate-y-1 hover:border-primary/20">
                 <div className="flex items-center justify-between mb-3">
@@ -67,7 +67,7 @@ export function Testimonials() {
               </PremiumDraggable>
               </motion.div>
             ))}
-          </div>
+          </motion.div>
         </motion.div>
       </div>
     </section>

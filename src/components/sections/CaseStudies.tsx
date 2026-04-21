@@ -1,13 +1,18 @@
-import { motion, useInView } from 'framer-motion'
+import { motion, useInView, useScroll, useTransform } from 'framer-motion'
 import { useRef } from 'react'
 import { caseStudies } from '../../data/portfolio'
 import { PremiumDraggable } from '../ui/PremiumDraggable'
+import { scrollAnimations } from '../../hooks/useScrollAnimations'
 
 /* ── Case Studies Section ────────────────────────────────────────────────── */
 
 export function CaseStudies() {
   const ref = useRef(null)
   const isInView = useInView(ref, { once: true, margin: '-100px' })
+  const { scrollY } = useScroll()
+
+  // Parallax effect for case studies grid
+  const cardsY = useTransform(scrollY, [3200, 3800], [100, -50])
 
   return (
     <section id="case-studies" className="relative py-24 md:py-32">
@@ -37,14 +42,14 @@ export function CaseStudies() {
         </motion.div>
 
         {/* Cards grid */}
-        <div className="mt-12 grid grid-cols-1 md:grid-cols-3 gap-6">
+        <motion.div className="mt-12 grid grid-cols-1 md:grid-cols-3 gap-6" style={{ y: cardsY }}>
           {caseStudies.map((study, i) => (
             <motion.div
               key={study.id}
-              initial={{ opacity: 0, y: 40 }}
-              whileInView={{ opacity: 1, y: 0 }}
+              initial={{ opacity: 0, y: 40, scale: 0.95 }}
+              whileInView={{ opacity: 1, y: 0, scale: 1 }}
               viewport={{ once: true, margin: '-60px' }}
-              transition={{ duration: 0.5, delay: i * 0.12, ease: [0.4, 0, 0.2, 1] }}
+              transition={{ type: 'spring', stiffness: 70, damping: 16, delay: i * 0.15 }}
             >
               <PremiumDraggable className="glass-panel rounded-xl p-6 border border-border/60 transition-colors duration-300 hover:border-primary/30 group">
                 <span className="text-xs font-mono text-primary uppercase tracking-wider">
@@ -79,7 +84,7 @@ export function CaseStudies() {
               </PremiumDraggable>
             </motion.div>
           ))}
-        </div>
+        </motion.div>
       </div>
     </section>
   )

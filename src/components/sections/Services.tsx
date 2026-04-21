@@ -1,21 +1,21 @@
 import { useRef } from 'react'
-import { motion, useInView } from 'framer-motion'
+import { motion, useInView, useScroll, useTransform } from 'framer-motion'
 import { Globe, Layers, Zap, LayoutDashboard, Shield, Container } from 'lucide-react'
 import { services } from '../../data/portfolio'
 import { PremiumDraggable } from '../ui/PremiumDraggable'
+import { scrollAnimations } from '../../hooks/useScrollAnimations'
 
 const iconMap: Record<string, React.ElementType> = {
   Globe, Layers, Zap, LayoutDashboard, Shield, Container,
 }
 
-const fadeUp = {
-  hidden: { opacity: 0, y: 30 },
-  visible: { opacity: 1, y: 0, transition: { type: 'spring' as const, stiffness: 80, damping: 18 } },
-}
-
 export function Services() {
   const ref = useRef(null)
   const isInView = useInView(ref, { once: true, margin: '-100px' })
+  const { scrollY } = useScroll()
+
+  // Parallax effect for services grid
+  const servicesY = useTransform(scrollY, [1400, 1900], [80, -40])
 
   return (
     <section id="services" className="relative py-24 md:py-32" ref={ref}>
@@ -23,10 +23,10 @@ export function Services() {
         <motion.div
           initial="hidden"
           animate={isInView ? 'visible' : 'hidden'}
-          variants={{ hidden: {}, visible: { transition: { staggerChildren: 0.08 } } }}
+          variants={{ hidden: {}, visible: { transition: { staggerChildren: 0.1, delayChildren: 0.15 } } }}
         >
           {/* Header */}
-          <motion.div variants={fadeUp} className="mb-16">
+          <motion.div variants={scrollAnimations.fadeInUp} className="mb-16">
             <PremiumDraggable intensity="light">
             <div className="flex items-center gap-3 mb-4">
               <div className="h-px w-8 bg-primary" />
@@ -42,11 +42,11 @@ export function Services() {
           </motion.div>
 
           {/* Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {services.map((service) => {
+          <motion.div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6" style={{ y: servicesY }}>
+            {services.map((service, index) => {
               const Icon = iconMap[service.icon] || Globe
               return (
-                <motion.div key={service.title} variants={fadeUp} className="h-full">
+                <motion.div key={service.title} variants={scrollAnimations.scaleInUp} className="h-full">
                 <PremiumDraggable
                   className="service-card-glow group relative overflow-hidden glass-panel rounded-xl p-6 transition-all duration-300 hover:-translate-y-1 hover:border-primary/20 h-full"
                 >
@@ -63,7 +63,7 @@ export function Services() {
                 </motion.div>
               )
             })}
-          </div>
+          </motion.div>
         </motion.div>
       </div>
     </section>

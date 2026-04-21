@@ -1,20 +1,18 @@
 import { useRef } from "react";
-import { motion, useInView } from "framer-motion";
+import { motion, useInView, useScroll, useTransform } from "framer-motion";
 import { Download } from "lucide-react";
 import { PremiumDraggable } from "../ui/PremiumDraggable";
+import { scrollAnimations } from "../../hooks/useScrollAnimations";
 
-const fadeUp = {
-  hidden: { opacity: 0, y: 30 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: { type: "spring" as const, stiffness: 80, damping: 18 },
-  },
-};
+const fadeUp = scrollAnimations.fadeInUp;
 
 export function About() {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
+  const { scrollY } = useScroll();
+
+  // Parallax effect for left image
+  const imageY = useTransform(scrollY, [400, 900], [80, -60]);
 
   return (
     <section id="about" className="relative py-24 md:py-32" ref={ref}>
@@ -24,7 +22,7 @@ export function About() {
           animate={isInView ? "visible" : "hidden"}
           variants={{
             hidden: {},
-            visible: { transition: { staggerChildren: 0.1 } },
+            visible: { transition: { staggerChildren: 0.12, delayChildren: 0.15 } },
           }}>
           {/* Section header */}
           <motion.div variants={fadeUp} className="mb-16">
@@ -45,7 +43,7 @@ export function About() {
 
           <div className="grid md:grid-cols-2 gap-12 md:gap-16 items-start">
             {/* Left: abstract profile visual */}
-            <motion.div variants={fadeUp} className="relative">
+            <motion.div variants={scrollAnimations.scaleInUp} style={{ y: imageY }} className="relative">
               <PremiumDraggable>
                 <div className="aspect-square rounded-2xl glass-panel p-6 md:p-10 flex items-center justify-center overflow-hidden relative">
                   {/* Decorative background elements */}
@@ -75,7 +73,7 @@ export function About() {
             {/* Right: story text */}
             <div className="space-y-6">
               <motion.p
-                variants={fadeUp}
+                variants={scrollAnimations.fadeInUp}
                 className="text-muted-foreground leading-relaxed">
                 <PremiumDraggable intensity="light">
                   I&apos;m a senior full-stack developer based in{" "}
@@ -93,7 +91,7 @@ export function About() {
               </motion.p>
 
               <motion.p
-                variants={fadeUp}
+                variants={scrollAnimations.fadeInUp}
                 className="text-muted-foreground leading-relaxed">
                 I specialize in the{" "}
                 <span className="text-foreground font-medium">
@@ -108,7 +106,7 @@ export function About() {
               </motion.p>
 
               <motion.p
-                variants={fadeUp}
+                variants={scrollAnimations.fadeInUp}
                 className="text-muted-foreground leading-relaxed">
                 When I&apos;m not coding, I&apos;m mentoring developers,
                 contributing to open source, or exploring the latest in{" "}
@@ -119,7 +117,7 @@ export function About() {
                 both the code and the people who use it.
               </motion.p>
 
-              <motion.div variants={fadeUp} className="pt-4">
+              <motion.div variants={scrollAnimations.fadeInUp} className="pt-4">
                 <PremiumDraggable intensity="light" className="w-auto">
                   <a
                     href="#"
