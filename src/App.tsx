@@ -1,7 +1,5 @@
 import { useState, useEffect, useCallback } from "react";
 import { Navbar } from "./components/layout/Navbar";
-import { EntropyBackground } from "./components/ui/EntropyBackground";
-import { DottedSurface } from "./components/ui/DottedSurface";
 import { CustomCursor } from "./components/ui/CustomCursor";
 import { SectionCinematicReveal } from "./components/ui/SectionCinematicReveal";
 import { useMediaQuery } from "react-responsive";
@@ -57,7 +55,22 @@ function App() {
   return (
     <div className="min-h-screen bg-background text-foreground relative">
       {isDesktop && <CustomCursor />}
-      {isDesktop ? <EntropyBackground /> : <DottedSurface />}
+      <div
+        aria-hidden
+        className="fixed inset-0 z-0 pointer-events-none"
+        style={{
+          background:
+            "radial-gradient(120% 70% at 50% 0%, rgba(75,131,251,0.12) 0%, rgba(75,131,251,0.05) 32%, rgba(2,6,23,0) 72%)",
+        }}
+      />
+      <div
+        aria-hidden
+        className="fixed inset-0 z-0 pointer-events-none"
+        style={{
+          background:
+            "linear-gradient(180deg, rgba(2,6,23,0.2) 0%, rgba(2,6,23,0) 30%, rgba(2,6,23,0.1) 100%)",
+        }}
+      />
       <Navbar
         scrollProgress={scrollProgress}
         activeSection={activeSection}
@@ -83,17 +96,17 @@ function App() {
         <SectionCinematicReveal tone="float">
           <TechStack />
         </SectionCinematicReveal>
-        <SectionCinematicReveal tone="glide-left">
+        <SectionCinematicReveal tone="vault">
           <Experience />
         </SectionCinematicReveal>
         <SectionCinematicReveal tone="glide-right">
           <Testimonials />
         </SectionCinematicReveal>
-        <SectionCinematicReveal tone="curtain">
+        <SectionCinematicReveal tone="depth">
           <Contact />
         </SectionCinematicReveal>
       </main>
-      <SectionCinematicReveal tone="depth" className="relative z-10">
+      <SectionCinematicReveal tone="vault" className="relative z-10">
         <Footer />
       </SectionCinematicReveal>
     </div>
