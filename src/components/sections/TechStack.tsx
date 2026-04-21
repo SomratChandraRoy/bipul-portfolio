@@ -1,12 +1,8 @@
 import { useRef } from 'react'
-import { motion, useInView } from 'framer-motion'
+import { motion, useInView, useScroll, useTransform } from 'framer-motion'
 import { techStack } from '../../data/portfolio'
 import { PremiumDraggable } from '../ui/PremiumDraggable'
-
-const fadeUp = {
-  hidden: { opacity: 0, y: 30 },
-  visible: { opacity: 1, y: 0, transition: { type: 'spring' as const, stiffness: 80, damping: 18 } },
-}
+import { scrollAnimations } from '../../hooks/useScrollAnimations'
 
 const categories = [
   { label: 'Frontend', items: techStack.frontend },
@@ -19,6 +15,10 @@ const categories = [
 export function TechStack() {
   const ref = useRef(null)
   const isInView = useInView(ref, { once: true, margin: '-100px' })
+  const { scrollY } = useScroll()
+
+  // Parallax effect for tech stack grid
+  const gridY = useTransform(scrollY, [2800, 3300], [80, -40])
 
   return (
     <section id="tech-stack" className="relative py-24 md:py-32" ref={ref}>
@@ -26,10 +26,10 @@ export function TechStack() {
         <motion.div
           initial="hidden"
           animate={isInView ? 'visible' : 'hidden'}
-          variants={{ hidden: {}, visible: { transition: { staggerChildren: 0.08 } } }}
+          variants={{ hidden: {}, visible: { transition: { staggerChildren: 0.1, delayChildren: 0.15 } } }}
         >
           {/* Header */}
-          <motion.div variants={fadeUp} className="mb-16">
+          <motion.div variants={scrollAnimations.fadeInUp} className="mb-16">
             <PremiumDraggable intensity="light">
             <div className="flex items-center gap-3 mb-4">
               <div className="h-px w-8 bg-primary" />
@@ -45,9 +45,9 @@ export function TechStack() {
           </motion.div>
 
           {/* Category grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <motion.div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" style={{ y: gridY }}>
             {categories.map((cat) => (
-              <motion.div key={cat.label} variants={fadeUp}>
+              <motion.div key={cat.label} variants={scrollAnimations.scaleInUp}>
                 <h3 className="text-sm font-semibold text-foreground uppercase tracking-wider mb-3" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
                   {cat.label}
                 </h3>
@@ -64,7 +64,7 @@ export function TechStack() {
                 </div>
               </motion.div>
             ))}
-          </div>
+          </motion.div>
         </motion.div>
       </div>
     </section>

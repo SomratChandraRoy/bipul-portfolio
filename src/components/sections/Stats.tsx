@@ -1,7 +1,8 @@
 import { useRef, useState, useEffect } from 'react'
-import { motion, useInView } from 'framer-motion'
+import { motion, useInView, useScroll, useTransform } from 'framer-motion'
 import { stats } from '../../data/portfolio'
 import { PremiumDraggable } from '../ui/PremiumDraggable'
+import { scrollAnimations } from '../../hooks/useScrollAnimations'
 
 function AnimatedCounter({ value, suffix }: { value: string; suffix?: string }) {
   const [count, setCount] = useState(0)
@@ -38,27 +39,29 @@ function AnimatedCounter({ value, suffix }: { value: string; suffix?: string }) 
 export function Stats() {
   const ref = useRef(null)
   const isInView = useInView(ref, { once: true, margin: '-100px' })
+  const { scrollY } = useScroll()
+
+  // Parallax effect for stats
+  const statsScale = useTransform(scrollY, [300, 600], [0.95, 1])
 
   return (
     <section id="stats" className="relative py-20 border-t border-b border-border/50" ref={ref}>
       <div className="mx-auto max-w-6xl px-6">
         <motion.div
           className="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-12"
+          style={{ scale: statsScale }}
           initial="hidden"
           animate={isInView ? 'visible' : 'hidden'}
           variants={{
             hidden: {},
-            visible: { transition: { staggerChildren: 0.12 } },
+            visible: { transition: { staggerChildren: 0.15, delayChildren: 0.1 } },
           }}
         >
           {stats.map((stat) => (
             <motion.div
               key={stat.label}
               className="text-center"
-              variants={{
-                hidden: { opacity: 0, y: 20 },
-                visible: { opacity: 1, y: 0, transition: { type: 'spring' as const, stiffness: 80, damping: 18 } },
-              }}
+              variants={scrollAnimations.scaleIn}
             >
               <PremiumDraggable>
                 <div className="text-4xl md:text-5xl font-bold text-foreground" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>

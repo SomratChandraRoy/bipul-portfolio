@@ -1,9 +1,10 @@
-import { motion, useInView } from 'framer-motion'
+import { motion, useInView, useScroll, useTransform } from 'framer-motion'
 import { useRef, useState } from 'react'
 import { ExternalLink, FileText } from 'lucide-react'
 import { GitHubIcon } from '../ui/SocialIcons'
 import { PremiumDraggable } from '../ui/PremiumDraggable'
 import { projects, type Project } from '../../data/portfolio'
+import { scrollAnimations } from '../../hooks/useScrollAnimations'
 
 /* ── Filter Tabs ─────────────────────────────────────────────────────────── */
 
@@ -50,10 +51,10 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 40 }}
-      whileInView={{ opacity: 1, y: 0 }}
+      initial={{ opacity: 0, y: 40, scale: 0.95 }}
+      whileInView={{ opacity: 1, y: 0, scale: 1 }}
       viewport={{ once: true, margin: '-60px' }}
-      transition={{ duration: 0.5, delay: index * 0.1, ease: [0.4, 0, 0.2, 1] }}
+      transition={{ type: 'spring', stiffness: 70, damping: 16, delay: index * 0.15 }}
       style={{
         perspective: 800,
       }}
@@ -169,6 +170,10 @@ export function Projects() {
   const [activeFilter, setActiveFilter] = useState<Filter>('All')
   const ref = useRef(null)
   const isInView = useInView(ref, { once: true, margin: '-100px' })
+  const { scrollY } = useScroll()
+
+  // Parallax effect for section header
+  const headerY = useTransform(scrollY, [800, 1200], [60, -40])
 
   const featured = projects.filter((p) => p.featured)
   const filtered =
@@ -185,6 +190,7 @@ export function Projects() {
           initial={{ opacity: 0, y: 30 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6, ease: [0.4, 0, 0.2, 1] }}
+          style={{ y: headerY }}
         >
           <PremiumDraggable intensity="light">
           <div className="flex items-center gap-3 mb-4">
@@ -210,12 +216,25 @@ export function Projects() {
         {/* Filter tabs */}
         <motion.div
           className="mt-10 flex flex-wrap gap-2"
-          initial={{ opacity: 0, y: 20 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.5, delay: 0.2, ease: [0.4, 0, 0.2, 1] }}
+          initial="hidden"
+          animate={isInView ? "visible" : "hidden"}
+          variants={{
+            hidden: { opacity: 0 },
+            visible: {
+              opacity: 1,
+              transition: {
+                staggerChildren: 0.08,
+                delayChildren: 0.2,
+              },
+            },
+          }}
         >
           {filters.map((filter) => (
-            <PremiumDraggable key={filter} intensity="feather" className="w-auto">
+            <motion.div
+              key={filter}
+              variants={scrollAnimations.badgePulse}
+            >
+            <PremiumDraggable intensity="feather" className="w-auto">
             <button
               onClick={() => setActiveFilter(filter)}
               className={`rounded-full px-4 py-1.5 text-sm font-medium transition-all duration-200 ${
@@ -227,6 +246,7 @@ export function Projects() {
               {filter}
             </button>
             </PremiumDraggable>
+            </motion.div>
           ))}
         </motion.div>
 

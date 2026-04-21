@@ -1,18 +1,18 @@
 import { useRef } from 'react'
-import { motion, useInView } from 'framer-motion'
+import { motion, useInView, useScroll, useTransform } from 'framer-motion'
 import { Mail, MapPin, Send } from 'lucide-react'
 import { GitHubIcon, LinkedInIcon, XIcon } from '../ui/SocialIcons'
 import { socialLinks, tallyFormId } from '../../data/portfolio'
 import { PremiumDraggable } from '../ui/PremiumDraggable'
-
-const fadeUp = {
-  hidden: { opacity: 0, y: 30 },
-  visible: { opacity: 1, y: 0, transition: { type: 'spring' as const, stiffness: 80, damping: 18 } },
-}
+import { scrollAnimations } from '../../hooks/useScrollAnimations'
 
 export function Contact() {
   const ref = useRef(null)
   const isInView = useInView(ref, { once: true, margin: '-100px' })
+  const { scrollY } = useScroll()
+
+  // Parallax effect for contact section
+  const contentY = useTransform(scrollY, [4000, 4600], [100, -50])
 
   const socialProfiles = [
     { icon: GitHubIcon, href: socialLinks.github, label: 'GitHub' },
@@ -26,10 +26,10 @@ export function Contact() {
         <motion.div
           initial="hidden"
           animate={isInView ? 'visible' : 'hidden'}
-          variants={{ hidden: {}, visible: { transition: { staggerChildren: 0.1 } } }}
+          variants={{ hidden: {}, visible: { transition: { staggerChildren: 0.12, delayChildren: 0.15 } } }}
         >
           {/* Header */}
-          <motion.div variants={fadeUp} className="mb-16">
+          <motion.div variants={scrollAnimations.fadeInUp} className="mb-16">
             <PremiumDraggable intensity="light">
             <div className="flex items-center gap-3 mb-4">
               <div className="h-px w-8 bg-primary" />
@@ -44,9 +44,9 @@ export function Contact() {
             </PremiumDraggable>
           </motion.div>
 
-          <div className="grid md:grid-cols-2 gap-12 items-start">
+          <motion.div className="grid md:grid-cols-2 gap-12 items-start" style={{ y: contentY }}>
             {/* Left: info */}
-            <motion.div variants={fadeUp} className="space-y-6">
+            <motion.div variants={scrollAnimations.fadeInLeft} className="space-y-6">
               <PremiumDraggable><div className="glass-panel rounded-xl p-6 flex items-start gap-4">
                 <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0">
                   <Mail className="w-5 h-5 text-primary" />
@@ -91,7 +91,7 @@ export function Contact() {
             </motion.div>
 
             {/* Right: Tally contact form */}
-            <motion.div variants={fadeUp}>
+            <motion.div variants={scrollAnimations.fadeInRight}>
               <PremiumDraggable><div className="glass-panel rounded-xl p-8 md:p-10 text-center space-y-6">
                 <div className="w-16 h-16 rounded-2xl bg-primary/10 flex items-center justify-center mx-auto">
                   <Send className="w-7 h-7 text-primary" />
@@ -117,7 +117,7 @@ export function Contact() {
                 </div>
               </div></PremiumDraggable>
             </motion.div>
-          </div>
+          </motion.div>
         </motion.div>
       </div>
     </section>

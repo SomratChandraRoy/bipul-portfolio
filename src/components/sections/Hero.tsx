@@ -1,8 +1,9 @@
 import { useEffect, useRef } from 'react'
-import { motion } from 'framer-motion'
+import { motion, useScroll, useTransform } from 'framer-motion'
 import { ChevronDown, ArrowRight, Star } from 'lucide-react'
 import { tallyFormId } from '../../data/portfolio'
 import { PremiumDraggable } from '../ui/PremiumDraggable'
+import { scrollAnimations } from '../../hooks/useScrollAnimations'
 
 
 /* ── Animation Orchestration ─────────────────────────────────────────────── */
@@ -15,23 +16,17 @@ const container = {
   },
 }
 
-const itemUp = {
-  hidden: { opacity: 0, y: 40, filter: 'blur(8px)' },
+const itemUp = scrollAnimations.fadeInUp
+
+const itemScale = scrollAnimations.scaleIn
+
+const itemDown = {
+  hidden: { opacity: 0, y: -40, filter: 'blur(8px)' },
   visible: {
     opacity: 1,
     y: 0,
     filter: 'blur(0px)',
     transition: { type: 'spring' as const, stiffness: 70, damping: 18, mass: 0.8 },
-  },
-}
-
-const itemScale = {
-  hidden: { opacity: 0, scale: 0.8, filter: 'blur(12px)' },
-  visible: {
-    opacity: 1,
-    scale: 1,
-    filter: 'blur(0px)',
-    transition: { type: 'spring' as const, stiffness: 60, damping: 16, mass: 1 },
   },
 }
 
@@ -212,14 +207,24 @@ function ConstellationNetwork() {
 /* ── Hero Section ───────────────────────────────────────────────────────── */
 
 export function Hero() {
-  return (
-    <section id="hero" className="relative min-h-screen flex items-center justify-center pt-24 pb-16 overflow-hidden bg-[#020617]">
-      
-      {/* Constellation Canvas */}
-      <ConstellationNetwork />
+  const sectionRef = useRef<HTMLElement>(null)
+  const { scrollY } = useScroll()
 
-      {/* Massive Orbital Rings */}
-      <div className="absolute inset-0 z-[1] flex items-center justify-center pointer-events-none mix-blend-screen">
+  // Parallax effects for background elements
+  const bgY = useTransform(scrollY, [0, 500], [0, 150])
+  const ringScale = useTransform(scrollY, [0, 600], [1, 1.15])
+  const overlayOpacity = useTransform(scrollY, [0, 400], [1, 0.6])
+
+  return (
+    <section id="hero" className="relative min-h-screen flex items-center justify-center pt-24 pb-16 overflow-hidden bg-[#020617]" ref={sectionRef}>
+      
+      {/* Constellation Canvas with Parallax */}
+      <motion.div style={{ y: bgY }}>
+        <ConstellationNetwork />
+      </motion.div>
+
+      {/* Massive Orbital Rings with Parallax Scale */}
+      <motion.div className="absolute inset-0 z-[1] flex items-center justify-center pointer-events-none mix-blend-screen" style={{ opacity: overlayOpacity }}>
         <motion.div 
           className="absolute w-[130vw] h-[130vw] max-w-[1500px] max-h-[1500px] rounded-full border border-[#4b83fb]/8"
           style={{ boxShadow: '0 0 180px rgba(75, 131, 251, 0.08), inset 0 0 180px rgba(75, 131, 251, 0.08)' }}
@@ -245,7 +250,7 @@ export function Hero() {
         
         {/* Bottom-left accent glow */}
         <div className="absolute -bottom-[20%] -left-[10%] w-[50vw] h-[50vw] max-w-[500px] max-h-[500px] bg-[radial-gradient(ellipse_at_center,rgba(100,160,255,0.05)_0%,transparent_60%)] rounded-full blur-3xl" />
-      </div>
+      </motion.div>
 
       {/* Side accent lines */}
       <div className="absolute top-0 left-0 w-px h-full bg-gradient-to-b from-transparent via-[#4b83fb]/10 to-transparent pointer-events-none z-[2] hidden lg:block" style={{ left: '8%' }} />
