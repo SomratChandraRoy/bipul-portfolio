@@ -7,7 +7,7 @@ import {
   useAnimationControls,
   useVelocity,
 } from 'framer-motion'
-import { ReactNode, useRef, useState, useCallback } from 'react'
+import { ReactNode, useRef, useState, useCallback, useEffect } from 'react'
 import { cn } from '../../lib/utils'
 
 /* ─────────────────────────────────────────────────────────────
@@ -93,8 +93,17 @@ export function PremiumDraggable({
 }: PremiumDraggableProps) {
   const ref = useRef<HTMLDivElement>(null)
   const [isDragging, setIsDragging] = useState(false)
+  const [dragEnabled, setDragEnabled] = useState(false)
   const controls = useAnimationControls()
   const cfg = presets[intensity]
+
+  useEffect(() => {
+    const mediaQuery = window.matchMedia('(pointer: fine)')
+    const updateDragAvailability = () => setDragEnabled(mediaQuery.matches)
+    updateDragAvailability()
+    mediaQuery.addEventListener('change', updateDragAvailability)
+    return () => mediaQuery.removeEventListener('change', updateDragAvailability)
+  }, [])
 
   /* ── Drag offset tracking ── */
   const dragX = useMotionValue(0)
@@ -188,7 +197,7 @@ export function PremiumDraggable({
     <motion.div
       {...rest}
       ref={ref}
-      drag
+      drag={dragEnabled}
       dragSnapToOrigin
       dragElastic={cfg.elastic}
       dragMomentum={false}
@@ -202,24 +211,32 @@ export function PremiumDraggable({
         rotateY,
         skewX,
         skewY,
-        scaleX: isDragging ? jellyScaleX : undefined,
-        scaleY: isDragging ? jellyScaleY : undefined,
-        touchAction: 'none',
+        scaleX: isDragging && dragEnabled ? jellyScaleX : undefined,
+        scaleY: isDragging && dragEnabled ? jellyScaleY : undefined,
+        touchAction: dragEnabled ? 'none' : 'pan-y',
         perspective: 1000,
         transformStyle: 'preserve-3d' as const,
       }}
-      whileHover={{
-        cursor: 'grab',
-        scale: 1.01,
-        ...(typeof whileHover === 'object' ? whileHover : {}),
-      }}
-      whileDrag={{
-        scale: cfg.scaleUp,
-        cursor: 'grabbing',
-        filter: `brightness(${cfg.brighten})`,
-        boxShadow: cfg.glowDrag,
-        transition: { type: 'spring', stiffness: 400, damping: 25 },
-      }}
+      whileHover={
+        dragEnabled
+          ? {
+              cursor: 'grab',
+              scale: 1.01,
+              ...(typeof whileHover === 'object' ? whileHover : {}),
+            }
+          : undefined
+      }
+      whileDrag={
+        dragEnabled
+          ? {
+              scale: cfg.scaleUp,
+              cursor: 'grabbing',
+              filter: `brightness(${cfg.brighten})`,
+              boxShadow: cfg.glowDrag,
+              transition: { type: 'spring', stiffness: 400, damping: 25 },
+            }
+          : undefined
+      }
       transition={{
         type: 'spring',
         stiffness: cfg.stiffness,

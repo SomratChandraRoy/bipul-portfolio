@@ -350,6 +350,25 @@ body,
   transform: scaleX(1);
 }
 
+/* ── Desktop CTA Neumorphism Hover ───────────────────────────────────────── */
+@media (hover: hover) and (pointer: fine) and (min-width: 1024px) {
+  .cta-neumorphism {
+    transition:
+      transform 320ms cubic-bezier(0.22, 1, 0.36, 1),
+      box-shadow 320ms cubic-bezier(0.22, 1, 0.36, 1),
+      color 280ms ease;
+  }
+
+  .cta-neumorphism:hover {
+    transform: translateY(-2px) scale(1.03);
+    box-shadow:
+      -1px -1px 5px rgba(255, 255, 255, 0.65),
+      1px 1px 6px rgba(0, 0, 0, 0.35),
+      inset -2px -2px 5px rgba(255, 255, 255, 0.35),
+      inset 2px 2px 4px rgba(0, 0, 0, 0.32);
+  }
+}
+
 /* ── Reduced Motion ────────────────────────────────────────────────────────── */
 @media (prefers-reduced-motion: reduce) {
   *,
