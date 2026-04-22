@@ -19,6 +19,10 @@ module.exports = {
         DEFAULT: 'var(--radius-md)',
       },
 
+      spacing: {
+        '4.5': '1.125rem',
+      },
+
       // ── Box shadows — must match @blinkdotnew/ui's tailwind.config.ts ────
       boxShadow: {
         sm:      'var(--shadow-sm)',

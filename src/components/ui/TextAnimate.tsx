@@ -87,9 +87,10 @@ export function TextAnimate({
           style={{
             display: by === 'line' ? 'block' : 'inline-block',
             whiteSpace: by === 'word' ? 'nowrap' : 'normal',
+            marginRight: by === 'word' && index < segments.length - 1 ? '0.34em' : undefined,
           }}
         >
-          {by === 'word' ? segment + (index < segments.length - 1 ? ' ' : '') : segment}
+          {segment}
           {by === 'line' && index < segments.length - 1 && <br />}
         </motion.span>
       ))}
