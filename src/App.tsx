@@ -14,11 +14,12 @@ import { TechStack } from "./components/sections/TechStack";
 import { Experience } from "./components/sections/Experience";
 import { Testimonials } from "./components/sections/Testimonials";
 import { Contact } from "./components/sections/Contact";
+import { AuroraHero } from "./components/sections/AuroraHero";
 import { Footer } from "./components/sections/Footer";
 import { useScrollProgress } from "./hooks/useScrollProgress";
 
 function App() {
-  const { scrollProgress, activeSection, isScrolled } = useScrollProgress();
+  const { activeSection, isScrolled } = useScrollProgress();
   const [isDark, setIsDark] = useState(true);
 
   useEffect(() => {
@@ -72,7 +73,6 @@ function App() {
         }}
       />
       <Navbar
-        scrollProgress={scrollProgress}
         activeSection={activeSection}
         isScrolled={isScrolled}
       />
@@ -105,6 +105,7 @@ function App() {
         <SectionCinematicReveal tone="depth">
           <Contact />
         </SectionCinematicReveal>
+        <AuroraHero />
       </main>
       <SectionCinematicReveal tone="vault" className="relative z-10">
         <Footer />

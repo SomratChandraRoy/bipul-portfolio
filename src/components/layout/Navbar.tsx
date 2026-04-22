@@ -1,5 +1,5 @@
 import { useState, useRef } from 'react'
-import { motion, AnimatePresence, useMotionValue, useSpring, useTransform } from 'framer-motion'
+import { motion, AnimatePresence, useMotionValue, useSpring, useTransform, useScroll } from 'framer-motion'
 import { Layers } from 'lucide-react'
 import { PremiumDraggable } from '../ui/PremiumDraggable'
 
@@ -12,7 +12,6 @@ const navLinks = [
 ]
 
 interface NavbarProps {
-  scrollProgress: number
   activeSection: string
   isScrolled: boolean
 }
@@ -123,11 +122,12 @@ function use3DTilt() {
   return { rotateX, rotateY, x, y, handleMouseMove, handleMouseLeave }
 }
 
-  export function Navbar({ scrollProgress, activeSection, isScrolled }: NavbarProps) {
+  export function Navbar({ activeSection, isScrolled }: NavbarProps) {
   const [mobileOpen, setMobileOpen] = useState(false)
   const [compactMenuOpen, setCompactMenuOpen] = useState(false)
   const [hoveredLink, setHoveredLink] = useState<string | null>(null)
   const [isNavHovered, setIsNavHovered] = useState(false)
+  const { scrollYProgress } = useScroll()
   
   // Outer Container Tilt
   const { rotateX, rotateY, handleMouseMove, handleMouseLeave, x, y } = use3DTilt()
@@ -161,7 +161,7 @@ function use3DTilt() {
     <>
       <motion.div
         className="fixed top-0 left-0 right-0 h-[2px] bg-primary z-[60] origin-left"
-        style={{ scaleX: scrollProgress }}
+        style={{ scaleX: scrollYProgress }}
       />
       
 

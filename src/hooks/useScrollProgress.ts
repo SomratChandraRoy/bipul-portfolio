@@ -1,16 +1,23 @@
 import { useState, useEffect } from 'react'
 
 export function useScrollProgress() {
-  const [scrollProgress, setScrollProgress] = useState(0)
   const [activeSection, setActiveSection] = useState('hero')
   const [isScrolled, setIsScrolled] = useState(false)
 
   useEffect(() => {
+    let ticking = false;
     const handleScroll = () => {
-      const totalHeight = document.documentElement.scrollHeight - window.innerHeight
-      const progress = totalHeight > 0 ? window.scrollY / totalHeight : 0
-      setScrollProgress(Math.min(Math.max(progress, 0), 1))
-      setIsScrolled(window.scrollY > 50)
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          setIsScrolled((prev) => {
+            const currentlyScrolled = window.scrollY > 50;
+            if (prev !== currentlyScrolled) return currentlyScrolled;
+            return prev;
+          });
+          ticking = false;
+        });
+        ticking = true;
+      }
     }
     window.addEventListener('scroll', handleScroll, { passive: true })
     handleScroll()
@@ -37,5 +44,5 @@ export function useScrollProgress() {
     return () => observers.forEach((o) => o.disconnect())
   }, [])
 
-  return { scrollProgress, activeSection, isScrolled }
+  return { activeSection, isScrolled }
 }
