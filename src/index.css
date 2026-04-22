@@ -261,13 +261,22 @@
 /* ── Scroll Behavior ───────────────────────────────────────────────────────── */
 html {
   scroll-behavior: smooth;
-  scroll-padding-top: 80px;
+  scroll-padding-top: 88px;
   overflow-x: clip;
 }
 
 body,
 #root {
   overflow-x: clip;
+}
+
+body {
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior-y: auto;
+}
+
+section[id] {
+  scroll-margin-top: 88px;
 }
 
 /* ── Selection ─────────────────────────────────────────────────────────────── */

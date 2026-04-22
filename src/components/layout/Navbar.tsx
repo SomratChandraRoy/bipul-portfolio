@@ -138,42 +138,24 @@ function use3DTilt() {
     ([latestX, latestY]) => `radial-gradient(1200px circle at ${(latestX as number + 0.5) * 100}% ${(latestY as number + 0.5) * 100}%, rgba(75, 131, 251, 0.08), transparent 40%)`
   )
 
-  // Bulletproof custom cinematic scroll engine bridging Framer layout conflicts
+  // Smooth premium scroll with stable native behavior
   const premiumScrollTo = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
-    e.preventDefault();
-    const id = href.replace('#', '');
-    const target = document.getElementById(id);
-    if (!target) return;
+    e.preventDefault()
+    const id = href.replace('#', '')
+    const target = document.getElementById(id)
+    if (!target) return
 
-    // Temporarily neuter CSS smooth scroll so our JS loop doesn't fight it and abort halfway!
-    document.documentElement.style.scrollBehavior = 'auto';
+    const offset = 88
+    const top = target.getBoundingClientRect().top + window.scrollY - offset
+    const prefersReducedMotion = window.matchMedia(
+      '(prefers-reduced-motion: reduce)'
+    ).matches
 
-    const targetPosition = target.getBoundingClientRect().top + window.scrollY - 80;
-    const startPosition = window.scrollY;
-    const distance = targetPosition - startPosition;
-    const duration = 1000; // 1 second extremely luxurious cinematic glide
-    let start: number | null = null;
-
-    // Apple-tier EaseInOutQuint profile
-    const easeInOutQuint = (t: number) => t < 0.5 ? 16 * t * t * t * t * t : 1 - Math.pow(-2 * t + 2, 5) / 2;
-
-    const step = (timestamp: number) => {
-      if (!start) start = timestamp;
-      const progress = timestamp - start;
-      const percent = Math.min(progress / duration, 1);
-      
-      window.scrollTo(0, startPosition + distance * easeInOutQuint(percent));
-
-      if (progress < duration) {
-        window.requestAnimationFrame(step);
-      } else {
-        // Restore CSS smooth scroll once perfectly landed
-        document.documentElement.style.scrollBehavior = 'smooth';
-      }
-    };
-
-    window.requestAnimationFrame(step);
-  };
+    window.scrollTo({
+      top,
+      behavior: prefersReducedMotion ? 'auto' : 'smooth',
+    })
+  }
 
   return (
     <>

@@ -114,7 +114,8 @@ function ConstellationNetwork() {
     let animationFrameId: number;
     let particles: Particle[] = [];
 
-    const particleCount = window.innerWidth < 768 ? 50 : 100;
+    const isMobile = window.innerWidth < 768;
+    const particleCount = isMobile ? 26 : 70;
     const connectionDistance = 220;
 
     const resize = () => {
@@ -211,22 +212,24 @@ function ConstellationNetwork() {
 
       ctx.shadowBlur = 0;
 
-      // Draw connection lines
-      for (let i = 0; i < particles.length; i++) {
-        for (let j = i + 1; j < particles.length; j++) {
-          const dx = particles[i].x - particles[j].x;
-          const dy = particles[i].y - particles[j].y;
-          const distance = Math.sqrt(dx * dx + dy * dy);
+      if (!isMobile) {
+        // Connection lines are visually rich but expensive; skip on mobile/tablet.
+        for (let i = 0; i < particles.length; i++) {
+          for (let j = i + 1; j < particles.length; j++) {
+            const dx = particles[i].x - particles[j].x;
+            const dy = particles[i].y - particles[j].y;
+            const distance = Math.sqrt(dx * dx + dy * dy);
 
-          if (distance < connectionDistance) {
-            const opacity =
-              0.35 * Math.pow(1 - distance / connectionDistance, 1.8);
-            ctx.beginPath();
-            ctx.strokeStyle = `rgba(100, 160, 255, ${opacity})`;
-            ctx.lineWidth = 0.8 + (1 - distance / connectionDistance) * 0.8;
-            ctx.moveTo(particles[i].x, particles[i].y);
-            ctx.lineTo(particles[j].x, particles[j].y);
-            ctx.stroke();
+            if (distance < connectionDistance) {
+              const opacity =
+                0.35 * Math.pow(1 - distance / connectionDistance, 1.8);
+              ctx.beginPath();
+              ctx.strokeStyle = `rgba(100, 160, 255, ${opacity})`;
+              ctx.lineWidth = 0.8 + (1 - distance / connectionDistance) * 0.8;
+              ctx.moveTo(particles[i].x, particles[i].y);
+              ctx.lineTo(particles[j].x, particles[j].y);
+              ctx.stroke();
+            }
           }
         }
       }

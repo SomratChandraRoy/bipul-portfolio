@@ -1,5 +1,11 @@
-import { useRef, type ReactNode } from "react";
-import { motion, useScroll, useSpring, useTransform } from "framer-motion";
+import { useEffect, useRef, useState, type ReactNode } from "react";
+import {
+  motion,
+  useReducedMotion,
+  useScroll,
+  useSpring,
+  useTransform,
+} from "framer-motion";
 import { cn } from "../../lib/utils";
 
 type RevealTone =
@@ -52,7 +58,19 @@ export function SectionCinematicReveal({
   tone = "lift",
   className,
 }: SectionCinematicRevealProps) {
+  const prefersReducedMotion = useReducedMotion();
+  const [isCoarsePointer, setIsCoarsePointer] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const mediaQuery = window.matchMedia("(pointer: coarse)");
+    const update = () => setIsCoarsePointer(mediaQuery.matches);
+    update();
+    mediaQuery.addEventListener("change", update);
+    return () => mediaQuery.removeEventListener("change", update);
+  }, []);
+
+  const usePerformanceMode = prefersReducedMotion || isCoarsePointer;
   const { scrollYProgress } = useScroll({
     target: ref,
     offset: ["start 94%", "end 8%"],
@@ -67,14 +85,22 @@ export function SectionCinematicReveal({
   const y = useTransform(progress, [0, 1], yDriftMap[tone]);
   const opacity = useTransform(progress, [0, 0.2, 1], [0.52, 1, 1]);
   const scale = useTransform(progress, [0, 0.25, 1], [0.955, 1, 1]);
-  const rotateX = useTransform(progress, [0, 1], rotateXMap[tone]);
-  const rotateY = useTransform(progress, [0, 1], rotateYMap[tone]);
-  const blur = useTransform(progress, [0, 0.25, 1], [8, 0, 0]);
+  const rotateX = useTransform(
+    progress,
+    [0, 1],
+    usePerformanceMode ? [0, 0] : rotateXMap[tone],
+  );
+  const rotateY = useTransform(
+    progress,
+    [0, 1],
+    usePerformanceMode ? [0, 0] : rotateYMap[tone],
+  );
+  const blur = useTransform(progress, [0, 0.25, 1], usePerformanceMode ? [0, 0, 0] : [8, 0, 0]);
   const blurFilter = useTransform(blur, (value) => `blur(${value}px)`);
-  const glowOpacity = useTransform(progress, [0, 0.28, 1], [0, 0.45, 0.12]);
-  const lineOpacity = useTransform(progress, [0, 0.2, 1], [0, 0.6, 0.12]);
+  const glowOpacity = useTransform(progress, [0, 0.28, 1], usePerformanceMode ? [0, 0, 0] : [0, 0.45, 0.12]);
+  const lineOpacity = useTransform(progress, [0, 0.2, 1], usePerformanceMode ? [0, 0, 0] : [0, 0.6, 0.12]);
   const clipPath =
-    tone === "curtain"
+    tone === "curtain" && !usePerformanceMode
       ? useTransform(
           progress,
           [0, 0.4, 1],
@@ -87,8 +113,8 @@ export function SectionCinematicReveal({
     rotateX,
     rotateY,
     filter: blurFilter,
-    transformPerspective: 1400,
-    transformStyle: "preserve-3d" as const,
+    transformPerspective: usePerformanceMode ? 0 : 1400,
+    transformStyle: usePerformanceMode ? "flat" : ("preserve-3d" as const),
     ...(clipPath ? { clipPath } : {}),
   };
 
