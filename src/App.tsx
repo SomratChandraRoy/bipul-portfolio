@@ -53,7 +53,7 @@ function App() {
   const isDesktop = useMediaQuery({ query: "(min-width: 1024px)" });
 
   return (
-    <div className="min-h-screen bg-background text-foreground relative">
+    <div className="min-h-screen bg-background text-foreground relative overflow-x-hidden">
       {isDesktop && <CustomCursor />}
       <div
         aria-hidden

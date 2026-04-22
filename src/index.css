@@ -262,6 +262,12 @@
 html {
   scroll-behavior: smooth;
   scroll-padding-top: 80px;
+  overflow-x: hidden;
+}
+
+body,
+#root {
+  overflow-x: hidden;
 }
 
 /* ── Selection ─────────────────────────────────────────────────────────────── */

@@ -75,11 +75,11 @@ export function SectionCinematicReveal({
   const lineOpacity = useTransform(progress, [0, 0.2, 1], [0, 0.6, 0.12]);
   const clipPath =
     tone === "curtain"
-      ? useTransform(progress, [0, 0.4, 1], [
-          "inset(0 0 22% 0)",
-          "inset(0 0 0% 0)",
-          "inset(0 0 0% 0)",
-        ])
+      ? useTransform(
+          progress,
+          [0, 0.4, 1],
+          ["inset(0 0 22% 0)", "inset(0 0 0% 0)", "inset(0 0 0% 0)"],
+        )
       : undefined;
 
   const animatedPanelStyle = {
@@ -96,7 +96,7 @@ export function SectionCinematicReveal({
     <motion.div
       ref={ref}
       style={{ y, opacity }}
-      className={cn("relative will-change-transform", className)}>
+      className={cn("relative will-change-transform overflow-x-hidden", className)}>
       <motion.div style={animatedPanelStyle} className="relative">
         <motion.div
           aria-hidden
