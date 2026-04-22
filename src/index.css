@@ -262,12 +262,12 @@
 html {
   scroll-behavior: smooth;
   scroll-padding-top: 80px;
-  overflow-x: hidden;
+  overflow-x: clip;
 }
 
 body,
 #root {
-  overflow-x: hidden;
+  overflow-x: clip;
 }
 
 /* ── Selection ─────────────────────────────────────────────────────────────── */
@@ -277,18 +277,15 @@ body,
 }
 
 /* ── Scrollbar ─────────────────────────────────────────────────────────────── */
+* {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
 ::-webkit-scrollbar {
-  width: 6px;
-}
-::-webkit-scrollbar-track {
-  background: hsl(229 84% 5%);
-}
-::-webkit-scrollbar-thumb {
-  background: hsl(221 64% 20%);
-  border-radius: 3px;
-}
-::-webkit-scrollbar-thumb:hover {
-  background: hsl(221 64% 28%);
+  width: 0;
+  height: 0;
+  display: none;
 }
 
 /* ── Shimmer Badge Animation ───────────────────────────────────────────────── */

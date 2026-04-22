@@ -132,76 +132,6 @@ function use3DTilt() {
   // Outer Container Tilt
   const { rotateX, rotateY, handleMouseMove, handleMouseLeave, x, y } = use3DTilt()
   
-  // ── Navbar bar drag system (threshold-based: clicks still work) ──
-  const navDragX = useMotionValue(0)
-  const navDragY = useMotionValue(0)
-  const navDragRotate = useMotionValue(0)
-  const navDragSkewX = useMotionValue(0)
-  const navDragSkewY = useMotionValue(0)
-  // Soft, floaty springs for luxury snap-back
-  const navSpringX = useSpring(navDragX, { stiffness: 220, damping: 20, mass: 0.9 })
-  const navSpringY = useSpring(navDragY, { stiffness: 220, damping: 20, mass: 0.9 })
-  const navSpringRotate = useSpring(navDragRotate, { stiffness: 180, damping: 18, mass: 0.7 })
-  // Jelly springs — very soft for dramatic wobbly organic feel
-  const navSpringSkewX = useSpring(navDragSkewX, { stiffness: 70, damping: 7, mass: 0.5 })
-  const navSpringSkewY = useSpring(navDragSkewY, { stiffness: 70, damping: 7, mass: 0.5 })
-  const [isNavDragging, setIsNavDragging] = useState(false)
-  const navDragOrigin = useRef<{ x: number; y: number } | null>(null)
-  const navDragActive = useRef(false)
-  const navPrevPos = useRef<{ x: number; y: number }>({ x: 0, y: 0 })
-
-  const onNavMouseDown = (e: React.MouseEvent) => {
-    if (e.button !== 0) return
-    navDragOrigin.current = { x: e.clientX, y: e.clientY }
-    navPrevPos.current = { x: e.clientX, y: e.clientY }
-    navDragActive.current = false
-
-    const onMove = (ev: MouseEvent) => {
-      if (!navDragOrigin.current) return
-      const dx = ev.clientX - navDragOrigin.current.x
-      const dy = ev.clientY - navDragOrigin.current.y
-      
-      // 8px dead zone — click-safe threshold
-      if (!navDragActive.current && (Math.abs(dx) > 8 || Math.abs(dy) > 8)) {
-        navDragActive.current = true
-        setIsNavDragging(true)
-      }
-      
-      if (navDragActive.current) {
-        // Rubber-band: decreasing elasticity at distance
-        const maxDist = 120
-        const clampedDx = dx * 0.4 * (1 - Math.min(Math.abs(dx) / maxDist, 0.6) * 0.5)
-        const clampedDy = dy * 0.4 * (1 - Math.min(Math.abs(dy) / maxDist, 0.6) * 0.5)
-        navDragX.set(clampedDx)
-        navDragY.set(clampedDy)
-        navDragRotate.set(clampedDx * 0.04)
-
-        // Jelly: velocity → skew deformation (amplified)
-        const velX = (ev.clientX - navPrevPos.current.x) * 0.5
-        const velY = (ev.clientY - navPrevPos.current.y) * 0.5
-        navDragSkewX.set(velX * 0.45)
-        navDragSkewY.set(velY * 0.25)
-      }
-      navPrevPos.current = { x: ev.clientX, y: ev.clientY }
-    }
-
-    const onUp = () => {
-      document.removeEventListener('mousemove', onMove)
-      document.removeEventListener('mouseup', onUp)
-      navDragOrigin.current = null
-      navDragX.set(0)
-      navDragY.set(0)
-      navDragRotate.set(0)
-      navDragSkewX.set(0)
-      navDragSkewY.set(0)
-      navDragActive.current = false
-      setIsNavDragging(false)
-    }
-
-    document.addEventListener('mousemove', onMove, { passive: true })
-    document.addEventListener('mouseup', onUp)
-  }
-
   // Calculate intense premium dynamic glow position based on mouse pct
   const backgroundGlow = useTransform(
     [x, y],
@@ -264,27 +194,17 @@ function use3DTilt() {
           <motion.nav 
             layout
             transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-            onMouseDown={onNavMouseDown}
             onMouseMove={(e) => { handleMouseMove(e as any); setIsNavHovered(true); }}
             onMouseLeave={() => { handleMouseLeave(); setIsNavHovered(false); }}
             style={{ 
               rotateX, rotateY,
-              x: navSpringX,
-              y: navSpringY,
-              rotate: navSpringRotate,
-              skewX: navSpringSkewX,
-              skewY: navSpringSkewY,
               transformStyle: "preserve-3d"
             }}
             animate={{
-              scale: isNavDragging ? 1.04 : 1,
-              filter: isNavDragging ? 'brightness(1.08)' : 'brightness(1)',
-              boxShadow: isNavDragging 
-                ? '0 28px 70px -12px rgba(75,131,251,0.4), 0 0 40px rgba(75,131,251,0.18), inset 0 1px 2px rgba(255,255,255,0.12)' 
-                : undefined,
-              borderColor: isNavDragging ? 'rgba(75,131,251,0.3)' : undefined,
+              scale: isNavHovered ? 1.01 : 1,
+              filter: isNavHovered ? 'brightness(1.03)' : 'brightness(1)',
             }}
-            className={`relative flex items-center justify-between transition-[background,backdrop-filter,border-color,box-shadow,border-width] duration-700 ${isNavDragging ? 'select-none !border-[#4b83fb]/30' : ''} ${isScrolled 
+            className={`relative flex items-center justify-between transition-[background,backdrop-filter,border-color,box-shadow,border-width] duration-700 ${isScrolled 
               ? `w-[calc(100vw-2rem)] md:w-auto px-3 md:px-4 py-2 md:py-2 rounded-2xl md:rounded-full
                  ${isNavHovered 
                    ? 'bg-[#020617]/85 backdrop-blur-3xl border border-white/[0.08] shadow-[0_8px_32px_-8px_rgba(0,0,0,0.6),inset_0_1px_0_rgba(255,255,255,0.04)]' 

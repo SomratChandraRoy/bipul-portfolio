@@ -372,16 +372,6 @@ export function Hero() {
         />
       </div>
 
-      {/* Side accent lines */}
-      <div
-        className="absolute top-0 left-0 w-px h-full bg-gradient-to-b from-transparent via-[#4b83fb]/10 to-transparent pointer-events-none z-[2] hidden lg:block"
-        style={{ left: "8%" }}
-      />
-      <div
-        className="absolute top-0 right-0 w-px h-full bg-gradient-to-b from-transparent via-[#4b83fb]/10 to-transparent pointer-events-none z-[2] hidden lg:block"
-        style={{ right: "8%" }}
-      />
-
       {/* Hero Content */}
       <div className="relative z-10 w-full max-w-5xl mx-auto px-6 text-center">
         <motion.div
