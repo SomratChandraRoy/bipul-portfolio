@@ -23,9 +23,9 @@ export function Footer() {
 
   return (
     <footer className="border-t border-border" ref={ref}>
-      <div className="mx-auto max-w-6xl px-6 py-12">
+      <div className="mx-auto max-w-6xl px-6 py-14">
         {/* Top row */}
-        <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-8">
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-10">
           {/* Logo + tagline */}
           <PremiumDraggable className="w-auto">
             <div>
@@ -35,14 +35,14 @@ export function Footer() {
                 style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
                 Bipul<span className="text-primary">.</span>
               </a>
-              <p className="mt-1 text-sm text-muted-foreground">
+              <p className="mt-2 text-sm text-muted-foreground leading-relaxed tracking-[0.01em]">
                 Building the future, one commit at a time.
               </p>
             </div>
           </PremiumDraggable>
 
           {/* Quick links */}
-          <nav className="flex flex-wrap items-center gap-6">
+          <nav className="flex flex-wrap items-center gap-7">
             {quickLinks.map((link) => (
               <PremiumDraggable
                 key={link.label}
@@ -85,9 +85,9 @@ export function Footer() {
         </div>
 
         {/* Bottom row */}
-        <div className="mt-8 pt-8 border-t border-border/50 flex flex-col sm:flex-row justify-between items-center gap-4">
+        <div className="mt-10 pt-8 border-t border-border/50 flex flex-col sm:flex-row justify-between items-center gap-5">
           <PremiumDraggable intensity="feather" className="w-auto">
-            <p className="text-xs text-muted-foreground">
+            <p className="text-xs text-muted-foreground leading-relaxed tracking-[0.01em]">
               <TextAnimate
                 animation="blurInUp"
                 by="word"
@@ -98,7 +98,7 @@ export function Footer() {
             </p>
           </PremiumDraggable>
           <PremiumDraggable intensity="feather" className="w-auto">
-            <p className="text-xs text-muted-foreground flex items-center gap-1">
+            <p className="text-xs text-muted-foreground leading-relaxed tracking-[0.01em] flex items-center gap-1.5">
               <TextAnimate
                 animation="blurInUp"
                 by="word"

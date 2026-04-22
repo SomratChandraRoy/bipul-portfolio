@@ -464,7 +464,7 @@ export function Hero() {
               {/* Primary CTA */}
               <a
                 href="#projects"
-                className="group relative inline-flex items-center gap-3 px-10 py-4.5 rounded-full overflow-hidden text-[14px] sm:text-[15px] font-bold text-white transition-all duration-400 hover:scale-[1.04] active:scale-[0.96] shadow-[0_0_50px_rgba(75,131,251,0.3),0_8px_32px_-8px_rgba(75,131,251,0.4),inset_0_1px_2px_rgba(255,255,255,0.4),inset_0_-4px_16px_rgba(0,0,0,0.5)] bg-gradient-to-b from-[#3575e8] to-[#152f6b] border border-[#60a5fa]/30"
+                className="group relative inline-flex items-center gap-3 px-10 py-[1.125rem] rounded-full overflow-hidden text-[14px] sm:text-[15px] font-bold text-white transition-all duration-400 hover:scale-[1.04] active:scale-[0.96] shadow-[0_0_50px_rgba(75,131,251,0.3),0_8px_32px_-8px_rgba(75,131,251,0.4),inset_0_1px_2px_rgba(255,255,255,0.4),inset_0_-4px_16px_rgba(0,0,0,0.5)] bg-gradient-to-b from-[#3575e8] to-[#152f6b] border border-[#60a5fa]/30"
                 style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
                 <div className="absolute inset-0 w-[200%] h-[200%] bg-gradient-to-tr from-transparent via-white/15 to-transparent skew-x-[-25deg] -translate-x-[200%] group-hover:translate-x-[100%] transition-transform duration-1000 ease-out pointer-events-none" />
                 <span className="relative z-10">View My Proven Systems</span>
@@ -477,7 +477,7 @@ export function Hero() {
                 data-tally-open={tallyFormId}
                 data-tally-layout="modal"
                 data-tally-width="600"
-                className="group relative inline-flex items-center gap-2.5 rounded-full border border-white/[0.08] bg-white/[0.03] backdrop-blur-2xl px-10 py-4.5 text-[14px] sm:text-[15px] font-bold text-slate-300 transition-all duration-400 hover:text-white hover:border-white/20 hover:bg-white/[0.06] hover:scale-[1.04] active:scale-[0.96] shadow-[0_4px_24px_rgba(0,0,0,0.4),inset_0_1px_1px_rgba(255,255,255,0.06)]"
+                className="group relative inline-flex items-center gap-2.5 rounded-full border border-white/[0.08] bg-white/[0.03] backdrop-blur-2xl px-10 py-[1.125rem] text-[14px] sm:text-[15px] font-bold text-slate-300 transition-all duration-400 hover:text-white hover:border-white/20 hover:bg-white/[0.06] hover:scale-[1.04] active:scale-[0.96] shadow-[0_4px_24px_rgba(0,0,0,0.4),inset_0_1px_1px_rgba(255,255,255,0.06)]"
                 style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
                 <Star className="h-4 w-4 transition-all duration-400 group-hover:rotate-[20deg] group-hover:text-[#60a5fa]" />
                 <span className="relative z-10">Book a Strategy Call</span>

@@ -28,31 +28,46 @@ export function About() {
             hidden: {},
             visible: { transition: { staggerChildren: 0.1 } },
           }}>
-           {/* Section header */}
-           <motion.div variants={fadeUp} className="mb-16">
-             <PremiumDraggable intensity="light">
-               <div className="flex items-center gap-3 mb-4">
-                 <div className="h-px w-8 bg-primary" />
-                 <span className="text-xs font-semibold uppercase tracking-widest text-primary font-mono">
-                   <TextAnimate animation="blurInUp" by="word" duration={0.8} staggerDelay={0.06}>
-                     About
-                   </TextAnimate>
-                 </span>
-               </div>
-               <h2
-                 className="text-3xl md:text-4xl font-bold text-foreground leading-[1.2]"
-                 style={{ fontFamily: "'Space Grotesk', sans-serif", letterSpacing: "0.02em" }}>
-                 <TextAnimate animation="blurInUp" by="word" duration={1.2} staggerDelay={0.08} className="inline">
-                   The story behind the
-                 </TextAnimate>
-                 {' '}<span className="text-transparent bg-clip-text bg-gradient-to-r from-[#4b83fb] via-[#60a5fa] to-[#a8caff]">
-                   <TextAnimate animation="blurInUp" by="word" duration={1.2} delay={0.1} staggerDelay={0.08} className="inline">
-                     code
-                   </TextAnimate>
-                 </span>
-               </h2>
-             </PremiumDraggable>
-           </motion.div>
+          {/* Section header */}
+          <motion.div variants={fadeUp} className="mb-14 md:mb-16">
+            <PremiumDraggable intensity="light">
+              <div className="section-kicker">
+                <div className="h-px w-8 bg-primary" />
+                <span className="text-xs font-semibold uppercase tracking-widest text-primary font-mono">
+                  <TextAnimate
+                    animation="blurInUp"
+                    by="word"
+                    duration={0.8}
+                    staggerDelay={0.06}>
+                    About
+                  </TextAnimate>
+                </span>
+              </div>
+              <h2
+                className="section-title"
+                style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
+                <TextAnimate
+                  animation="blurInUp"
+                  by="word"
+                  duration={1.2}
+                  staggerDelay={0.08}
+                  className="inline">
+                  The story behind the
+                </TextAnimate>{" "}
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#4b83fb] via-[#60a5fa] to-[#a8caff]">
+                  <TextAnimate
+                    animation="blurInUp"
+                    by="word"
+                    duration={1.2}
+                    delay={0.1}
+                    staggerDelay={0.08}
+                    className="inline">
+                    code
+                  </TextAnimate>
+                </span>
+              </h2>
+            </PremiumDraggable>
+          </motion.div>
 
           <div className="grid md:grid-cols-2 gap-12 md:gap-16 items-start">
             {/* Left: abstract profile visual */}
@@ -84,52 +99,75 @@ export function About() {
             </motion.div>
 
             {/* Right: story text */}
-            <div className="space-y-6">
-               <motion.p
-                 variants={fadeUp}
-                 className="text-muted-foreground leading-relaxed text-[15px] sm:text-base md:text-[17px]"
-                 style={{ letterSpacing: "0.015em" }}>
-                 <PremiumDraggable intensity="light">
-                   <TextAnimate animation="blurInUp" by="word" duration={1.4} staggerDelay={0.04}>
-                     I&apos;m a senior full-stack developer based in Dinajpur, Bangladesh with 8+ years of experience building affordable websites and digital products that scale. My work sits at the intersection of clean engineering, thoughtful design, and real business outcomes.
-                   </TextAnimate>
-                 </PremiumDraggable>
-               </motion.p>
+            <div className="space-y-7">
+              <motion.p variants={fadeUp} className="section-copy">
+                <PremiumDraggable intensity="light">
+                  <TextAnimate
+                    animation="blurInUp"
+                    by="word"
+                    duration={1.4}
+                    staggerDelay={0.04}>
+                    I&apos;m a senior full-stack developer based in Dinajpur,
+                    Bangladesh with 8+ years of experience building affordable
+                    websites and digital products that scale. My work sits at
+                    the intersection of clean engineering, thoughtful design,
+                    and real business outcomes.
+                  </TextAnimate>
+                </PremiumDraggable>
+              </motion.p>
 
-               <motion.p
-                 variants={fadeUp}
-                 className="text-muted-foreground leading-relaxed text-[15px] sm:text-base md:text-[17px]"
-                 style={{ letterSpacing: "0.015em" }}>
-                 <PremiumDraggable intensity="light">
-                   <TextAnimate animation="blurInUp" by="word" duration={1.4} delay={0.2} staggerDelay={0.04}>
-                     I specialize in the React and Django ecosystems, designing systems from database schemas to pixel-perfect interfaces. Every project starts with understanding the problem deeply—then architecting a solution that&apos;s maintainable, performant, and built to last. I deliver end-to-end web development for clients across Bangladesh with clear scope, pricing, and reliable delivery.
-                   </TextAnimate>
-                 </PremiumDraggable>
-               </motion.p>
+              <motion.p variants={fadeUp} className="section-copy">
+                <PremiumDraggable intensity="light">
+                  <TextAnimate
+                    animation="blurInUp"
+                    by="word"
+                    duration={1.4}
+                    delay={0.2}
+                    staggerDelay={0.04}>
+                    I specialize in the React and Django ecosystems, designing
+                    systems from database schemas to pixel-perfect interfaces.
+                    Every project starts with understanding the problem
+                    deeply—then architecting a solution that&apos;s
+                    maintainable, performant, and built to last. I deliver
+                    end-to-end web development for clients across Bangladesh
+                    with clear scope, pricing, and reliable delivery.
+                  </TextAnimate>
+                </PremiumDraggable>
+              </motion.p>
 
-               <motion.p
-                 variants={fadeUp}
-                 className="text-muted-foreground leading-relaxed text-[15px] sm:text-base md:text-[17px]"
-                 style={{ letterSpacing: "0.015em" }}>
-                 <PremiumDraggable intensity="light">
-                   <TextAnimate animation="blurInUp" by="word" duration={1.4} delay={0.4} staggerDelay={0.04}>
-                     When I&apos;m not coding, I&apos;m mentoring developers, contributing to open source, or exploring the latest in cloud-native infrastructure. I believe the best software is built by people who care about both the code and the people who use it.
-                   </TextAnimate>
-                 </PremiumDraggable>
-               </motion.p>
+              <motion.p variants={fadeUp} className="section-copy">
+                <PremiumDraggable intensity="light">
+                  <TextAnimate
+                    animation="blurInUp"
+                    by="word"
+                    duration={1.4}
+                    delay={0.4}
+                    staggerDelay={0.04}>
+                    When I&apos;m not coding, I&apos;m mentoring developers,
+                    contributing to open source, or exploring the latest in
+                    cloud-native infrastructure. I believe the best software is
+                    built by people who care about both the code and the people
+                    who use it.
+                  </TextAnimate>
+                </PremiumDraggable>
+              </motion.p>
 
-               <motion.div variants={fadeUp} className="pt-4">
-                 <PremiumDraggable intensity="light" className="w-auto">
-                   <a
-                     href="#"
-                     className="inline-flex items-center gap-2 rounded-lg border border-border px-5 py-2.5 text-sm font-medium text-foreground transition-all duration-200 hover:border-primary hover:text-primary hover:scale-[1.02] active:scale-[0.98]">
-                     <Download className="h-4 w-4" />
-                     <TextAnimate animation="blurInUp" by="word" duration={0.6} staggerDelay={0.05}>
-                       Download Resume
-                     </TextAnimate>
-                   </a>
-                 </PremiumDraggable>
-               </motion.div>
+              <motion.div variants={fadeUp} className="pt-6">
+                <PremiumDraggable intensity="light" className="w-auto">
+                  <a
+                    href="#"
+                    className="inline-flex items-center gap-2 rounded-lg border border-border px-5 py-2.5 text-sm font-medium text-foreground transition-all duration-200 hover:border-primary hover:text-primary hover:scale-[1.02] active:scale-[0.98]">
+                    <Download className="h-4 w-4" />
+                    <TextAnimate
+                      animation="blurInUp"
+                      by="word"
+                      duration={0.6}
+                      staggerDelay={0.05}>
+                      Download Resume
+                    </TextAnimate>
+                  </a>
+                </PremiumDraggable>
+              </motion.div>
             </div>
           </div>
         </motion.div>
