@@ -1,9 +1,6 @@
-import { useRef } from "react";
 import { Heart } from "lucide-react";
 import { GitHubIcon, LinkedInIcon, XIcon } from "../ui/SocialIcons";
 import { socialLinks } from "../../data/portfolio";
-import { PremiumDraggable } from "../ui/PremiumDraggable";
-import { TextAnimate } from "../ui/TextAnimate";
 
 const quickLinks = [
   { label: "About", href: "#about" },
@@ -19,53 +16,40 @@ const socialProfiles = [
 ];
 
 export function Footer() {
-  const ref = useRef(null);
-
   return (
-    <footer className="border-t border-border" ref={ref}>
-      <div className="mx-auto max-w-6xl px-6 py-14">
-        {/* Top row */}
-        <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-10">
+    <footer className="border-t border-border min-h-[60vh] md:min-h-screen flex flex-col justify-center bg-background relative z-10">
+      <div className="mx-auto w-full max-w-6xl px-6 py-14 flex-1 flex flex-col justify-between">
+        {/* Main Content Area */}
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-12 mt-auto mb-auto">
           {/* Logo + tagline */}
-          <PremiumDraggable className="w-auto">
-            <div>
-              <a
-                href="#hero"
-                className="text-xl font-bold text-foreground"
-                style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
-                Bipul<span className="text-primary">.</span>
-              </a>
-              <p className="mt-2 text-sm text-muted-foreground leading-relaxed tracking-[0.01em]">
-                Building the future, one commit at a time.
-              </p>
-            </div>
-          </PremiumDraggable>
+          <div className="max-w-md">
+            <a
+              href="#hero"
+              className="text-5xl md:text-7xl lg:text-8xl font-bold text-foreground tracking-tight"
+              style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
+              Bipul<span className="text-primary">.</span>
+            </a>
+            <p className="mt-6 text-lg md:text-2xl text-muted-foreground leading-relaxed tracking-[0.01em]">
+              Building the future, one commit at a time. Let's create something amazing together.
+            </p>
+          </div>
 
-          {/* Quick links */}
-          <nav className="flex flex-wrap items-center gap-7">
-            {quickLinks.map((link) => (
-              <PremiumDraggable
-                key={link.label}
-                intensity="feather"
-                className="w-auto">
+          {/* Right Side Links & Socials */}
+          <div className="flex flex-col items-start md:items-end gap-10">
+            {/* Quick links */}
+            <nav className="flex flex-wrap items-center gap-6 md:gap-10">
+              {quickLinks.map((link) => (
                 <a
+                  key={link.label}
                   href={link.href}
-                  className="text-sm text-muted-foreground hover:text-primary transition-colors duration-200">
-                  <TextAnimate
-                    animation="blurInUp"
-                    by="word"
-                    duration={0.6}
-                    staggerDelay={0.05}>
-                    {link.label}
-                  </TextAnimate>
+                  className="text-lg md:text-xl font-medium text-muted-foreground hover:text-primary transition-colors duration-200">
+                  {link.label}
                 </a>
-              </PremiumDraggable>
-            ))}
-          </nav>
+              ))}
+            </nav>
 
-          {/* Social icons */}
-          <PremiumDraggable className="w-auto">
-            <div className="flex items-center gap-3">
+            {/* Social icons */}
+            <div className="flex items-center gap-4">
               {socialProfiles.map((social) => {
                 const Icon = social.icon;
                 return (
@@ -74,41 +58,25 @@ export function Footer() {
                     href={social.href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="w-9 h-9 rounded-full bg-secondary flex items-center justify-center text-muted-foreground hover:bg-primary/10 hover:text-primary transition-all duration-200"
+                    className="w-14 h-14 md:w-16 md:h-16 rounded-full bg-secondary flex items-center justify-center text-muted-foreground hover:bg-primary hover:text-primary-foreground transition-all duration-300 shadow-sm"
                     aria-label={social.label}>
-                    <Icon className="w-4 h-4" />
+                    <Icon className="w-6 h-6 md:w-7 md:h-7" />
                   </a>
                 );
               })}
             </div>
-          </PremiumDraggable>
+          </div>
         </div>
 
         {/* Bottom row */}
-        <div className="mt-10 pt-8 border-t border-border/50 flex flex-col sm:flex-row justify-between items-center gap-5">
-          <PremiumDraggable intensity="feather" className="w-auto">
-            <p className="text-xs text-muted-foreground leading-relaxed tracking-[0.01em]">
-              <TextAnimate
-                animation="blurInUp"
-                by="word"
-                duration={0.8}
-                staggerDelay={0.05}>
-                &copy; 2026 Bipul. All rights reserved.
-              </TextAnimate>
-            </p>
-          </PremiumDraggable>
-          <PremiumDraggable intensity="feather" className="w-auto">
-            <p className="text-xs text-muted-foreground leading-relaxed tracking-[0.01em] flex items-center gap-1.5">
-              <TextAnimate
-                animation="blurInUp"
-                by="word"
-                duration={1.2}
-                staggerDelay={0.04}>
-                {`Built with React, Tailwind, and attention to detail.`}
-              </TextAnimate>
-              <Heart className="w-3 h-3 text-primary" />
-            </p>
-          </PremiumDraggable>
+        <div className="mt-16 pt-8 border-t border-border/50 flex flex-col sm:flex-row justify-between items-center gap-5 w-full">
+          <p className="text-sm md:text-base text-muted-foreground leading-relaxed tracking-[0.01em]">
+            &copy; {new Date().getFullYear()} Bipul. All rights reserved.
+          </p>
+          <p className="text-sm md:text-base text-muted-foreground leading-relaxed tracking-[0.01em] flex items-center gap-1.5">
+            Built with React, Tailwind, and attention to detail.
+            <Heart className="w-4 h-4 text-primary" />
+          </p>
         </div>
       </div>
     </footer>
