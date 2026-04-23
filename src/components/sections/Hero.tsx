@@ -184,8 +184,8 @@ function ConstellationNetwork() {
           0,
           `rgba(120, 170, 255, ${this.baseAlpha * (0.5 + pulse * 0.5)})`,
         );
-        g.addColorStop(0.4, `rgba(75, 131, 251, ${this.baseAlpha * 0.2})`);
-        g.addColorStop(1, "rgba(75, 131, 251, 0)");
+        g.addColorStop(0.4, `rgba(46, 103, 206, ${this.baseAlpha * 0.22})`);
+        g.addColorStop(1, "rgba(46, 103, 206, 0)");
         ctx.beginPath();
         ctx.arc(this.x, this.y, currentSize * 3, 0, Math.PI * 2);
         ctx.fillStyle = g;
@@ -280,19 +280,19 @@ export function Hero() {
   return (
     <section
       id="hero"
-      className="relative min-h-screen flex items-center justify-center pt-24 sm:pt-32 pb-12 sm:pb-20 overflow-hidden bg-[#020617]">
+      className="relative min-h-screen flex items-center justify-center pt-24 sm:pt-32 pb-12 sm:pb-20 overflow-hidden bg-[#0d1220]">
       {/* Constellation Canvas */}
       <ConstellationNetwork />
 
       {/* Enhanced Floating particles effect - Premium layer with multiple orbs */}
       <motion.div className="absolute inset-0 z-[0.5] pointer-events-none">
         <motion.div
-          className="absolute top-1/4 left-1/4 w-40 h-40 bg-[#4b83fb]/25 rounded-full blur-3xl"
+          className="absolute top-1/4 left-1/4 w-40 h-40 bg-[#2e67ce]/25 rounded-full blur-3xl"
           animate={{ scale: [1, 1.2, 1], opacity: [0.4, 0.6, 0.4] }}
           transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
         />
         <motion.div
-          className="absolute bottom-1/3 right-1/4 w-48 h-48 bg-[#60a5fa]/20 rounded-full blur-3xl"
+          className="absolute bottom-1/3 right-1/4 w-48 h-48 bg-[#5f8fdf]/20 rounded-full blur-3xl"
           animate={{ scale: [1, 1.15, 1], opacity: [0.3, 0.5, 0.3] }}
           transition={{
             duration: 10,
@@ -302,7 +302,7 @@ export function Hero() {
           }}
         />
         <motion.div
-          className="absolute top-2/3 left-1/3 w-32 h-32 bg-[#a8caff]/15 rounded-full blur-3xl"
+          className="absolute top-2/3 left-1/3 w-32 h-32 bg-[#a4bce8]/15 rounded-full blur-3xl"
           animate={{ scale: [1, 1.25, 1], opacity: [0.2, 0.4, 0.2] }}
           transition={{
             duration: 12,
@@ -317,10 +317,10 @@ export function Hero() {
       <div className="absolute inset-0 z-[1] flex items-center justify-center pointer-events-none mix-blend-screen">
         {/* Outer ring with glow */}
         <motion.div
-          className="absolute w-[130vw] h-[130vw] max-w-[1500px] max-h-[1500px] rounded-full border border-[#4b83fb]/8"
+          className="absolute w-[130vw] h-[130vw] max-w-[1500px] max-h-[1500px] rounded-full border border-[#2e67ce]/10"
           style={{
             boxShadow:
-              "0 0 180px rgba(75, 131, 251, 0.08), inset 0 0 180px rgba(75, 131, 251, 0.08)",
+              "0 0 180px rgba(46, 103, 206, 0.1), inset 0 0 180px rgba(46, 103, 206, 0.1)",
           }}
           animate={{ rotate: 360 }}
           transition={{ duration: 80, repeat: Infinity, ease: "linear" }}
@@ -328,21 +328,21 @@ export function Hero() {
 
         {/* Middle ring */}
         <motion.div
-          className="absolute w-[90vw] h-[90vw] max-w-[1100px] max-h-[1100px] rounded-full border border-[#4b83fb]/12 blur-[2px]"
+          className="absolute w-[90vw] h-[90vw] max-w-[1100px] max-h-[1100px] rounded-full border border-[#2e67ce]/14 blur-[2px]"
           animate={{ rotate: -360 }}
           transition={{ duration: 55, repeat: Infinity, ease: "linear" }}
         />
 
         {/* Inner ring */}
         <motion.div
-          className="absolute w-[50vw] h-[50vw] max-w-[650px] max-h-[650px] rounded-full border border-[#4b83fb]/15 blur-[1px]"
+          className="absolute w-[50vw] h-[50vw] max-w-[650px] max-h-[650px] rounded-full border border-[#2e67ce]/18 blur-[1px]"
           animate={{ rotate: 360 }}
           transition={{ duration: 35, repeat: Infinity, ease: "linear" }}
         />
 
         {/* Premium particles in rings */}
         <motion.div
-          className="absolute w-3 h-3 rounded-full bg-[#4b83fb] shadow-[0_0_20px_rgba(75,131,251,0.8)]"
+          className="absolute w-3 h-3 rounded-full bg-[#2e67ce] shadow-[0_0_20px_rgba(46,103,206,0.75)]"
           style={{
             top: "50%",
             left: "50%",
@@ -358,18 +358,18 @@ export function Hero() {
         />
 
         {/* Central aurora bloom with enhanced glow */}
-        <div className="absolute w-[70vw] h-[70vw] max-w-[700px] max-h-[700px] bg-[radial-gradient(ellipse_at_center,rgba(15,40,120,0.6)_0%,rgba(10,25,80,0.3)_30%,transparent_70%)] rounded-full blur-3xl" />
+        <div className="absolute w-[70vw] h-[70vw] max-w-[700px] max-h-[700px] bg-[radial-gradient(ellipse_at_center,rgba(18,41,89,0.55)_0%,rgba(12,27,58,0.32)_30%,transparent_70%)] rounded-full blur-3xl" />
 
         {/* Top-right accent glow - Enhanced */}
         <motion.div
-          className="absolute -top-[20%] -right-[10%] w-[60vw] h-[60vw] max-w-[600px] max-h-[600px] bg-[radial-gradient(ellipse_at_center,rgba(75,131,251,0.12)_0%,transparent_60%)] rounded-full blur-3xl"
+          className="absolute -top-[20%] -right-[10%] w-[60vw] h-[60vw] max-w-[600px] max-h-[600px] bg-[radial-gradient(ellipse_at_center,rgba(46,103,206,0.14)_0%,transparent_60%)] rounded-full blur-3xl"
           animate={{ scale: [1, 1.1, 1], opacity: [0.6, 0.8, 0.6] }}
           transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
         />
 
         {/* Bottom-left accent glow - Enhanced */}
         <motion.div
-          className="absolute -bottom-[20%] -left-[10%] w-[50vw] h-[50vw] max-w-[500px] max-h-[500px] bg-[radial-gradient(ellipse_at_center,rgba(100,160,255,0.1)_0%,transparent_60%)] rounded-full blur-3xl"
+          className="absolute -bottom-[20%] -left-[10%] w-[50vw] h-[50vw] max-w-[500px] max-h-[500px] bg-[radial-gradient(ellipse_at_center,rgba(110,156,232,0.12)_0%,transparent_60%)] rounded-full blur-3xl"
           animate={{ scale: [1, 1.15, 1], opacity: [0.5, 0.7, 0.5] }}
           transition={{ duration: 7, repeat: Infinity, ease: "easeInOut" }}
         />
@@ -386,10 +386,10 @@ export function Hero() {
           <PremiumDraggable className="w-auto" intensity="light">
             <motion.div
               variants={itemScale}
-              className="mb-10 inline-flex items-center gap-3 rounded-full border border-[#4b83fb]/20 bg-[#061026]/70 backdrop-blur-2xl px-6 py-2.5 shadow-[0_0_40px_rgba(75,131,251,0.12),inset_0_1px_1px_rgba(255,255,255,0.06)]">
+              className="mb-10 inline-flex items-center gap-3 rounded-full border border-[#2e67ce]/24 bg-[#0f1628]/72 backdrop-blur-2xl px-6 py-2.5 shadow-[0_0_40px_rgba(46,103,206,0.15),inset_0_1px_1px_rgba(255,255,255,0.06)]">
               <span className="relative flex h-2 w-2">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#4b83fb] opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-[#60a5fa] shadow-[0_0_8px_rgba(96,165,250,0.6)]"></span>
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#2e67ce] opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-[#5f8fdf] shadow-[0_0_8px_rgba(95,143,223,0.6)]"></span>
               </span>
               <span
                 className="text-xs sm:text-[13px] font-semibold tracking-widest text-slate-300/90 uppercase"
@@ -458,7 +458,7 @@ export function Hero() {
               {/* Primary CTA */}
               <a
                 href="#projects"
-                className="cta-neumorphism group relative w-full sm:w-auto sm:min-w-[280px] inline-flex items-center justify-center gap-3 px-8 sm:px-10 py-4.5 rounded-full overflow-hidden text-[14px] sm:text-[15px] font-bold text-white transition-all duration-400 active:scale-[0.96] shadow-[0_0_50px_rgba(75,131,251,0.3),0_8px_32px_-8px_rgba(75,131,251,0.4),inset_0_1px_2px_rgba(255,255,255,0.4),inset_0_-4px_16px_rgba(0,0,0,0.5)] bg-gradient-to-b from-[#3575e8] to-[#152f6b] border border-[#60a5fa]/30"
+                className="cta-neumorphism group relative w-full sm:w-auto sm:min-w-[280px] inline-flex items-center justify-center gap-3 px-8 sm:px-10 py-4.5 rounded-full overflow-hidden text-[14px] sm:text-[15px] font-bold text-white transition-all duration-400 active:scale-[0.96] shadow-[0_0_50px_rgba(46,103,206,0.32),0_8px_32px_-8px_rgba(46,103,206,0.45),inset_0_1px_2px_rgba(255,255,255,0.4),inset_0_-4px_16px_rgba(0,0,0,0.5)] bg-gradient-to-b from-[#2e67ce] to-[#1b3f85] border border-[#5f8fdf]/30"
                 style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
                 <div className="absolute inset-0 w-[200%] h-[200%] bg-gradient-to-tr from-transparent via-white/15 to-transparent skew-x-[-25deg] -translate-x-[200%] group-hover:translate-x-[100%] transition-transform duration-1000 ease-out pointer-events-none" />
                 <span className="relative z-10">View My Proven Systems</span>
@@ -471,9 +471,9 @@ export function Hero() {
                 data-tally-open={tallyFormId}
                 data-tally-layout="modal"
                 data-tally-width="600"
-                className="cta-neumorphism group relative w-full sm:w-auto sm:min-w-[280px] inline-flex items-center justify-center gap-2.5 rounded-full border border-white/[0.08] bg-white/[0.03] backdrop-blur-2xl px-8 sm:px-10 py-4.5 text-[14px] sm:text-[15px] font-bold text-slate-300 transition-all duration-400 lg:hover:text-[#8eb4ff] lg:hover:border-white/20 lg:hover:bg-white/[0.06] active:scale-[0.96] shadow-[0_4px_24px_rgba(0,0,0,0.4),inset_0_1px_1px_rgba(255,255,255,0.06)]"
+                className="cta-neumorphism group relative w-full sm:w-auto sm:min-w-[280px] inline-flex items-center justify-center gap-2.5 rounded-full border border-white/[0.08] bg-white/[0.03] backdrop-blur-2xl px-8 sm:px-10 py-4.5 text-[14px] sm:text-[15px] font-bold text-slate-300 transition-all duration-400 lg:hover:text-[#9ab7e7] lg:hover:border-white/20 lg:hover:bg-white/[0.06] active:scale-[0.96] shadow-[0_4px_24px_rgba(0,0,0,0.4),inset_0_1px_1px_rgba(255,255,255,0.06)]"
                 style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
-                <FiSend className="h-4 w-4 transition-all duration-400 lg:group-hover:-translate-y-0.5 lg:group-hover:translate-x-0.5 lg:group-hover:text-[#60a5fa]" />
+                <FiSend className="h-4 w-4 transition-all duration-400 lg:group-hover:-translate-y-0.5 lg:group-hover:translate-x-0.5 lg:group-hover:text-[#5f8fdf]" />
                 <span className="relative z-10">Book a Strategy Call</span>
               </a>
             </motion.div>
@@ -498,7 +498,7 @@ export function Hero() {
                     damping: 16,
                   }}>
                   <div
-                    className="px-5 sm:px-6 py-2.5 rounded-full text-[10px] sm:text-[11px] font-bold tracking-[0.12em] text-slate-300/70 bg-white/[0.05] border border-white/[0.1] backdrop-blur-xl shadow-[0_4px_24px_rgba(0,0,0,0.2),inset_0_1px_1px_rgba(255,255,255,0.08)] hover:border-[#60a5fa]/50 hover:bg-[#4b83fb]/[0.1] hover:text-slate-100 transition-all duration-500 cursor-default uppercase"
+                    className="px-5 sm:px-6 py-2.5 rounded-full text-[10px] sm:text-[11px] font-bold tracking-[0.12em] text-slate-300/70 bg-white/[0.05] border border-white/[0.1] backdrop-blur-xl shadow-[0_4px_24px_rgba(0,0,0,0.2),inset_0_1px_1px_rgba(255,255,255,0.08)] hover:border-[#5f8fdf]/50 hover:bg-[#2e67ce]/[0.12] hover:text-slate-100 transition-all duration-500 cursor-default uppercase"
                     style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
                     {badge}
                   </div>

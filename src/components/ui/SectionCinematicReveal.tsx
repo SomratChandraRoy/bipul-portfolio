@@ -33,26 +33,6 @@ const yDriftMap: Record<RevealTone, [number, number]> = {
   vault: [72, -18],
 };
 
-const rotateXMap: Record<RevealTone, [number, number]> = {
-  lift: [7, 0],
-  "glide-left": [5, 0],
-  "glide-right": [5, 0],
-  curtain: [3, 0],
-  depth: [11, 0],
-  float: [9, 0],
-  vault: [14, 0],
-};
-
-const rotateYMap: Record<RevealTone, [number, number]> = {
-  lift: [0, 0],
-  "glide-left": [-7, 0],
-  "glide-right": [7, 0],
-  curtain: [0, 0],
-  depth: [2, 0],
-  float: [0, 0],
-  vault: [4, 0],
-};
-
 export function SectionCinematicReveal({
   children,
   tone = "lift",
@@ -84,49 +64,25 @@ export function SectionCinematicReveal({
 
   const y = useTransform(progress, [0, 1], yDriftMap[tone]);
   const opacity = useTransform(progress, [0, 0.2, 1], [0.52, 1, 1]);
-  const scale = useTransform(progress, [0, 0.25, 1], [0.955, 1, 1]);
-  const rotateX = useTransform(
-    progress,
-    [0, 1],
-    usePerformanceMode ? [0, 0] : rotateXMap[tone],
-  );
-  const rotateY = useTransform(
-    progress,
-    [0, 1],
-    usePerformanceMode ? [0, 0] : rotateYMap[tone],
-  );
-  const blur = useTransform(progress, [0, 0.25, 1], usePerformanceMode ? [0, 0, 0] : [8, 0, 0]);
-  const blurFilter = useTransform(blur, (value) => `blur(${value}px)`);
+  const scale = useTransform(progress, [0, 0.25, 1], [0.98, 1, 1]);
+  
   const glowOpacity = useTransform(progress, [0, 0.28, 1], usePerformanceMode ? [0, 0, 0] : [0, 0.45, 0.12]);
   const lineOpacity = useTransform(progress, [0, 0.2, 1], usePerformanceMode ? [0, 0, 0] : [0, 0.6, 0.12]);
-  const clipPath =
-    tone === "curtain" && !usePerformanceMode
-      ? useTransform(
-          progress,
-          [0, 0.4, 1],
-          ["inset(0 0 22% 0)", "inset(0 0 0% 0)", "inset(0 0 0% 0)"],
-        )
-      : undefined;
 
   const animatedPanelStyle = {
     scale,
-    rotateX,
-    rotateY,
-    filter: blurFilter,
-    transformPerspective: usePerformanceMode ? 0 : 1400,
-    transformStyle: usePerformanceMode ? "flat" : ("preserve-3d" as const),
-    ...(clipPath ? { clipPath } : {}),
+    y,
+    opacity
   };
 
   return (
     <motion.div
       ref={ref}
-      style={{ y, opacity }}
-      className={cn("relative will-change-transform overflow-x-hidden", className)}>
+      className={cn("relative", className)}>
       <motion.div style={animatedPanelStyle} className="relative">
         <motion.div
           aria-hidden
-          className="pointer-events-none absolute inset-x-10 -top-8 h-20 rounded-full bg-[radial-gradient(circle,rgba(75,131,251,0.28)_0%,rgba(75,131,251,0)_72%)] blur-2xl"
+          className="pointer-events-none absolute inset-x-10 -top-8 h-20 rounded-full bg-[radial-gradient(circle,rgba(46,103,206,0.28)_0%,rgba(46,103,206,0)_72%)] blur-2xl"
           style={{ opacity: glowOpacity }}
         />
         <motion.div

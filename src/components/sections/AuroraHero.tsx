@@ -11,7 +11,7 @@ import {
 } from "framer-motion";
 import { tallyFormId } from "../../data/portfolio";
 
-const COLORS_TOP = ["#13FFAA", "#1E67C6", "#CE84CF", "#DD335C"];
+const COLORS_TOP = ["#2e67ce", "#3f79df", "#5f8fdf", "#244f9f"];
 
 export const AuroraHero = () => {
   const color = useMotionValue(COLORS_TOP[0]);
@@ -52,15 +52,15 @@ export const AuroraHero = () => {
   return (
     <motion.section
       style={{ backgroundImage }}
-      className="relative grid min-h-[70vh] place-content-center overflow-hidden px-4 py-24 text-gray-200">
+      className="relative grid min-h-[70vh] place-content-center overflow-hidden px-4 py-24 text-slate-200">
       <div className="relative z-10 flex flex-col items-center">
-        <span className="mb-2 inline-block rounded-full bg-gray-600/50 px-3 py-1.5 text-sm">
+        <span className="mb-2 inline-block rounded-full bg-slate-700/45 px-3 py-1.5 text-sm">
           Available for New Projects
         </span>
-        <h2 className="max-w-3xl bg-gradient-to-br from-white to-gray-400 bg-clip-text text-center text-3xl font-medium leading-tight text-transparent sm:text-5xl sm:leading-tight md:text-6xl md:leading-tight">
+        <h2 className="max-w-3xl bg-gradient-to-br from-white to-slate-400 bg-clip-text text-center text-3xl font-medium leading-tight text-transparent sm:text-5xl sm:leading-tight md:text-6xl md:leading-tight">
           Build a Premium Web System That Grows Your Revenue
         </h2>
-        <p className="my-6 max-w-xl text-center text-base leading-relaxed md:text-lg md:leading-relaxed text-gray-300/90">
+        <p className="my-6 max-w-xl text-center text-base leading-relaxed md:text-lg md:leading-relaxed text-slate-300/90">
           Let&apos;s design and launch a high-converting platform with modern UX,
           smooth performance, and business-first engineering.
         </p>
@@ -72,7 +72,7 @@ export const AuroraHero = () => {
           style={{ border, boxShadow }}
           whileHover={{ scale: 1.02 }}
           whileTap={{ scale: 0.985 }}
-          className="group relative flex w-fit items-center gap-1.5 rounded-full bg-gray-950/20 px-5 py-2.5 text-gray-50 transition-colors hover:bg-gray-950/50">
+          className="group relative flex w-fit items-center gap-1.5 rounded-full bg-slate-950/25 px-5 py-2.5 text-slate-50 transition-colors hover:bg-slate-950/55">
           Start your project
           <FiArrowRight className="transition-transform group-hover:-rotate-45 group-active:-rotate-12" />
         </motion.button>

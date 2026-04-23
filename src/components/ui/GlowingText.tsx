@@ -11,9 +11,9 @@ interface GlowingTextProps {
 
 const colorMap = {
   blue: {
-    light: 'text-blue-400 shadow-[0_0_20px_rgba(96,165,250,0.3)]',
-    medium: 'text-blue-400 shadow-[0_0_40px_rgba(75,131,251,0.5)]',
-    heavy: 'text-blue-400 shadow-[0_0_60px_rgba(75,131,251,0.8)]',
+    light: 'text-primary shadow-[0_0_20px_rgba(46,103,206,0.3)]',
+    medium: 'text-primary shadow-[0_0_40px_rgba(46,103,206,0.5)]',
+    heavy: 'text-primary shadow-[0_0_60px_rgba(46,103,206,0.8)]',
   },
   purple: {
     light: 'text-purple-400 shadow-[0_0_20px_rgba(168,85,247,0.3)]',
@@ -44,9 +44,9 @@ export function GlowingText({
           ? {
               opacity: [0.8, 1, 0.8],
               textShadow: [
-                `0 0 20px ${color === 'blue' ? 'rgba(96,165,250,0.3)' : color === 'purple' ? 'rgba(168,85,247,0.3)' : 'rgba(34,211,238,0.3)'}`,
-                `0 0 40px ${color === 'blue' ? 'rgba(75,131,251,0.6)' : color === 'purple' ? 'rgba(168,85,247,0.6)' : 'rgba(34,211,238,0.6)'}`,
-                `0 0 20px ${color === 'blue' ? 'rgba(96,165,250,0.3)' : color === 'purple' ? 'rgba(168,85,247,0.3)' : 'rgba(34,211,238,0.3)'}`,
+                `0 0 20px ${color === 'blue' ? 'rgba(46,103,206,0.3)' : color === 'purple' ? 'rgba(168,85,247,0.3)' : 'rgba(34,211,238,0.3)'}`,
+                `0 0 40px ${color === 'blue' ? 'rgba(46,103,206,0.6)' : color === 'purple' ? 'rgba(168,85,247,0.6)' : 'rgba(34,211,238,0.6)'}`,
+                `0 0 20px ${color === 'blue' ? 'rgba(46,103,206,0.3)' : color === 'purple' ? 'rgba(168,85,247,0.3)' : 'rgba(34,211,238,0.3)'}`,
               ],
             }
           : {}

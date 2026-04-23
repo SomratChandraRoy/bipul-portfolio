@@ -79,7 +79,7 @@ function MagneticItem({ children, className = "", delay = 0 }: { children: React
         }}
         whileHover={{ 
           scale: 1.06, 
-          filter: 'brightness(1.12) drop-shadow(0 4px 12px rgba(75,131,251,0.2))',
+          filter: 'brightness(1.12) drop-shadow(0 4px 12px rgba(46,103,206,0.24))',
         }}
         whileTap={{ scale: 0.93 }}
         transition={{ type: "spring", stiffness: 400, damping: 22, mass: 0.25 }}
@@ -197,7 +197,7 @@ function use3DTilt() {
                    : 'bg-transparent backdrop-blur-none border-0 shadow-none'}`}`}
           >
           {/* Subtle gradient top-edge shine (only on hover) */}
-          <div className={`absolute top-0 left-4 right-4 h-px bg-gradient-to-r from-transparent via-[#4b83fb]/25 to-transparent pointer-events-none transition-opacity duration-700 ${isNavHovered ? 'opacity-100' : 'opacity-0'}`} />
+          <div className={`absolute top-0 left-4 right-4 h-px bg-gradient-to-r from-transparent via-[#2e67ce]/30 to-transparent pointer-events-none transition-opacity duration-700 ${isNavHovered ? 'opacity-100' : 'opacity-0'}`} />
           {/* Hardware-Accelerated Dynamic Spotlight Geometry Tracing Layer */}
           <motion.div 
             className={`absolute inset-0 z-0 pointer-events-none rounded-[inherit] transition-opacity duration-700 ${isNavHovered ? 'opacity-100' : 'opacity-0'}`}
@@ -235,8 +235,8 @@ function use3DTilt() {
                       src="/b.png" 
                       alt="Bipul" 
                       className="h-full w-auto object-contain relative z-10 transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-105 group-hover:-translate-y-1"
-                      initial={{ filter: "drop-shadow(0px 0px 0px rgba(75,131,251,0))" }}
-                      whileHover={{ filter: "drop-shadow(0px 10px 25px rgba(75,131,251,0.6))" }}
+                      initial={{ filter: "drop-shadow(0px 0px 0px rgba(46,103,206,0))" }}
+                      whileHover={{ filter: "drop-shadow(0px 10px 25px rgba(46,103,206,0.62))" }}
                     />
                     {/* Glowing footprint physics */}
                     <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-full h-8 bg-primary/30 blur-2xl rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" />
@@ -247,7 +247,7 @@ function use3DTilt() {
                     className="overflow-hidden flex items-baseline max-w-0 opacity-0 -ml-4 group-hover:ml-0.5 group-hover:max-w-[100px] group-hover:opacity-100 transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] pointer-events-none" 
                   >
                     <span className="tracking-tighter">ipul</span>
-                    <span className="text-primary drop-shadow-[0_0_8px_rgba(75,131,251,0.6)]">.</span>
+                    <span className="text-primary drop-shadow-[0_0_8px_rgba(46,103,206,0.65)]">.</span>
                   </div>
 
                 </div>
@@ -325,7 +325,7 @@ function use3DTilt() {
                              className="absolute inset-0 rounded-full border border-white/10 bg-white/[0.02]"
                              transition={{ type: "spring", stiffness: 350, damping: 30 }}
                           >
-                             <div className="absolute -bottom-px left-1/2 -translate-x-1/2 w-8 h-[2px] rounded-t-full bg-gradient-to-r from-transparent via-primary to-transparent opacity-80 shadow-[0_-2px_8px_rgba(75,131,251,0.6)]" />
+                             <div className="absolute -bottom-px left-1/2 -translate-x-1/2 w-8 h-[2px] rounded-t-full bg-gradient-to-r from-transparent via-primary to-transparent opacity-80 shadow-[0_-2px_8px_rgba(46,103,206,0.62)]" />
                           </motion.div>
                       )}
                     </a>
@@ -371,7 +371,7 @@ function use3DTilt() {
                     initial={{ opacity: 0, scale: 0.5 }}
                     animate={{ opacity: 1, scale: 1 }}
                     exit={{ opacity: 0, scale: 0.5 }}
-                    className="hidden lg:flex items-center justify-center w-10 h-10 rounded-full bg-white/5 border border-white/10 text-white/80 hover:bg-primary hover:border-primary hover:text-primary-foreground hover:shadow-[0_0_15px_rgba(75,131,251,0.3)] transition-all focus:outline-none"
+                    className="hidden lg:flex items-center justify-center w-10 h-10 rounded-full bg-white/5 border border-white/10 text-white/80 hover:bg-primary hover:border-primary hover:text-primary-foreground hover:shadow-[0_0_15px_rgba(46,103,206,0.35)] transition-all focus:outline-none"
                     aria-label="Compact Menu"
                   >
                     <Layers className="w-4 h-4" />
@@ -412,7 +412,7 @@ function use3DTilt() {
                 e.preventDefault();
                 setMobileOpen(false);
                 premiumScrollTo(e as any, '#contact');
-              }} className="relative flex items-center justify-center gap-1.5 h-[34px] px-4 rounded-xl bg-gradient-to-b from-[#3b73eb] to-[#2054c4] border border-[#60a5fa]/20 text-white text-[10px] font-bold shadow-[0_2px_12px_-2px_rgba(75,131,251,0.4),inset_0_1px_0_rgba(255,255,255,0.2)] active:scale-[0.96] transition-all focus:outline-none tracking-[0.12em] overflow-hidden shrink-0" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
+              }} className="relative flex items-center justify-center gap-1.5 h-[34px] px-4 rounded-xl bg-gradient-to-b from-[#2e67ce] to-[#1b3f85] border border-[#5f8fdf]/25 text-white text-[10px] font-bold shadow-[0_2px_12px_-2px_rgba(46,103,206,0.45),inset_0_1px_0_rgba(255,255,255,0.2)] active:scale-[0.96] transition-all focus:outline-none tracking-[0.12em] overflow-hidden shrink-0" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
                   <span className="relative flex h-1.5 w-1.5 shrink-0">
                     <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-60" />
                     <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-emerald-400" />
@@ -422,8 +422,8 @@ function use3DTilt() {
             </MagneticItem>
 
             <MagneticItem className="flex-shrink-0 relative hidden md:block">
-              <div className="w-11 h-11 rounded-full border border-white/[0.15] overflow-hidden ml-2 shadow-[0_0_12px_rgba(75,131,251,0.2),0_0_0_1px_rgba(75,131,251,0.1)] group cursor-pointer relative">
-                <img src={`https://api.dicebear.com/7.x/notionists/svg?seed=Bipul&backgroundColor=4b83fb`} alt="Avatar" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
+              <div className="w-11 h-11 rounded-full border border-white/[0.15] overflow-hidden ml-2 shadow-[0_0_12px_rgba(46,103,206,0.24),0_0_0_1px_rgba(46,103,206,0.14)] group cursor-pointer relative">
+                <img src={`https://api.dicebear.com/7.x/notionists/svg?seed=Bipul&backgroundColor=2e67ce`} alt="Avatar" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
                 <div className="absolute inset-0 ring-1 ring-inset ring-white/[0.08] rounded-full pointer-events-none" />
               </div>
             </MagneticItem>
@@ -479,12 +479,12 @@ function use3DTilt() {
                <motion.div 
                  animate={{ scale: [1, 1.2, 1], opacity: [0.3, 0.5, 0.3] }}
                  transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
-                 className="absolute top-[-10%] left-[-10%] w-[60vw] h-[60vw] rounded-full bg-[#4b83fb]/20 blur-[80px]" 
+                 className="absolute top-[-10%] left-[-10%] w-[60vw] h-[60vw] rounded-full bg-[#2e67ce]/22 blur-[80px]" 
                />
                <motion.div 
                  animate={{ scale: [1, 1.5, 1], opacity: [0.2, 0.4, 0.2] }}
                  transition={{ duration: 10, repeat: Infinity, ease: "easeInOut", delay: 1 }}
-                 className="absolute bottom-[-10%] right-[-10%] w-[70vw] h-[70vw] rounded-full bg-[#8eb4ff]/10 blur-[100px]" 
+                 className="absolute bottom-[-10%] right-[-10%] w-[70vw] h-[70vw] rounded-full bg-[#9ab8e8]/12 blur-[100px]" 
                />
             </div>
 
@@ -504,13 +504,13 @@ function use3DTilt() {
                     transition={{ delay: 0.1 + i * 0.08, duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
                     className={`block py-2 text-4xl sm:text-5xl font-black tracking-tighter uppercase relative group ${
                       activeSection === link.section 
-                        ? 'text-white drop-shadow-[0_0_20px_rgba(75,131,251,0.6)]' 
+                        ? 'text-white drop-shadow-[0_0_20px_rgba(46,103,206,0.6)]' 
                         : 'text-neutral-400 hover:text-white'
                     }`}
                     style={{ fontFamily: "'Space Grotesk', sans-serif" }}
                   >
                     <span className="relative z-10">{link.label}</span>
-                    <span className="absolute left-0 right-0 top-1/2 h-[2px] bg-[#4b83fb] -translate-y-1/2 scale-x-0 group-hover:scale-x-100 active:scale-x-100 transition-transform duration-500 origin-left ease-[cubic-bezier(0.16,1,0.3,1)] z-0" />
+                    <span className="absolute left-0 right-0 top-1/2 h-[2px] bg-[#2e67ce] -translate-y-1/2 scale-x-0 group-hover:scale-x-100 active:scale-x-100 transition-transform duration-500 origin-left ease-[cubic-bezier(0.16,1,0.3,1)] z-0" />
                   </motion.a>
                   </PremiumDraggable>
                 </div>

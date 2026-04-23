@@ -54,7 +54,7 @@ export function About() {
                   className="inline">
                   The story behind the
                 </TextAnimate>{" "}
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#4b83fb] via-[#60a5fa] to-[#a8caff]">
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#2e67ce] via-[#5f8fdf] to-[#a4bce8]">
                   <TextAnimate
                     animation="blurInUp"
                     by="word"
@@ -83,11 +83,11 @@ export function About() {
                   {/* Main visual */}
                   <div className="text-center relative z-10">
                     <div className="relative inline-flex items-center justify-center">
-                      <div className="absolute inset-0 rounded-[2rem] bg-[radial-gradient(circle_at_25%_20%,rgba(75,131,251,0.42),transparent_62%)] blur-xl scale-110" />
+                      <div className="absolute inset-0 rounded-[2rem] bg-[radial-gradient(circle_at_25%_20%,rgba(46,103,206,0.42),transparent_62%)] blur-xl scale-110" />
                       <img
                         src="/profile.jpg"
                         alt="Profile"
-                        className="relative w-56 h-56 md:w-72 md:h-72 lg:w-80 lg:h-80 rounded-[1.75rem] object-cover border border-white/20 shadow-[0_30px_80px_-26px_rgba(75,131,251,0.75)] ring-1 ring-primary/35"
+                        className="relative w-56 h-56 md:w-72 md:h-72 lg:w-80 lg:h-80 rounded-[1.75rem] object-cover border border-white/20 shadow-[0_30px_80px_-26px_rgba(46,103,206,0.75)] ring-1 ring-primary/35"
                       />
                     </div>
                     <p className="mt-4 text-sm text-muted-foreground font-mono">

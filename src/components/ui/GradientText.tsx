@@ -13,14 +13,14 @@ interface GradientTextProps {
 export function GradientText({
   children,
   className = '',
-  gradientStart = 'from-[#4b83fb]',
-  gradientEnd = 'to-[#a8caff]',
+  gradientStart = 'from-primary',
+  gradientEnd = 'to-accent',
   animateGradient = true,
   duration = 4,
 }: GradientTextProps) {
   return (
     <motion.span
-      className={`inline-block bg-clip-text text-transparent bg-gradient-to-r ${gradientStart} via-[#60a5fa] ${gradientEnd} ${className}`}
+      className={`inline-block bg-clip-text text-transparent bg-gradient-to-r ${gradientStart} via-[#5f8fdf] ${gradientEnd} ${className}`}
       animate={
         animateGradient
           ? {

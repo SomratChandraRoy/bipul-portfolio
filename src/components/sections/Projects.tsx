@@ -55,7 +55,11 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
       initial={{ opacity: 0, y: 40 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-60px" }}
-      transition={{ duration: 0.5, delay: index * 0.1, ease: [0.4, 0, 0.2, 1] }}
+      transition={{
+        duration: 0.5,
+        delay: index * 0.1,
+        ease: [0.4, 0, 0.2, 1],
+      }}
       style={{
         perspective: 800,
       }}>
@@ -70,7 +74,7 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
         }}
         whileHover={{
           y: -4,
-          boxShadow: "0 16px 48px -8px hsl(221 96% 64% / 0.12)",
+          boxShadow: "0 16px 48px -8px hsl(217 64% 49% / 0.18)",
         }}
         transition={{ type: "spring", stiffness: 300, damping: 25 }}
         style={{ transformStyle: "preserve-3d" }}>
@@ -276,7 +280,7 @@ export function Projects() {
                 staggerDelay={0.08}>
                 Projects that make an
               </TextAnimate>{" "}
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#4b83fb] via-[#60a5fa] to-[#a8caff]">
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#2e67ce] via-[#5f8fdf] to-[#a4bce8]">
                 <TextAnimate
                   animation="blurInUp"
                   by="word"

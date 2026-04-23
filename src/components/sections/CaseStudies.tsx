@@ -45,7 +45,7 @@ export function CaseStudies() {
                 staggerDelay={0.08}>
                 Case studies in
               </TextAnimate>{" "}
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#4b83fb] via-[#60a5fa] to-[#a8caff]">
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#2e67ce] via-[#5f8fdf] to-[#a4bce8]">
                 <TextAnimate
                   animation="blurInUp"
                   by="word"
