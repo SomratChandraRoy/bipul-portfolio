@@ -135,7 +135,7 @@ function use3DTilt() {
   // Calculate intense premium dynamic glow position based on mouse pct
   const backgroundGlow = useTransform(
     [x, y],
-    ([latestX, latestY]) => `radial-gradient(1200px circle at ${(latestX as number + 0.5) * 100}% ${(latestY as number + 0.5) * 100}%, rgba(75, 131, 251, 0.08), transparent 40%)`
+    ([latestX, latestY]) => `radial-gradient(1200px circle at ${(latestX as number + 0.5) * 100}% ${(latestY as number + 0.5) * 100}%, rgba(46, 103, 206, 0.1), transparent 40%)`
   )
 
   // Smooth premium scroll with stable native behavior
@@ -204,7 +204,7 @@ function use3DTilt() {
             style={{ 
               background: useTransform(
                 [x, y],
-                ([latestX, latestY]) => `radial-gradient(150px circle at ${(latestX as number + 0.5) * 100}% ${(latestY as number + 0.5) * 100}%, rgba(75, 131, 251, 0.45), transparent 100%)`
+                ([latestX, latestY]) => `radial-gradient(150px circle at ${(latestX as number + 0.5) * 100}% ${(latestY as number + 0.5) * 100}%, rgba(46, 103, 206, 0.45), transparent 100%)`
               ),
               WebkitMask: 'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)',
               WebkitMaskComposite: 'xor',
