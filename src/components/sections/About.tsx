@@ -83,7 +83,7 @@ export function About() {
                   {/* Main visual */}
                   <div className="text-center relative z-10">
                     <div className="relative inline-flex items-center justify-center">
-                      <div className="absolute inset-0 rounded-[2rem] bg-[radial-gradient(circle_at_25%_20%,rgba(46,103,206,0.42),transparent_62%)] blur-xl scale-110" />
+                      <div className="absolute inset-0 rounded-[2rem] bg-[radial-gradient(circle_at_25%_20%,rgba(46,103,206,0.25),transparent_62%)] blur-xl scale-110" />
                       <img
                         src="/profile.jpg"
                         alt="Profile"

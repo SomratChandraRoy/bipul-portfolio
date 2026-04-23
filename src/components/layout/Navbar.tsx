@@ -189,11 +189,11 @@ function use3DTilt() {
             className={`relative flex items-center justify-between transition-[background,backdrop-filter,border-color,box-shadow,border-width] duration-700 ${isScrolled 
               ? `w-[calc(100vw-2rem)] md:w-auto px-3 md:px-4 py-2 md:py-2 rounded-2xl md:rounded-full
                  ${isNavHovered 
-                   ? 'bg-[#020617]/85 backdrop-blur-3xl border border-white/[0.08] shadow-[0_8px_32px_-8px_rgba(0,0,0,0.6),inset_0_1px_0_rgba(255,255,255,0.04)]' 
+                   ? 'bg-[#0a0a0a]/85 backdrop-blur-3xl border border-white/[0.08] shadow-[0_8px_32px_-8px_rgba(0,0,0,0.6),inset_0_1px_0_rgba(255,255,255,0.04)]' 
                    : 'bg-transparent backdrop-blur-none border-0 shadow-none'}` 
               : `w-[calc(100vw-2rem)] max-w-5xl px-3 md:px-6 py-2.5 md:py-3 rounded-2xl md:rounded-[2rem] 
                  ${isNavHovered 
-                   ? 'bg-[#0a1628]/60 backdrop-blur-2xl border border-white/[0.08] shadow-[0_12px_40px_-8px_rgba(0,0,0,0.5),inset_0_1px_0_rgba(255,255,255,0.08)]' 
+                   ? 'bg-[#050505]/80 backdrop-blur-2xl border border-white/[0.08] shadow-[0_12px_40px_-8px_rgba(0,0,0,0.5),inset_0_1px_0_rgba(255,255,255,0.08)]' 
                    : 'bg-transparent backdrop-blur-none border-0 shadow-none'}`}`}
           >
           {/* Subtle gradient top-edge shine (only on hover) */}
@@ -479,12 +479,12 @@ function use3DTilt() {
                <motion.div 
                  animate={{ scale: [1, 1.2, 1], opacity: [0.3, 0.5, 0.3] }}
                  transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
-                 className="absolute top-[-10%] left-[-10%] w-[60vw] h-[60vw] rounded-full bg-[#2e67ce]/22 blur-[80px]" 
+                 className="absolute top-[-10%] left-[-10%] w-[60vw] h-[60vw] rounded-full bg-[#2e67ce]/20 blur-[80px]" 
                />
                <motion.div 
                  animate={{ scale: [1, 1.5, 1], opacity: [0.2, 0.4, 0.2] }}
                  transition={{ duration: 10, repeat: Infinity, ease: "easeInOut", delay: 1 }}
-                 className="absolute bottom-[-10%] right-[-10%] w-[70vw] h-[70vw] rounded-full bg-[#9ab8e8]/12 blur-[100px]" 
+                 className="absolute bottom-[-10%] right-[-10%] w-[70vw] h-[70vw] rounded-full bg-[#5f8fdf]/10 blur-[100px]" 
                />
             </div>
 

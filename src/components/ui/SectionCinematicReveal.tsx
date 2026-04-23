@@ -82,7 +82,7 @@ export function SectionCinematicReveal({
       <motion.div style={animatedPanelStyle} className="relative">
         <motion.div
           aria-hidden
-          className="pointer-events-none absolute inset-x-10 -top-8 h-20 rounded-full bg-[radial-gradient(circle,rgba(46,103,206,0.28)_0%,rgba(46,103,206,0)_72%)] blur-2xl"
+          className="pointer-events-none absolute inset-x-10 -top-8 h-20 rounded-full bg-[radial-gradient(circle,rgba(46,103,206,0.12)_0%,rgba(46,103,206,0)_72%)] blur-2xl"
           style={{ opacity: glowOpacity }}
         />
         <motion.div

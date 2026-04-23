@@ -45,7 +45,7 @@ export const AuroraHero = () => {
     [isCoarsePointer],
   );
 
-  const backgroundImage = useMotionTemplate`radial-gradient(125% 125% at 50% 0%, #020617 50%, ${color})`;
+  const backgroundImage = useMotionTemplate`radial-gradient(125% 125% at 50% 0%, #050505 50%, ${color})`;
   const border = useMotionTemplate`1px solid ${color}`;
   const boxShadow = useMotionTemplate`0px 4px 24px ${color}`;
 
@@ -72,7 +72,7 @@ export const AuroraHero = () => {
           style={{ border, boxShadow }}
           whileHover={{ scale: 1.02 }}
           whileTap={{ scale: 0.985 }}
-          className="group relative flex w-fit items-center gap-1.5 rounded-full bg-slate-950/25 px-5 py-2.5 text-slate-50 transition-colors hover:bg-slate-950/55">
+          className="group relative flex w-fit items-center gap-1.5 rounded-full bg-black/25 px-5 py-2.5 text-slate-50 transition-colors hover:bg-black/55">
           Start your project
           <FiArrowRight className="transition-transform group-hover:-rotate-45 group-active:-rotate-12" />
         </motion.button>

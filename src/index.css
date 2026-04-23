@@ -129,25 +129,25 @@
 .theme-glass.dark,
 .theme-midnight.dark,
 .theme-minimal.dark {
-  --background: 229 84% 5%;
-  --foreground: 210 40% 98%;
-  --card: 221 73% 8%;
-  --card-foreground: 210 40% 98%;
-  --popover: 221 73% 8%;
-  --popover-foreground: 210 40% 98%;
-  --primary: 221 96% 64%;
-  --primary-foreground: 229 84% 5%;
-  --secondary: 221 72% 23%;
-  --secondary-foreground: 210 40% 98%;
-  --muted: 221 72% 13%;
-  --muted-foreground: 215 20% 65%;
-  --accent: 213 97% 68%;
-  --accent-foreground: 229 84% 5%;
+  --background: 0 0% 3%;
+  --foreground: 0 0% 98%;
+  --card: 0 0% 7%;
+  --card-foreground: 0 0% 98%;
+  --popover: 0 0% 7%;
+  --popover-foreground: 0 0% 98%;
+  --primary: 219 64% 49%;
+  --primary-foreground: 0 0% 100%;
+  --secondary: 0 0% 12%;
+  --secondary-foreground: 0 0% 98%;
+  --muted: 0 0% 12%;
+  --muted-foreground: 0 0% 60%;
+  --accent: 219 64% 49%;
+  --accent-foreground: 0 0% 100%;
   --destructive: 0 72% 51%;
   --destructive-foreground: 0 0% 100%;
-  --border: 224 64% 33%;
-  --input: 224 64% 33%;
-  --ring: 221 96% 64%;
+  --border: 0 0% 16%;
+  --input: 0 0% 16%;
+  --ring: 219 64% 49%;
 }
 
 /* ── Custom Utilities ──────────────────────────────────────────────────────── */
@@ -187,9 +187,9 @@
 }
 
 .glass-panel {
-  background: hsl(221 73% 8% / 0.6);
+  background: hsl(0 0% 7% / 0.6);
   backdrop-filter: blur(20px) saturate(150%);
-  border: 1px solid hsl(224 64% 33% / 0.6);
+  border: 1px solid hsl(0 0% 16% / 0.6);
 }
 
 .light .glass-panel {
@@ -225,15 +225,15 @@
 
 .bg-grid {
   background-image:
-    linear-gradient(hsl(224 64% 33% / 0.4) 1px, transparent 1px),
-    linear-gradient(90deg, hsl(224 64% 33% / 0.4) 1px, transparent 1px);
+    linear-gradient(hsl(0 0% 16% / 0.4) 1px, transparent 1px),
+    linear-gradient(90deg, hsl(0 0% 16% / 0.4) 1px, transparent 1px);
   background-size: 60px 60px;
 }
 
 .bg-dots {
   background-image: radial-gradient(
     circle,
-    hsl(224 64% 33% / 0.6) 1px,
+    hsl(0 0% 16% / 0.6) 1px,
     transparent 1px
   );
   background-size: 24px 24px;
@@ -275,8 +275,8 @@ section[id] {
 
 /* ── Selection ─────────────────────────────────────────────────────────────── */
 ::selection {
-  background: hsl(221 96% 64% / 0.25);
-  color: hsl(220 20% 95%);
+  background: hsl(219 64% 49% / 0.25);
+  color: hsl(0 0% 98%);
 }
 
 /* ── Scrollbar ─────────────────────────────────────────────────────────────── */
@@ -316,9 +316,9 @@ section[id] {
   padding: 1px;
   background: linear-gradient(
     90deg,
-    hsl(221 96% 64% / 0.3),
-    hsl(213 97% 68% / 0.3),
-    hsl(221 96% 64% / 0.3)
+    hsl(219 64% 49% / 0.3),
+    hsl(219 75% 64% / 0.3),
+    hsl(219 64% 49% / 0.3)
   );
   background-size: 200% 100%;
   animation: shimmer-border 3s ease infinite;
@@ -340,7 +340,7 @@ section[id] {
   left: 0;
   right: 0;
   height: 2px;
-  background: linear-gradient(90deg, hsl(221 96% 64%), hsl(213 97% 68%));
+  background: linear-gradient(90deg, hsl(219 64% 49%), hsl(219 75% 64%));
   transform: scaleX(0);
   transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   transform-origin: left;

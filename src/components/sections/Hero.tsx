@@ -184,7 +184,7 @@ function ConstellationNetwork() {
           0,
           `rgba(120, 170, 255, ${this.baseAlpha * (0.5 + pulse * 0.5)})`,
         );
-        g.addColorStop(0.4, `rgba(46, 103, 206, ${this.baseAlpha * 0.22})`);
+        g.addColorStop(0.4, `rgba(46, 103, 206, ${this.baseAlpha * 0.2})`);
         g.addColorStop(1, "rgba(46, 103, 206, 0)");
         ctx.beginPath();
         ctx.arc(this.x, this.y, currentSize * 3, 0, Math.PI * 2);

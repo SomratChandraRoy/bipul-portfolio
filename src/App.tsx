@@ -61,7 +61,7 @@ function App() {
         className="fixed inset-0 z-0 pointer-events-none"
         style={{
           background:
-            "radial-gradient(120% 70% at 50% 0%, rgba(46,103,206,0.16) 0%, rgba(46,103,206,0.07) 32%, rgba(12,16,28,0) 72%)",
+            "radial-gradient(120% 70% at 50% 0%, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0.01) 32%, rgba(0,0,0,0) 72%)",
         }}
       />
       <div
@@ -69,7 +69,7 @@ function App() {
         className="fixed inset-0 z-0 pointer-events-none"
         style={{
           background:
-            "linear-gradient(180deg, rgba(10,14,24,0.26) 0%, rgba(10,14,24,0) 30%, rgba(10,14,24,0.18) 100%)",
+            "linear-gradient(180deg, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0) 30%, rgba(0,0,0,0.4) 100%)",
         }}
       />
       <Navbar
